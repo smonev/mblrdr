@@ -1,0 +1,181 @@
+
+#layout_container {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  background: #e0e0da url(/images/page_background.png) center repeat-y;
+}
+
+#layout_content {
+  padding-bottom: 118px;
+}
+
+#div_footer {
+  position: absolute;
+  bottom: 0px;
+  background: black;
+  text-align: center;
+  color: #fff;
+  padding: 60px 0px 20px;
+  margin: 0px auto;
+  height: 38px;
+  width: 100%;
+  min-width: 1040px;
+}
+
+#layout_footer img {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.layout_centered {
+  width: 1040px;
+  margin: 0px auto;
+  background-position: top;
+  background-repeat: repeat-y;
+}
+
+.white_section {
+  width: 960px;
+  margin: 0px 10px;
+  padding: 20px 30px 0px;
+  overflow: hidden;
+}
+
+#header {
+  width: 1040px;
+  height: 248px;
+  background: #e0e0da url(/images/splash.png) center no-repeat;
+  position: relative;
+}
+
+#account_links {
+  position: absolute;
+  top: 0px;
+  right: 100px;
+  width: 200;
+  height: 22px;
+  color: #000;
+  font-size: .7em;
+  text-align: center;
+  padding: 5px 0px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#account_links a{
+  color: #fff;
+  background-color: #F6341A;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#account_links #sign_in {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-style: italic;
+}
+#account_links #sign_up {text-transform: uppercase;}
+
+h1 {margin-bottom: .2em;}
+h2 {margin-top: .5em;
+    font-weight: bold;
+}
+
+.one_col {
+  width: 299px;
+  padding: 0px 10px 5px;
+  float: left;
+}
+
+
+
+.two_col {
+  width: 600px;
+  padding: 0px 10px 5px;
+  float: left;
+}
+
+.two_col_no_padding {
+  width: 600px;
+  padding: 0px 0px 5px;
+  float: left;
+}
+
+.three_col {
+  width: 960px;
+  padding: 0px 10px 5px;
+  float: left;
+}
+
+h1.headline {
+  text-align: justify;
+  margin: 0px 0px .3em;
+  font-size: 3.5em;
+  line-height: .9em;
+}
+
+#testimonials {padding-bottom: 80px;}
+
+.testimonial {
+  border-top: 1px solid #1e1e1e;
+  padding-top: 10px;
+  font-size: 1.4em;
+}
+
+.testifier {
+  font-size: .8em;
+  line-height: 1em;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: right;
+}
+
+
+.centered{
+    text-align: center
+}
+.right{
+    text-align: right
+}
+
+#news1 h1, #news4 h1{
+    color:#0374F9;
+}
+
+#news2 h1, #news5 h1{
+    color:#CF03F9;
+}
+
+#news3 h1, #news6 h1{
+    color:#F9036B;
+}
+
+.top_section h1{
+    color:#fff;
+    background-color:#000;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+#news1, #news2, #news3, #news4, #news5, #news6{
+    text-align:left;
+}
+
+#news1 h1, #news2 h1, #news3 h1, #news4 h1, #news5 h1, #news6 h1{
+    text-decoration:underline;
+}
+
+.one_col p {
+    padding-left:10px;
+}
+
+.heading h1{
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left:10px;
+    border-color:#00008b;
+}
+
+#header_img{
+     background: #e0e0da url(/images/mblrdr_logo.png) center no-repeat;
+}
+

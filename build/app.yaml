@@ -1,0 +1,53 @@
+application: fdjsfkdsfhkjdshfkjsdhfkjsdhkj
+# application: orbrdrfdsflasfkaskjdaskj
+version: 3
+runtime: python27
+api_version: 1
+threadsafe: true
+
+skip_files: |
+ ^(.*/)?(
+ (app\.yaml)|
+ (app\.yml)|
+ (index\.yaml)|
+ (index\.yml)|
+ (#.*#)|
+ (.*~)|
+ (.*\.py[co])|
+ )$
+
+default_expiration: "13m"
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /js
+  static_dir: js
+
+- url: /fonts
+  static_dir: fonts
+
+- url: /images
+  static_dir: images
+
+- url: /favicon.ico
+  static_files: images/favicon.ico
+  upload: images/favicon.ico
+
+- url: /robots.txt
+  static_files: media/robots.txt
+  upload: media/robots.txt
+
+- url: .*
+  script: mblrdr.app
+
+builtins:
+- appstats: on
+
+libraries:
+- name: jinja2
+  version: latest
+
+- name: lxml
+  version: 2.3
