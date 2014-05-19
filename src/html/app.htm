@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        
+        <title>mblrdr - a mobile reader</title>
+        <meta name="description" content="">
+        <!-- <meta name="viewport" content="width=device-width"> -->
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+        <!--script type="text/javascript" src="https://getfirebug.com/firebug-lite.js#startOpened"></script-->
+
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+    </head>
+    <body>
+        <div class="menu">
+            <header>
+                <a class="feedSettingsAction" >
+                    <span class="fa fa-bars"></span>
+                </a>
+
+                <span class="headerCaption">&nbsp;</span>
+                
+                <a class="up">
+                    <span class="fa fa-home"></span>
+                </a>
+
+            </header>
+
+            <ul class="menuList">
+            </ul>
+        </div>
+            
+        <div class="articlesHeader displayNone">
+            <header>
+                <a class="feedSettingsAction">
+                    <span class="fa fa-bars"></span>
+                </a>
+
+                <span class="headerCaption"></span>
+                
+                <a class="up">
+                    <span class="fa fa-arrow-left"></span>
+                </a>
+
+            </header>
+
+            <ul class="articlesList">
+            </ul>
+        </div>
+
+        <ul class="feedSettings displayNone">
+            <li class="setting closeButton">
+                <a class="close">
+                    <span>Close</span>
+                    <span class="fa fa-times"></span>
+                </a>
+            </li>
+
+            <li class="settingHeader">
+                <input class="settingsTitle"></input>
+                <a class="feedTitleOK displayNone">
+                    <span class="fa fa-check"></span>
+                </a>
+            </li>
+            
+            <li class="setting markReadSetting">
+                <div class="settingTypeContainer">
+                    <span class="settingType">mark as read: </span>
+                </div>
+
+                <a class="markReadOption" data-val="1">all</a>
+                <!--a class="markReadOption" data-val="2">24h</a>
+                <a class="markReadOption" data-val="3">7d</a-->
+            </li>
+
+            <li class="setting visibilitySetting">
+                <div class="settingTypeContainer">
+                    <span class="settingType">show: </span>
+                </div>
+                
+                <a class="showHideOption first" data-val="1"></a>
+                <a class="showHideOption second" data-val="2"></a>
+            </li>
+
+            <li class="setting nightmodeSetting">
+                <div class="settingTypeContainer">
+                    <span class="settingType">night mode: </span>
+                </div>
+                
+                <a class="nightmodeOption first" data-val="1">Off</a>
+                <a class="nightmodeOption second" data-val="2">On</a>
+            </li>
+
+            <li class="setting changeFolderSetting">
+                <div class="settingTypeContainer">
+                    <span class="settingType">change folder:</span>
+                </div>
+                
+                <select>
+                </select>
+                <span class="fa fa-check changeFolder"></span>
+            </li>
+
+            <li class="setting addFeedSetting">
+                <div class="settingTypeContainer">
+                    <span class="inputType selected" data-addtype="feed">add feed</span>
+                    <span class="inputType" data-addtype="folder">add folder</span>
+                    <span class="inputType" data-addtype="opml">ompl</span>
+                </div>
+                <input type="text" class="feedUrl">
+                <span class="fa fa-check addFeedUrl"></span>
+
+                <input type="text" class="folderName displayNone">
+                <span class="fa fa-check addFolder displayNone"></span>
+
+                <form action="{{ upload_url }}" method="POST" enctype="multipart/form-data" class="omplImportForm displayNone">
+                    <input type="file" name="file" class="opmlFile" placeholder="Upload OPML file" />
+                    <span class="opmlFilePath"></span>
+                    <span class="fa fa-check addOpml"></span>
+                </form>
+            </li>
+
+            <li class="setting deleteFolder displayNone">
+                <a class="feedUnsubscribe">
+                    <span class="fa fa-times"></span>
+                    <span>delete folder</span>
+                </a>
+            </li>
+
+        </ul>
+
+        <script src="js/ext/jquery-1.11.1.min.js"></script>
+        <script src="js/ext/jquery.history.js"></script>
+        <script src="js/ext/jquery.animate-enhanced.js"></script>
+        <script src="js/ext/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        <script src="js/ext/globalize.js"></script>
+        <script src="js/ext/cultures/globalize.culture.en-US.js"></script>
+        <script src="js/ext/fastclick.js"></script>
+        <script src="js/ext/hammer.min.js"></script>
+
+        <script src="js/main.js"></script>
+        <script src="js/settings.js"></script>
+        <script src="js/shortcuts.js"></script>
+        
+        <!--script src="js/mblrdr.js"></script-->        
+        
+    </body>
+</html>
+
+

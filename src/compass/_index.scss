@@ -1,0 +1,446 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, button, input, select, textarea {
+  font-family: sans-serif;
+}
+
+body {
+  min-width: 250px;
+  overflow-x: hidden;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  -webkit-highlight: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  max-width: 800px;
+  margin: 0px auto;
+}
+
+.menu {
+  margin-top: 4px;
+  width: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+  height: 40px;
+
+  header {
+    width: 100%; 
+    height: 40px;
+  }
+
+  .menuList {
+    padding: 0;
+    margin-top: 0px;
+
+    .feed, .folder {
+      border-top: 1px solid #e8e8e8;
+      text-align: left;
+      height: 40px;
+    }
+
+    .feed:last-child, .folder:last-child {
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    &>.feed, &>.folder {
+      white-space: pre;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      line-height: 1.4em;
+      font-size: 2em;
+    }
+
+    &>.feed:first-child, &>.folder:first-child {
+      margin-top: 0px;
+    }
+
+    &>.feed a, &>.folder a {
+      text-decoration: none;
+      display: block;
+      color: blue;
+      cursor: pointer;
+    }
+  }
+
+  h3 {
+    color: blue;
+    margin-left: 20px;
+  }
+
+  .fa-file, .fa-spinner {
+    /*margin-right: 2%;*/
+    min-width: 30px;
+    float: left;
+    width: 30px;
+    margin-top: 4px;
+  }
+
+  .fa-folder {
+    margin-right: 2%;
+  }
+
+  .feedTitle {
+    margin: 0 39px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    color: blue;
+  }
+
+  .unreadCount {
+    float: right;
+    margin-top: -36px;
+    cursor: pointer;
+    min-width: 25px;
+    max-width: 25px;
+    font-size: 0.5em;
+    color: #737373;
+    height: 30px;
+    width: 25px;
+    background: #FAFAB0;
+    line-height: 2em;
+    text-align: right;
+    font-weight: normal;
+    padding: 0 2px;
+  }
+
+  .noUnreadCount {
+    margin-right: 0px;
+  }
+}
+
+.articlesList {
+  padding: 0;
+  margin-top: 0px;
+
+  .article {
+    border-top: 1px solid #e8e8e8;
+    display: inline-block;
+    width: 100%;
+
+    .footer {
+      display: none;
+    }
+
+
+    .header {
+      display: inline-block;
+      width: 100%;
+      font-size: 2em;
+      line-height: 1.4em;
+
+      .headerUrl .fa-external-link {
+        float: right;
+        display: inline-block;
+        font-size: 0.3em;
+        margin-top: 19px;
+        margin-left: 1%;
+        color: #66AA33;
+        text-decoration: none;
+      }
+
+      .title {
+        margin: 0px 14% 0px 0px;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+      }
+
+      .headerUrl {
+        float: right;
+        margin-top: -43px;
+        cursor: pointer;
+        width: 12%;
+        max-width: 12%;
+        display: block;
+        text-decoration: none;
+      }
+
+    }
+
+    .authorAndDate {
+      white-space: pre;
+      display: inline-block;
+      overflow: hidden;
+      float: right;
+      font-size: 0.3em;
+      font-weight: normal;
+      line-height: 1.5em;
+      margin-top: 10px;
+      color: black;
+      width: 75%;
+      text-align: right;
+    }
+
+    .contentHeader, .content {
+      display: none;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      font-size: 0.5em;
+      position: relative;
+      color: #444444;
+
+      font-size: 16px;
+      line-height: 24px;
+
+      .title {
+        font-size: 2em;
+        color: black;
+        white-space: inherit;
+        line-height: 1.2em;
+        float: left;
+        width: 90%;
+      }
+
+      .authorAndDate {
+        white-space: pre;
+        display: inline-block;
+        overflow: hidden;
+        float: right;
+        max-width: 16%;
+        font-size: 0.3em;
+      }
+
+      .imgScaled {
+        width: 100% !important;
+        height: auto  !important;
+      }
+
+      .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .fa-long-arrow-left, .fa-angle-double-up, .fa-star-o, .fa-share, .fa-facebook, .fa-twitter, .fa-google-plus {
+        position: absolute;
+        right: 2%;
+        color: #fcd114;
+        cursor: pointer;
+        font-size: 2em;
+      }
+
+      .fa-undo {
+        top: 110px;
+        font-size: 1.4em;
+      }
+
+      .fa-angle-double-right {
+        top: 10px;
+      }
+
+      .fa-angle-double-left {
+        top: 60px;
+      }
+
+      .fa-angle-double-up {
+        top: 110px;
+      }
+
+      .fa-share {
+        top: 160px;
+        font-size: 1.3em;
+      }
+
+      .fa-facebook {
+        top: 210px;
+        margin-right: 1%;
+      }
+
+      .fa-twitter {
+        top: 260px;
+        margin-right: -1%;
+      }
+
+      .fa-google-plus {
+        top: 310px;
+        margin-right: -1%;
+      }
+    }
+  }
+
+  .article:last-child {
+    border-bottom: 1px solid #e8e8e8;
+  }
+
+  h2 {
+    margin: 0;
+    padding-bottom: 10px;
+  }
+
+  .star {
+    margin-right: 1%;
+    float: left;
+    width: 30px;
+  }
+
+  .content {
+    margin-left: 2%;
+    margin-right: 10%;
+    margin-bottom: 20px;
+    line-height: 1.4em;
+    float: left;
+    min-height: 100px;
+    max-width: 800px;
+  }
+
+  .contentSubHeader {
+    width: 96%;
+    display: block;
+    float: left;
+    margin-top: 4px;
+
+   .fa-external-link {
+      color: #000;
+      font-size: 14px;
+      margin-top: 1px;
+      margin-left: 5px;
+      float: left;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .date {
+      float: left;
+      max-width: 75%;
+      overflow: hidden;
+      white-space: nowrap;
+      line-height: 1.1em;
+      margin-left: 0%;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+    }
+
+    .fa-undo, .fa-star, .fa-star-empty {
+      color: #66AA33;
+      float: left;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .fa-star, .fa-star-empty {
+      display: none;
+    }
+
+  }
+}
+
+.content p {
+  margin: 1.1em 0;
+}
+
+.articlesHeader {
+  margin-top: 4px;
+  padding-left: 2%;
+  padding-right: 2%;
+  width: 100%;
+  height: 40px;
+
+  &>header {
+    height: 40px;
+  }
+
+  .feedTitle {
+    margin-left: 7px;
+    max-width: 60%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+    display: inline-block;
+    white-space: nowrap;
+    float: left;
+    display: none;
+  }
+
+  .feedFolder {
+    margin-left: 20px;
+    float: right;
+    margin-top: 5px;
+  }
+
+  .feedFoldersContainer {
+    float: right;
+    margin-left: 5px;
+    margin-top: 5px;
+    overflow: hidden;
+    max-width: 10%;
+  }
+
+  .selectedFolder {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    text-decoration: underline;
+  }
+
+}
+
+.displayNone {
+  display: none !important;
+}
+
+.unread {
+  font-weight: bold;
+}
+
+.feedSettingsAction {
+  float: right;
+  width: 30px;
+  cursor: pointer;
+}
+
+.headerCaption {
+  font-size: 1.7em;
+  color: #737373;
+  line-height: 1.2em;
+  cursor: default;
+  margin: 0 45px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+}
+
+
+.up {
+  float: left;
+  width: 30px;
+  margin-top: -30px;
+  cursor: pointer;
+}
+
+
+.moreLink {
+  margin: 26px;
+  display: block;
+  text-align: center;
+  margin-bottom: 26px;
+
+  .fa-long-arrow-down {
+    color: #737373;
+  }
+}
+
+.folder a:active, .feedTitle:active, .header .title:active {
+  color: blue;
+}
+
+.fa:active {
+  -webkit-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  -moz-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  -ms-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  -o-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+}
+
+.fontSizeContainer {
+  width: 96%;
+  text-align: center;
+
+  span {
+      color: #fcd114;
+      padding: 0 2%;
+      cursor: pointer;
+      font-size: 1.2em;
+  }
+}

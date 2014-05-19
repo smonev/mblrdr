@@ -1,0 +1,930 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+html {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, button, input, select, textarea {
+  font-family: sans-serif;
+}
+
+body {
+  min-width: 250px;
+  overflow-x: hidden;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  -webkit-highlight: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  max-width: 800px;
+  margin: 0px auto;
+}
+
+.menu {
+  margin-top: 4px;
+  width: 100%;
+  padding-left: 2%;
+  padding-right: 2%;
+  height: 40px;
+}
+.menu header {
+  width: 100%;
+  height: 40px;
+}
+.menu .menuList {
+  padding: 0;
+  margin-top: 0px;
+}
+.menu .menuList .feed, .menu .menuList .folder {
+  border-top: 1px solid #e8e8e8;
+  text-align: left;
+  height: 40px;
+}
+.menu .menuList .feed:last-child, .menu .menuList .folder:last-child {
+  border-bottom: 1px solid #e8e8e8;
+}
+.menu .menuList > .feed, .menu .menuList > .folder {
+  white-space: pre;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  line-height: 1.4em;
+  font-size: 2em;
+}
+.menu .menuList > .feed:first-child, .menu .menuList > .folder:first-child {
+  margin-top: 0px;
+}
+.menu .menuList > .feed a, .menu .menuList > .folder a {
+  text-decoration: none;
+  display: block;
+  color: blue;
+  cursor: pointer;
+}
+.menu h3 {
+  color: blue;
+  margin-left: 20px;
+}
+.menu .fa-file, .menu .fa-spinner {
+  /*margin-right: 2%;*/
+  min-width: 30px;
+  float: left;
+  width: 30px;
+  margin-top: 4px;
+}
+.menu .fa-folder {
+  margin-right: 2%;
+}
+.menu .feedTitle {
+  margin: 0 39px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  color: blue;
+}
+.menu .unreadCount {
+  float: right;
+  margin-top: -36px;
+  cursor: pointer;
+  min-width: 25px;
+  max-width: 25px;
+  font-size: 0.5em;
+  color: #737373;
+  height: 30px;
+  width: 25px;
+  background: #FAFAB0;
+  line-height: 2em;
+  text-align: right;
+  font-weight: normal;
+  padding: 0 2px;
+}
+.menu .noUnreadCount {
+  margin-right: 0px;
+}
+
+.articlesList {
+  padding: 0;
+  margin-top: 0px;
+}
+.articlesList .article {
+  border-top: 1px solid #e8e8e8;
+  display: inline-block;
+  width: 100%;
+}
+.articlesList .article .footer {
+  display: none;
+}
+.articlesList .article .header {
+  display: inline-block;
+  width: 100%;
+  font-size: 2em;
+  line-height: 1.4em;
+}
+.articlesList .article .header .headerUrl .fa-external-link {
+  float: right;
+  display: inline-block;
+  font-size: 0.3em;
+  margin-top: 19px;
+  margin-left: 1%;
+  color: #66AA33;
+  text-decoration: none;
+}
+.articlesList .article .header .title {
+  margin: 0px 14% 0px 0px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+}
+.articlesList .article .header .headerUrl {
+  float: right;
+  margin-top: -43px;
+  cursor: pointer;
+  width: 12%;
+  max-width: 12%;
+  display: block;
+  text-decoration: none;
+}
+.articlesList .article .authorAndDate {
+  white-space: pre;
+  display: inline-block;
+  overflow: hidden;
+  float: right;
+  font-size: 0.3em;
+  font-weight: normal;
+  line-height: 1.5em;
+  margin-top: 10px;
+  color: black;
+  width: 75%;
+  text-align: right;
+}
+.articlesList .article .contentHeader, .articlesList .article .content {
+  display: none;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-size: 0.5em;
+  position: relative;
+  color: #444444;
+  font-size: 16px;
+  line-height: 24px;
+}
+.articlesList .article .contentHeader .title, .articlesList .article .content .title {
+  font-size: 2em;
+  color: black;
+  white-space: inherit;
+  line-height: 1.2em;
+  float: left;
+  width: 90%;
+}
+.articlesList .article .contentHeader .authorAndDate, .articlesList .article .content .authorAndDate {
+  white-space: pre;
+  display: inline-block;
+  overflow: hidden;
+  float: right;
+  max-width: 16%;
+  font-size: 0.3em;
+}
+.articlesList .article .contentHeader .imgScaled, .articlesList .article .content .imgScaled {
+  width: 100% !important;
+  height: auto  !important;
+}
+.articlesList .article .contentHeader .fa-undo, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-long-arrow-left, .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .contentHeader .fa-star-o, .articlesList .article .contentHeader .fa-share, .articlesList .article .contentHeader .fa-facebook, .articlesList .article .contentHeader .fa-twitter, .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-undo, .articlesList .article .content .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-long-arrow-left, .articlesList .article .content .fa-angle-double-up, .articlesList .article .content .fa-star-o, .articlesList .article .content .fa-share, .articlesList .article .content .fa-facebook, .articlesList .article .content .fa-twitter, .articlesList .article .content .fa-google-plus {
+  position: absolute;
+  right: 2%;
+  color: #fcd114;
+  cursor: pointer;
+  font-size: 2em;
+}
+.articlesList .article .contentHeader .fa-undo, .articlesList .article .content .fa-undo {
+  top: 110px;
+  font-size: 1.4em;
+}
+.articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .content .fa-angle-double-right {
+  top: 10px;
+}
+.articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .content .fa-angle-double-left {
+  top: 60px;
+}
+.articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .content .fa-angle-double-up {
+  top: 110px;
+}
+.articlesList .article .contentHeader .fa-share, .articlesList .article .content .fa-share {
+  top: 160px;
+  font-size: 1.3em;
+}
+.articlesList .article .contentHeader .fa-facebook, .articlesList .article .content .fa-facebook {
+  top: 210px;
+  margin-right: 1%;
+}
+.articlesList .article .contentHeader .fa-twitter, .articlesList .article .content .fa-twitter {
+  top: 260px;
+  margin-right: -1%;
+}
+.articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-google-plus {
+  top: 310px;
+  margin-right: -1%;
+}
+.articlesList .article:last-child {
+  border-bottom: 1px solid #e8e8e8;
+}
+.articlesList h2 {
+  margin: 0;
+  padding-bottom: 10px;
+}
+.articlesList .star {
+  margin-right: 1%;
+  float: left;
+  width: 30px;
+}
+.articlesList .content {
+  margin-left: 2%;
+  margin-right: 10%;
+  margin-bottom: 20px;
+  line-height: 1.4em;
+  float: left;
+  min-height: 100px;
+  max-width: 800px;
+}
+.articlesList .contentSubHeader {
+  width: 96%;
+  display: block;
+  float: left;
+  margin-top: 4px;
+}
+.articlesList .contentSubHeader .fa-external-link {
+  color: #000;
+  font-size: 14px;
+  margin-top: 1px;
+  margin-left: 5px;
+  float: left;
+}
+.articlesList .contentSubHeader a {
+  text-decoration: none;
+}
+.articlesList .contentSubHeader .date {
+  float: left;
+  max-width: 75%;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 1.1em;
+  margin-left: 0%;
+  font-size: 0.9em;
+  margin-bottom: 20px;
+}
+.articlesList .contentSubHeader .fa-undo, .articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
+  color: #66AA33;
+  float: left;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
+  display: none;
+}
+
+.content p {
+  margin: 1.1em 0;
+}
+
+.articlesHeader {
+  margin-top: 4px;
+  padding-left: 2%;
+  padding-right: 2%;
+  width: 100%;
+  height: 40px;
+}
+.articlesHeader > header {
+  height: 40px;
+}
+.articlesHeader .feedTitle {
+  margin-left: 7px;
+  max-width: 60%;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  margin-top: 5px;
+  display: inline-block;
+  white-space: nowrap;
+  float: left;
+  display: none;
+}
+.articlesHeader .feedFolder {
+  margin-left: 20px;
+  float: right;
+  margin-top: 5px;
+}
+.articlesHeader .feedFoldersContainer {
+  float: right;
+  margin-left: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+  max-width: 10%;
+}
+.articlesHeader .selectedFolder {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  text-decoration: underline;
+}
+
+.displayNone {
+  display: none !important;
+}
+
+.unread {
+  font-weight: bold;
+}
+
+.feedSettingsAction {
+  float: right;
+  width: 30px;
+  cursor: pointer;
+}
+
+.headerCaption {
+  font-size: 1.7em;
+  color: #737373;
+  line-height: 1.2em;
+  cursor: default;
+  margin: 0 45px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+}
+
+.up {
+  float: left;
+  width: 30px;
+  margin-top: -30px;
+  cursor: pointer;
+}
+
+.moreLink {
+  margin: 26px;
+  display: block;
+  text-align: center;
+  margin-bottom: 26px;
+}
+.moreLink .fa-long-arrow-down {
+  color: #737373;
+}
+
+.folder a:active, .feedTitle:active, .header .title:active {
+  color: blue;
+}
+
+.fa:active {
+  -webkit-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  -moz-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  -ms-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  -o-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+  transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
+}
+
+.fontSizeContainer {
+  width: 96%;
+  text-align: center;
+}
+.fontSizeContainer span {
+  color: #fcd114;
+  padding: 0 2%;
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.nightmode {
+  /*background: black;*/
+  /*color: #dad0b5;*/
+  /*background-color: rgb(39, 40, 34);*/
+  /*color: rgb(248, 248, 242);*/
+  background: #212324;
+  color: #ddd;
+}
+.nightmode .menu .feedTitle {
+  color: #dad0b5;
+}
+.nightmode .menu .menuList > .folder a {
+  color: #dad0b5;
+}
+.nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
+  border-top: 1px solid #202020;
+}
+.nightmode .menu .menuList .folder:last-child, .nightmode .menu .menuList .feed:last-child, .nightmode .menu .menuList .article:last-child, .nightmode .articlesList .folder:last-child, .nightmode .articlesList .feed:last-child, .nightmode .articlesList .article:last-child {
+  border-bottom: 1px solid #202020;
+}
+.nightmode .unreadCount {
+  background: #fcd114;
+  color: black;
+}
+.nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
+  color: #dad0b5;
+  text-decoration: none;
+}
+.nightmode .date {
+  color: #dad0b5;
+  text-decoration: none;
+}
+.nightmode .headerCaption {
+  color: #fcd114;
+}
+.nightmode .articlesList .article .authorAndDate {
+  color: #dad0b5;
+}
+.nightmode .feedSettings {
+  /*background: black;*/
+  background: #212324;
+  color: #ddd;
+}
+.nightmode .feedSettings .setting .markReadOption, .nightmode .feedSettings .setting .showHideOption, .nightmode .feedSettings .setting .nightmodeOption {
+  color: #dad0b5;
+}
+.nightmode .feedSettings .settingType {
+  background: none;
+  color: white;
+}
+.nightmode .feedSettings .feedUnsubscribe {
+  color: #dad0b5;
+}
+.nightmode .feedSettings .close {
+  border: 1px solid #dad0b5;
+}
+.nightmode .feedSettings .closeButton .close span:first-child {
+  color: #dad0b5;
+}
+.nightmode a {
+  color: #fcd114;
+}
+.nightmode .articlesList .article .contentSubHeader .fa-external-link {
+  color: #dad0b5;
+}
+.nightmode .unread .title {
+  font-weight: bold;
+  text-decoration: underline !important;
+}
+.nightmode .articlesList .article .contentHeader, .nightmode .articlesList .article .content {
+  color: #dad0b5;
+}
+
+.fa-desktop, .fa-remove, .fa-folder-o-alt, .fa-mobile-phone, .fa-plus, .fa-folder-o, .fa-share, .fa-signout, .fa-arrow-left, .fa-star, .fa-star-o, .fa-file, .fa-home, .fa-external-link, .fa-bars, .fa-long-arrow-left, .fa-remove-sign, .fa-undo, .fa-check, .fa-spinner {
+  text-decoration: none !important;
+}
+
+.fa-long-arrow-left, .fa-home, .fa-bars {
+  font-size: 2em;
+}
+
+.fa-remove {
+  float: right;
+  margin: 10px;
+}
+
+.fa-folder-o, .fa-file, .fa-star, .fa-star-o, .fa-long-arrow-left, .fa-home, .fa-bars, .fa-folder, .fa-spinner {
+  color: #66AA33;
+}
+
+.fa-spinner {
+  float: left;
+}
+
+.fa-folder, .fa-mobile-phone, .fa-signout, .addFeed .fa-plus {
+  margin-right: 3px;
+}
+
+.fa-undo {
+  font-size: 1.4em;
+  color: red;
+}
+
+.fa-check {
+  font-size: 2em;
+  color: green;
+}
+
+@media all and (max-width: 640px) {
+  .articles, .articlesHeader, .menu {
+    margin-right: 1%;
+  }
+
+  .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
+    right: 1%;
+  }
+}
+@media all and (max-width: 400px) {
+  .articlesList .article .authorAndDate {
+    display: none;
+  }
+
+  .title {
+    width: 82%;
+  }
+}
+@media all and (max-width: 270px) {
+  .title {
+    width: 80%;
+  }
+}
+@media all and (max-width: 370px) and (min-width: 1px) {
+  .feedFoldersContainer {
+    display: none;
+  }
+
+  .backToMenu {
+    max-width: 34px;
+    min-width: 34px;
+    text-overflow: ellipsis;
+    margin-left: 10%;
+  }
+
+  .backToMenu span:nth-child(2) {
+    display: none;
+  }
+
+  .title {
+    margin-left: 2%;
+  }
+
+  .leftCaption {
+    display: none;
+  }
+
+  .rightCaption {
+    width: 55%;
+  }
+
+  .showHideOption.second:after {
+    content: "unread" !important;
+  }
+}
+.feedSettings {
+  position: relative;
+  background-color: white;
+  border: 1px solid #5e5e5e;
+  top: -35px;
+  overflow-y: auto;
+  opacity: 0.98;
+  width: 98%;
+  min-width: 220px;
+  padding-bottom: 5%;
+  padding-left: 0px;
+  z-index: 100;
+  max-width: 90%;
+  max-width: 560px;
+  border-bottom: 10px solid #5e5e5e;
+  border-top: 3px solid #5e5e5e;
+  left: 1%;
+}
+.feedSettings a {
+  cursor: pointer;
+}
+.feedSettings .fa-long-arrow-left {
+  color: #66AA33;
+  font-size: 2em;
+  float: right;
+}
+.feedSettings .settingsTitle {
+  color: #000;
+  font-size: 1.2em;
+  text-overflow: clip;
+  white-space: nowrap;
+  overflow: hidden;
+  border: 1px solid #e1e1e1;
+  padding: 2px 3%;
+  width: 100%;
+  float: left;
+  background: #d1d1d1;
+}
+.feedSettings .setting {
+  width: 100%;
+  display: inline-block;
+  margin-top: 9%;
+}
+.feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption {
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  font-size: 1.5em;
+  border: 2px solid #66AA33;
+  border-radius: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 4%;
+  margin-top: 1px;
+  float: left;
+}
+.feedSettings .setting .showHideOption:hover, .feedSettings .setting .showHideOption.selected, .feedSettings .setting .markReadOption:hover, .feedSettings .setting .markReadOption.selected, .feedSettings .setting .nightmodeOption:hover, .feedSettings .setting .nightmodeOption.selected {
+  background: #66AA33;
+  color: white;
+  border-radius: 5px;
+}
+.feedSettings .setting.markReadSetting {
+  margin-top: 5%;
+}
+.feedSettings .setting .markReadOption {
+  width: 28%;
+}
+.feedSettings .setting .showHideOption {
+  width: 44%;
+}
+.feedSettings .setting .nightmodeOption {
+  width: 22%;
+}
+.feedSettings .feedTitleUndo {
+  text-decoration: none;
+  margin-right: 2%;
+  margin-top: 6px;
+  float: left;
+  margin-left: 1%;
+}
+.feedSettings .feedUnsubscribe {
+  margin-left: 2%;
+  color: black;
+  text-decoration: none;
+  font-size: 1.5em;
+}
+.feedSettings .feedUnsubscribe span:last-child {
+  margin-left: 4px;
+  text-decoration: underline;
+}
+.feedSettings .fa-times {
+  color: red;
+}
+.feedSettings .feedTitleOK {
+  text-decoration: none;
+  position: relative;
+  font-size: 0.8em;
+  background: white;
+  border-left: 1px solid #f1f1f1;
+  top: -31px;
+  left: 92%;
+}
+.feedSettings .feedTitleOK .fa-check {
+  position: relative;
+  top: 3px;
+  left: 2px;
+}
+.feedSettings .folder {
+  margin-top: 10px;
+}
+.feedSettings .folder .fa-folder {
+  margin-right: 1%;
+  color: #66AA33;
+}
+.feedSettings .folder a {
+  color: black;
+  padding: 2px;
+  font-size: 2em;
+  line-height: 1.2em;
+  margin-left: 30px;
+}
+.feedSettings .addFeedSetting {
+  position: relative;
+}
+.feedSettings .addFeedSetting .inputType {
+  padding: 2px;
+  padding: 3px;
+  margin-right: 3%;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+  float: left;
+  display: block;
+  font-weight: bold;
+  background: white;
+  color: #5e5e5e;
+  line-height: 1em;
+}
+.feedSettings .addFeedSetting .inputType.selected {
+  color: white;
+  background: #66AA33;
+  padding: 3px;
+}
+.feedSettings .feedUrl, .feedSettings .folderName {
+  float: left;
+  width: 92%;
+  margin-left: 3%;
+  border: 1px solid #66AA33;
+  /*font-size: 24px;*/
+  margin-right: 4%;
+  margin-top: -3px;
+  padding: 5px;
+}
+.feedSettings .addFolder, .feedSettings .addFeedUrl {
+  cursor: pointer;
+  position: absolute;
+  font-size: 1.7em;
+  border-left: 1px solid #f1f1f1;
+  right: 5%;
+  top: 1em;
+  margin-top: -3px;
+}
+.feedSettings .settingTypeDivider {
+  float: left;
+  margin-right: 3%;
+  font-weight: bold;
+  color: #5e5e5e;
+  padding: 3px;
+}
+.feedSettings li {
+  border: none;
+}
+.feedSettings .newFolder {
+  float: left;
+  width: 99%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: none;
+}
+.feedSettings .newFolder a {
+  background: white;
+  color: #66AA33;
+  text-decoration: none;
+  padding: 2px;
+  font-size: 1.5em;
+}
+.feedSettings .newFolder a:hover {
+  background: #66AA33;
+  color: white;
+  border-radius: 4px;
+}
+.feedSettings .settingHeader {
+  height: 30  px;
+  border-bottom: 1px solid #5e5e5e;
+  width: 100%;
+}
+.feedSettings .fa-remove-sign {
+  color: red;
+  font-size: 1em;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.feedSettings .showHideOption.first:after {
+  content: "show all";
+}
+.feedSettings .showHideOption.second:after {
+  content: "unread only";
+}
+.feedSettings .changeFolderSetting select {
+  float: left;
+  margin-left: 4%;
+  margin-top: 5px;
+  max-width: 80%;
+  width: 78%;
+  border: 1px solid #66AA33;
+  height: 40px;
+  font-size: 2em;
+}
+.feedSettings .changeFolderSetting .fa-check {
+  font-size: 2em;
+  margin-left: 4%;
+  margin-top: 10px;
+}
+.feedSettings .opmlFile {
+  border: none;
+  width: 102px;
+  float: left;
+  margin-left: 4%;
+  margin-top: 0px;
+  max-width: 50%;
+  height: 23px;
+  margin-bottom: 22px;
+}
+.feedSettings .closeSettings {
+  width: 100%;
+  border-top: 6px solid #66AA33;
+}
+.feedSettings .closeSettings span {
+  cursor: pointer;
+  margin-top: 6px;
+  display: block;
+  float: right;
+  margin-right: 1%;
+}
+.feedSettings .addOpml {
+  margin-left: 10px;
+  cursor: pointer;
+  float: left;
+  margin-top: 18px;
+  display: none;
+}
+.feedSettings .opmlText {
+  float: left;
+  margin-left: 10px;
+  margin-top: 3px;
+  font-size: 1.2em;
+}
+.feedSettings .opmlFilePath {
+  width: 29%;
+  display: none;
+  border: 1px dashed black;
+  white-space: nowrap;
+  max-width: 29%;
+  overflow: hidden;
+  margin-top: 23px;
+  margin-left: 11px;
+  float: left;
+  padding: 3px;
+}
+.feedSettings .settingTypeContainer {
+  width: 92%;
+  display: inline-block;
+  height: 23px;
+  margin-left: 3%;
+}
+.feedSettings .settingType {
+  float: left;
+  display: block;
+  margin-right: 3%;
+  font-weight: bold;
+  background: white;
+  color: #5e5e5e;
+  padding: 3px;
+  line-height: 1em;
+}
+.feedSettings .deleteFolder {
+  width: 90%;
+  border-top: 1px solid #66AA33;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  text-align: center;
+  margin-left: 5%;
+}
+.feedSettings .closeButton {
+  margin-top: 4%;
+  padding-bottom: 4%;
+  text-align: center;
+  color: #dad0b5;
+}
+.feedSettings .closeButton .close {
+  text-decoration: none;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-top: 10px;
+  padding-bottom: 4px;
+  border: 3px solid #66AA33;
+  border-radius: 5px;
+}
+.feedSettings .closeButton .close span:first-child {
+  color: black;
+  text-decoration: none;
+  font-size: 1.6em;
+  margin-left: 1%;
+}
+.feedSettings .closeButton .close .fa-times {
+  color: #66AA33;
+  font-size: 2em;
+  margin-left: 2%;
+  position: relative;
+  top: 1px;
+}

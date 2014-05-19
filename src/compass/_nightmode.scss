@@ -1,0 +1,98 @@
+.nightmode {
+  /*background: black;*/
+  /*color: #dad0b5;*/
+  /*background-color: rgb(39, 40, 34);*/
+  /*color: rgb(248, 248, 242);*/
+  background: #212324;
+  color: #ddd;
+
+  .menu .feedTitle {
+    color: #dad0b5;
+  }
+
+  .menu .menuList > .folder a {
+    color: #dad0b5;
+  }
+
+  .menu .menuList, .articlesList {
+    .folder, .feed, .article {
+      border-top: 1px solid #202020;
+    }
+
+    .folder:last-child, .feed:last-child, .article:last-child {
+      border-bottom: 1px solid #202020;
+    }
+
+  }
+
+  .unreadCount {
+    background: #fcd114;
+    color: black;
+  }
+
+  a.title, .articlesList .article .contentHeader .title, .articlesList .article .content .title {
+    color: #dad0b5;
+    text-decoration: none;
+  }
+
+  .date {
+    color: #dad0b5;
+    text-decoration: none;
+  }
+
+  .headerCaption {
+    color: #fcd114;
+  }
+
+  .articlesList .article .authorAndDate {
+    color: #dad0b5;
+  }
+
+  .feedSettings {
+    /*background: black;*/
+    background: #212324;
+    color: #ddd;
+  }
+
+  .feedSettings .setting {
+    .markReadOption, .showHideOption, .nightmodeOption {
+      color: #dad0b5;
+    }
+  }
+
+  .feedSettings .settingType {
+    background: none;
+    color: white;
+  }
+
+  .feedSettings .feedUnsubscribe {
+    color: #dad0b5;
+  }
+
+  .feedSettings .close {
+    border: 1px solid #dad0b5;
+  }
+
+  .feedSettings .closeButton .close span:first-child {
+    color: #dad0b5;
+  }
+
+  a {
+    color: #fcd114;
+  }  
+
+  .articlesList .article .contentSubHeader .fa-external-link {
+    color: #dad0b5;
+  }
+
+  .unread {
+    .title {
+      font-weight: bold;
+      text-decoration: underline !important;
+    }
+  }
+
+  .articlesList .article .contentHeader, .articlesList .article .content {
+    color: #dad0b5;
+  }
+}

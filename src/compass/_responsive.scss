@@ -1,0 +1,58 @@
+@media all and (max-width: 640px) {
+  .articles, .articlesHeader, .menu {
+    margin-right: 1%;
+  }
+
+  .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
+    right: 1%;
+  }
+}
+
+@media all and (max-width: 400px) {
+  .articlesList .article .authorAndDate {
+    display: none;
+  }
+
+  .title {
+    width: 82%;
+  }
+}
+
+@media all and (max-width: 270px) {
+  .title {
+    width: 80%;
+  }
+}
+
+@media all and (max-width: 370px) and (min-width: 1px) {
+  .feedFoldersContainer {
+    display: none;
+  }
+
+  .backToMenu {
+    max-width: 34px;
+    min-width: 34px;
+    text-overflow: ellipsis;
+    margin-left: 10%;
+  }
+
+  .backToMenu span:nth-child(2) {
+    display: none;
+  }
+
+  .title {
+    margin-left: 2%;
+  }
+
+  .leftCaption {
+    display: none;
+  }
+
+  .rightCaption {
+    width: 55%;
+  }
+
+  .showHideOption.second:after {
+    content: "unread" !important;
+  }
+}
