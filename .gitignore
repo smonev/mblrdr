@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 
@@ -9,7 +10,6 @@ __pycache__/
 .Python
 env/
 bin/
-build/
 develop-eggs/
 dist/
 eggs/
@@ -52,3 +52,5 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+##sass
+.sass-cache/
