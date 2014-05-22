@@ -258,6 +258,8 @@ class CronFeedHandler(BasicHandler):
         ## http://devblog.miumeet.com/2012/06/storing-json-efficiently-in-python-on.html
         ## RequestTooLargeError  http://stackoverflow.com/questions/5022725/how-do-i-measure-the-memory-usage-of-an-object-in-python
 
+        newItemsCount = len(items)
+
         if feedDataSettings.private_data <> '':
             oldData = json.loads(feedDataSettings.private_data)
             items = items + oldData
@@ -286,6 +288,8 @@ class CronFeedHandler(BasicHandler):
 
             feedDataSettings.latest_item = newKeyName
             feedDataSettings.private_data = ''
+
+        feedDataSettings.article_count = feedDataSettings.article_count + newItemsCount
 
         logging.debug('[READCOUNT DEBUG] Increase read count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
 
@@ -353,7 +357,7 @@ class CronFeedHandler(BasicHandler):
                 if hasattr(d['feed'], 'title'):
                     di['feedTitle'] = d['feed']['title']
 
-            feedDataSettings.article_count = feedDataSettings.article_count + 1
+            ##feedDataSettings.article_count = feedDataSettings.article_count + 1
 
             itemSize = itemSize + sys.getsizeof(di)
             if itemSize < 80000: ## todo more preciese calcs here

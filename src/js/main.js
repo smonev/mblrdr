@@ -223,6 +223,7 @@ MblRdr = function() {
                 }
 
                 MblRdr.data[i].rendered = true;
+                feedUrl = entry.feedUrl;
 
                 unread = MblRdr.read.indexOf('' + entry.id + '') === -1 ? 'unread' : '';
                 if (
@@ -247,7 +248,12 @@ MblRdr = function() {
                 }
 
                 star = MblRdr.star.indexOf('' + entry.id + '') === -1 ? 'fa fa-star-o' : 'fa fa-star';
-                feedUrl = entry.feedUrl;
+                if (
+                    (typeof MblRdr.starCache[feedUrl] !== "undefined") &&
+                    (typeof MblRdr.starCache[feedUrl][entry.id] !== "undefined")
+                ) {
+                    star = MblRdr.starCache[feedUrl][entry.id] ? 'fa fa-star' : 'fa fa-star-o';
+                }
 
                 if (entry.title === "") {
                     entry.title = Globalize.format(entry.publishedObject, 'MMM d');
@@ -467,6 +473,14 @@ MblRdr = function() {
         $('.star').off('click').on('click', function() {
             var $this = $(this), $article, newStarState;
 
+            function addToStarCache(feed, state, id) {
+                if (typeof MblRdr.starCache[feed] === "undefined") {
+                    MblRdr.starCache[feed] = {};
+                }
+
+                MblRdr.starCache[feed][id] = state === 1;
+            }
+
             function starArticle(feed, state, id) {
                 var data = {
                     'feed': feed,
@@ -493,8 +507,8 @@ MblRdr = function() {
                 newStarState = 1;
             }
 
-
             starArticle($article.data('url'), newStarState, $article.data('id'));
+            addToStarCache($article.data('url'), newStarState, $article.data('id'));
 
             return false;
         });

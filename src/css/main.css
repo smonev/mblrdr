@@ -129,13 +129,14 @@ body {
   margin-right: 2%;
 }
 .menu .feedTitle {
-  margin: 0 39px;
+  /*margin: 0 39px; unreadCount change*/
+  margin: 0 0 0 39px;
   overflow: hidden;
   white-space: nowrap;
   display: block;
   color: blue;
 }
-.menu .unreadCount {
+.menu .oldUnreadCount {
   float: right;
   margin-top: -36px;
   cursor: pointer;
@@ -150,6 +151,16 @@ body {
   text-align: right;
   font-weight: normal;
   padding: 0 2px;
+}
+.menu .unreadCount {
+  float: left;
+  margin-top: -29px;
+  cursor: pointer;
+  width: 2em;
+  line-height: 2em;
+  padding: 0 1px;
+  font-size: 0.36em;
+  color: white;
 }
 .menu .noUnreadCount {
   margin-right: 0px;
@@ -465,7 +476,7 @@ body {
   border-bottom: 1px solid #202020;
 }
 .nightmode .unreadCount {
-  background: #fcd114;
+  /*background: #fcd114;*/
   color: black;
 }
 .nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {

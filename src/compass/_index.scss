@@ -83,14 +83,15 @@ body {
   }
 
   .feedTitle {
-    margin: 0 39px;
+    /*margin: 0 39px; unreadCount change*/
+    margin: 0 0 0 39px;
     overflow: hidden;
     white-space: nowrap;
     display: block;
     color: blue;
   }
 
-  .unreadCount {
+  .oldUnreadCount {
     float: right;
     margin-top: -36px;
     cursor: pointer;
@@ -105,6 +106,17 @@ body {
     text-align: right;
     font-weight: normal;
     padding: 0 2px;
+  }
+
+  .unreadCount {
+    float: left;
+    margin-top: -29px;
+    cursor: pointer;
+    width: 2em;
+    line-height: 2em;
+    padding: 0 1px;
+    font-size: 0.36em;
+    color: white;
   }
 
   .noUnreadCount {

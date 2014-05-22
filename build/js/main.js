@@ -223,6 +223,7 @@ MblRdr = function() {
                 }
 
                 MblRdr.data[i].rendered = true;
+                feedUrl = entry.feedUrl;
 
                 unread = MblRdr.read.indexOf('' + entry.id + '') === -1 ? 'unread' : '';
                 if (
@@ -247,7 +248,12 @@ MblRdr = function() {
                 }
 
                 star = MblRdr.star.indexOf('' + entry.id + '') === -1 ? 'fa fa-star-o' : 'fa fa-star';
-                feedUrl = entry.feedUrl;
+                if (
+                    (typeof MblRdr.starCache[feedUrl] !== "undefined") &&
+                    (typeof MblRdr.starCache[feedUrl][entry.id] !== "undefined")
+                ) {
+                    star = MblRdr.starCache[feedUrl][entry.id] ? 'fa fa-star' : 'fa fa-star-o';
+                }
 
                 if (entry.title === "") {
                     entry.title = Globalize.format(entry.publishedObject, 'MMM d');
@@ -467,6 +473,14 @@ MblRdr = function() {
         $('.star').off('click').on('click', function() {
             var $this = $(this), $article, newStarState;
 
+            function addToStarCache(feed, state, id) {
+                if (typeof MblRdr.starCache[feed] === "undefined") {
+                    MblRdr.starCache[feed] = {};
+                }
+
+                MblRdr.starCache[feed][id] = state === 1;
+            }
+
             function starArticle(feed, state, id) {
                 var data = {
                     'feed': feed,
@@ -493,8 +507,8 @@ MblRdr = function() {
                 newStarState = 1;
             }
 
-
             starArticle($article.data('url'), newStarState, $article.data('id'));
+            addToStarCache($article.data('url'), newStarState, $article.data('id'));
 
             return false;
         });
@@ -742,10 +756,15 @@ MblRdr = function() {
     function pushState(appState) {
         var urlState = '?folderName=root';
 
+        // don't push the folder in the url (privacy)
+        // if ((typeof appState.feedUrl !== "undefined") && (typeof appState.folderName !== "undefined")) {
+        //     urlState = '?feedUrl=' + appState.feedUrl + '&folderName=' + appState.folderName;
+        // } else if (typeof appState.folderName !== "undefined") {
+        //     urlState = '?folderName=' + appState.folderName;
+        // }
+
         if ((typeof appState.feedUrl !== "undefined") && (typeof appState.folderName !== "undefined")) {
-            urlState = '?feedUrl=' + appState.feedUrl + '&folderName=' + appState.folderName;
-        } else if (typeof appState.folderName !== "undefined") {
-            urlState = '?folderName=' + appState.folderName;
+            urlState = '?feedUrl=' + appState.feedUrl;
         }
 
         History.pushState(appState, appState.folderName ? appState.folderName: 'root', urlState);

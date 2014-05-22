@@ -5,7 +5,7 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-concat');  
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-gae');
   //grunt.loadNpmTasks('grunt-appengine');  
 
@@ -17,7 +17,7 @@ module.exports = function(grunt){
           all: ["build"],
           temp: ["build/temp"],
           js: ["build/js"]
-        },        
+        },
         
         copy: {
           main: {
@@ -68,16 +68,16 @@ module.exports = function(grunt){
           },
           dist: {
             src: ['temp/**/*.js'],
-            dest: 'build/js/<%= pkg.name %>.js'          
+            dest: 'build/js/<%= pkg.name %>.js'
           },
-        },  
+        },
         
         gae: {
             deploy_default: {
                 action: 'update',
                 options: {
                     path: 'build/'
-                }            
+                }
             }
         }
     });

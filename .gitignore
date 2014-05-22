@@ -54,3 +54,4 @@ docs/_build/
 
 ##sass
 .sass-cache/
+*.sublime-workspace
