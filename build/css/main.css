@@ -634,7 +634,7 @@ body {
   max-width: 560px;
   border-bottom: 10px solid #5e5e5e;
   border-top: 3px solid #5e5e5e;
-  left: 1%;
+  margin: 0px auto;
 }
 .feedSettings a {
   cursor: pointer;
