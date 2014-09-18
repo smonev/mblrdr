@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"key",
+				"keyName"
+			],
+			[
+				"priv",
+				"private_data"
+			],
+			[
+				"cr",
+				"cronUrl"
+			],
+			[
+				"feed",
+				"feedUrl"
+			],
+			[
 				"curr",
 				"currentFolder"
 			],
@@ -14,10 +30,6 @@
 			[
 				"fun",
 				"function"
-			],
-			[
-				"feed",
-				"feedSettings"
 			],
 			[
 				"me",
@@ -208,18 +220,26 @@
 	"buffers":
 	[
 		{
-			"file": "src/js/main.js",
+			"file": "src/js/settings.js",
 			"settings":
 			{
-				"buffer_size": 31861,
+				"buffer_size": 22324,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/mblrdr.py",
+			"file": "src/js/shortcuts.js",
 			"settings":
 			{
-				"buffer_size": 52975,
+				"buffer_size": 9420,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/js/react-settings.js",
+			"settings":
+			{
+				"buffer_size": 3967,
 				"line_ending": "Windows"
 			}
 		}
@@ -227,15 +247,15 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 150.0,
+		"height": 392.0,
 		"selected_items":
 		[
 			[
-				"grun",
+				"gr",
 				"Grunt"
 			],
 			[
-				"gr",
+				"grun",
 				"Grunt"
 			],
 			[
@@ -303,7 +323,7 @@
 				"Preferences: Browse Packages"
 			]
 		],
-		"width": 400.0
+		"width": 416.0
 	},
 	"console":
 	{
@@ -324,6 +344,19 @@
 	},
 	"file_history":
 	[
+		"/C/proj/github/mblrdr/src/mblrdr.py",
+		"/C/proj/github/mblrdr/src/js/main.js",
+		"/C/proj/github/mblrdr/src/js/empty.js",
+		"/C/proj/github/mblrdr/src/js/shortcuts.js",
+		"/C/proj/github/mblrdr/src/js/react-settings.js",
+		"/C/proj/github/mblrdr/src/js/react-main.js",
+		"/C/proj/github/mblrdr/src/js/settings.js",
+		"/C/proj/github/mblrdr/src/cron.yaml",
+		"/C/proj/github/mblrdr/src/app.yaml",
+		"/C/proj/github/mblrdr/build/mblrdr.db.py",
+		"/C/proj/github/mblrdr/build/mblrdr.py",
+		"/C/proj/github/mblrdr/src/1queue.yaml",
+		"/C/proj/github/mblrdr/Gruntfile.js",
 		"/C/proj/orbrdr/src/js/settings.js",
 		"/C/proj/orbrdr/src/js/react-main.js",
 		"/C/proj/orbrdr/src/js/react-settings.js",
@@ -380,6 +413,86 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"300",
+			"findNextArticle",
+			"next",
+			"logging.de",
+			"logging.info",
+			"loggin",
+			"newf",
+			"addf",
+			"import urllib",
+			"create fe",
+			"getand",
+			"CreateFirstTimeUser",
+			"cronfeed",
+			"cronfe",
+			"incr",
+			"inccr",
+			"getfeeddatas",
+			"increa",
+			"rpc.wait()",
+			"urlf",
+			"quote",
+			"cronfeed",
+			"loggin",
+			"link ",
+			"link:",
+			"link",
+			"\"link",
+			"logging.debug",
+			"max-a",
+			"quote",
+			"encode",
+			"cronur",
+			"heloo",
+			"logging.debug",
+			"keynam",
+			"keyN",
+			"is no",
+			"feedDataSettings.private_data",
+			"Create FeedDataSettings",
+			"getFeedData",
+			"feedha",
+			"cronfeed",
+			"cro",
+			"GetAndParse",
+			"addso",
+			"AddSomeData",
+			"cronfeed",
+			"fetch",
+			"urlop",
+			"cronur",
+			"AddSomeData",
+			"Create FeedDataSettings for",
+			"newf",
+			"newFeed=",
+			"createNew",
+			"READCOUNT DEBUG",
+			"deb",
+			"cronf",
+			"task",
+			"transactional",
+			"get_by",
+			"ndb",
+			"asyn",
+			"newf",
+			"getNewFeedViaCron",
+			"newf",
+			"cronfeed",
+			"newf",
+			"getNewFeedViaCron",
+			"cronfeed",
+			"adding feed",
+			"addNewFeed",
+			"SaveSettingsHandler",
+			"cronfeed",
+			"getNewFeedViaCron",
+			"logging",
+			"getNewFeedViaCron",
+			"cronfeed",
+			"getfeeddata",
+			"folderName",
 			"root",
 			"pushs",
 			"foldernam",
@@ -427,87 +540,7 @@
 			"== N",
 			"is no",
 			"GetFeedDataSettings",
-			"set",
-			"getattr",
-			"setatt",
-			"getattr",
-			"ud.",
-			"articles = json.loads(feedData)",
-			"readc",
-			"s",
-			"readData.readCount",
-			"readc",
-			"#!/",
-			"readda",
-			"markSingleArticleAsRead",
-			"break",
-			"json.loads(self.request.get('data'))",
-			"append",
-			"readData = '",
-			"readdata",
-			"Stard",
-			"Star",
-			"readDataAttr",
-			"<>",
-			"!=",
-			"<>",
-			"readda",
-			"Feeddata",
-			"userda",
-			"UserD",
-			"slow",
-			"self.ma",
-			"unread",
-			"unreadc",
-			"readOrUnread",
-			"MarkArticlesAsRead",
-			"markall",
-			"findAndMarkAllArticles",
-			"findArticlesToMarkAsRead",
-			"findAndMarkAllArticles",
-			"findArticlesToMarkAsRead",
-			"readOrUnread",
-			"getread",
-			"ReadCount",
-			"readCount",
-			"getread",
-			"markasre",
-			"GetUserFeeds",
-			"sett",
-			"GetAppUserByEmail",
-			"app_username",
-			"GetAppUserByEmail",
-			"markar",
-			"if ",
-			"Running \"copy:main\" (copy) task\n[u'http://174.129.28.157/feed/', u'http://33bits.org/feed/', u'http://appengine-cookbook.appspot.com/feeds', u'http://artsbeat.blogs.nytimes.com/tag/mad-men-watch/feed/', u'http://aspn.activestate.com/ASPN/Cookbook/Python/index_rss', u'http://awesomepeoplehangingouttogether.tumblr.com/rss', u'http://beta.dailycolorscheme.com/feed/rss', u'http://bg-bg.facebook.com/feeds/page.php?id=184792058258487&format=atom10', u'http://bijansabet.com/rss', u'http://blog.codeclub.org.uk/blog/feed/', u'http://blog.distimo.com/category/android-market/feed/', u'http://blog.floxee.com/rss', u'http://blog.how-to-web.net/feed/', u'http://blog.ianbicking.org/feed/atom/', u'http://blog.kickstarter.com/rss/', u'http://blog.makezine.com/archive/make_store/index.xml', u'http://blog.musiclessons.bg/?feed=rss2', u'http://blog.notdot.net/feeds/atom.xml', u'http://blog.notifo.com/rss.xml', u'http://blog.peio.org/?feed=rss2', u'http://blog.rightscale.com/feed/', u'http://blog.thenounproject.com/rss', u'http://blogs.msdn.com/dthorpe/rss.xml', u'http://blogs.msdn.com/rssteam/rss.xml', u'http://blorn.com/rss', u'http://boyscoutmag.com/feed/', u'http://bunnylava.blogspot.com/feeds/posts/default', u'http://burakkanber.com/blog/feed/', u'http://calendar.perfplanet.com/feed/', u'http://capital-risqueur.blogspot.com/feeds/posts/default', u'http://cdixon.org/?feed=rss2', u'http://code.google.com/feeds/p/asynctools/issueupdates/basic', u'http://code.google.com/feeds/p/django-firebird/issueupdates/basic', u'http://corporateyouth.org/?feed=rss', u'http://coupland.blogs.nytimes.com/atom.xml', u'http://cracking-the-code.blogspot.com/feeds/posts/default', u'http://cvyk.blogspot.com/atom.xml', u'http://dekstop.de/weblog/index.xml', u'http://denitsa33.blogspot.com/feeds/posts/default?alt=rss', u'http://detskiknigi.com/feed/', u'http://dima.kalifish.com/?feed=rss2', u'http://dni.li/feed/', u'http://dunelmtechnology.co.uk/feed/', u'http://dzver.com/blog/?feed=rss2', u'http://edenflamingo.com/feed/', u'http://emurry.com/blog/feed/', u'http://essme.blogspot.com/feeds/posts/default?alt=rss', u'http://feedproxy.google.com/eenk', u'http://feedproxy.google.com/nettuts', u'http://feeds.dantup.com/DanTup', u'http://feeds.feedburner.com/AppEngineFan', u'http://feeds.feedburner.com/BonjourMadame', u'http://feeds.feedburner.com/BuzzMachine', u'http://feeds.feedburner.com/CityKidsbg', u'http://feeds.feedburner.com/DataMining', u'http://feeds.feedburner.com/Designknigoizdavane', u'http://feeds.feedburner.com/GeorgiNedelchevMonitoring', u'http://feeds.feedburner.com/GoogleAppEngineBlog', u'http://feeds.feedburner.com/InformationIsBeautiful', u'http://feeds.feedburner.com/Inkzee', u'http://feeds.feedburner.com/JeremiahGrossman', u'http://feeds.feedburner.com/JoshuaSchachter', u'http://feeds.feedburner.com/ModernLifeIsRubbish', u'http://feeds.feedburner.com/ServiceLevelAutomation', u'http://feeds.feedburner.com/SinticaEN', u'http://feeds.feedburner.com/Startup2Startup', u'http://feeds.feedburner.com/TheGrifters', u'http://feeds.feedburner.com/TheItRoom', u'http://feeds.feedburner.com/TheStartupFoundry', u'http://feeds.feedburner.com/TheUniversalGadget', u'http://feeds.feedburner.com/WSwI', u'http://feeds.feedburner.com/WhatAssociationBlog', u'http://feeds.feedburner.com/WhitehatSecurityBlog', u'http://feeds.feedburner.com/WorkHappy', u'http://feeds.feedburner.com/YlasticBlog', u'http://feeds.feedburner.com/alexanderkirk', u'http://feeds.feedburner.com/blogspot/OGBVh', u'http://feeds.feedburner.com/brettaylor', u'http://feeds.feedburner.com/carpeaqua', u'http://feeds.feedburner.com/catonmat', u'http://feeds.feedburner.com/crunchnotes', u'http://feeds.feedburner.com/directededge', u'http://feeds.feedburner.com/errorceptionBlog', u'http://feeds.feedburner.com/fastcompany/scobleizer', u'http://feeds.feedburner.com/garrettdimoncom', u'http://feeds.feedburner.com/georgiangelov', u'http://feeds.feedburner.com/iwdrm?format=xml', u'http://feeds.feedburner.com/john-nousis', u'http://feeds.feedburner.com/littlebigdetails', u'http://feeds.feedburner.com/mcsweeneys', u'http://feeds.feedburner.com/re-winder/feed', u'http://feeds.feedburner.com/reklama', u'http://feeds.feedburner.com/relevance-llc', u'http://feeds.feedburner.com/startupcompanylawyer', u'http://feeds.feedburner.com/startupping', u'http://feeds.feedburner.com/takaitaka2', u'http://feeds.feedburner.com/thesassway', u'http://feeds.feedburner.com/trendsspotting-feeds', u'http://feeds.feedburner.com/ubervu', u'http://feeds.feedburner.com/united-coders', u'http://feeds.infosthetics.com/infosthetics', u'http://feeds.simonwillison.net/swn-entries', u'http://feeds.sparkabout.net/sparkabout', u'http://feeds.venturehacks.com/venturehacks', u'http://feeds2.feedburner.com/LouisgraycomLive', u'http://feeds2.feedburner.com/Luckyrobotcom-GerryCampbell', u'http://feeds2.feedburner.com/StartupsInTurkey', u'http://feeds2.feedburner.com/asert/', u'http://feeds2.feedburner.com/bradburnham', u'http://feeds2.feedburner.com/openfund', u'http://feeds2.feedburner.com/startup/lessons/learned', u'http://fitsnstarts.tumblr.com/rss', u'http://friendfeed.com/gaberivera?format=atom', u'http://fusible.com/feed/', u'http://fxshaw.wordpress.com/feed/', u'http://gamedev.stackexchange.com/feeds/tag/html5', u'http://glasshouse.waggeneredstrom.com/blogs/frankshaw/rss.aspx', u'http://gloriapetkova.blogspot.com/feeds/posts/default?alt=rss', u'http://gradinadetelina.blogspot.com/feeds/posts/default?alt=rss', u'http://grigorweblog.wordpress.com/feed/', u'http://groups.google.com/group/get-theinfo/feed/rss_v2_0_msgs.xml', u'http://groups.google.com/group/google-appengine-downtime-notify/feed/rss_v2_0_msgs.xml', u'http://headrush.typepad.com/creating_passionate_users/index.rdf', u'http://ibdeveloper.blogspot.com/feeds/posts/default', u'http://ikonomika.org/?feed=rss2', u'http://ivanbedrov.com/?feed=rss2', u'http://jobs.37signals.com/categories/2/jobs.rss', u'http://joehewitt.com/index.xml', u'http://k1tesurf.com/main/component/option,com_rss/feed,RSS2.0/no_html,1/lang,en/', u'http://kanyewesanderson.tumblr.com/rss', u'http://krisibeta.tumblr.com/rss', u'http://krokotak.com/feed/', u'http://launchub.com/blog/?feed=rss2', u'http://levosgien.net/feed/', u'http://lifehacker.com/tag/android/index.xml', u'http://littlebits.cc/feed', u'http://ljato.wordpress.com/feed/', u'http://loveandtheft.org/feed/', u'http://lundxy.com/?feed=rss2', u'http://lydblog.wordpress.com/feed/', u'http://metaoptimize.com/blog/feed/', u'http://mhlegal.eu/bgblog/feed/', u'http://mightbwrong.tumblr.com/rss', u'http://milenafuchedjieva.blogspot.com/feeds/posts/default', u'http://mymilktoof.blogspot.com/feeds/posts/default', u'http://nellyo.wordpress.com/feed/', u'http://news.netcraft.com/feed/', u'http://nslatinski.org/?q=bg/rss.xml', u'http://odeqlo.wordpress.com/feed/', u'http://okdork.com/feed/rss', u'http://omis.me/feed/', u'http://open.blogs.nytimes.com/atom.xml', u'http://particletree.com/rss/', u'http://pavel-yanchev.blogspot.com/feeds/posts/default', u'http://pavlinav.wordpress.com/feed/', u'http://plovediv.com/feed', u'http://pomstar.org/rss', u'http://python-history.blogspot.com/feeds/posts/default?alt=rss', u'http://radankanev.blogspot.com/feeds/posts/default?alt=rss', u'http://reyk.tumblr.com/rss', u'http://rss.babble.com/babblenewthisweek/', u'http://rss.groups.yahoo.com/group/firebird-python/rss', u'http://rss.searchyc.com/techmeme?sort=by_date', u'http://scobleizer.posterous.com/rss.xml', u'http://search.twitter.com/search.atom?q=ececars', u'http://search.twitter.com/search.atom?q=smonev', u'http://seoblackhat.com/feed', u'http://shop.studioreforma.com/?feed=rss2', u'http://showmedo.com/latestVideoFeed/rss2.0?tag=python', u'http://simeons.wordpress.com/feed/', u'http://simoivanov.com/feed', u'http://songibson.wordpress.com/feed/', u'http://soroush.secproject.com/blog/feed/', u'http://sredparcalkitevshkafa.blogspot.com/feeds/posts/default?alt=rss', u'http://stackoverflow.com/feeds/tag?tagnames=translate3d&sort=newest', u'http://stallman.org/rss/rss.xml', u'http://status.blogrolling.com/rss', u'http://svilenivanov.blogspot.com/feeds/243478163996777031/comments/default', u'http://tagschema.com/blogs/tagschema/atom.xml', u'http://techcrunch.posterous.com/rss.xml', u'http://thebigcaption.com/rss', u'http://timurcommandos.blogspot.com/feeds/posts/default?alt=rss', u'http://tochitsa1.blogspot.com/feeds/posts/default?alt=rss', u'http://totalmoral.blogspot.com/feeds/posts/default', u'http://tuk-tame.blogspot.com/feeds/posts/default?alt=rss', u'http://uncrunched.com/feed/', u'http://valery.bgit.net/blog-bg/feed/', u'http://vitelcom.blogspot.com/feeds/posts/default', u'http://wesandersonpalettes.tumblr.com/rss', u'http://whatsthatcrap.blogspot.com/feeds/posts/default?alt=rss', u'http://ws.audioscrobbler.com/1.0/artist/Norah Jones/events.rss', u'http://www.ajaxian.com/index.rdf', u'http://www.all4android.com/feed/', u'http://www.allthingsdistributed.com/index.xml', u'http://www.authenticjobs.com/rss/custom.php?terms=&type=2&cats=&onlyremote=&location=', u'http://www.authenticjobs.com/rss/custom.php?terms=Anywhere&type=1,2,3,4&cats=&onlyremote=&location=', u'http://www.avramov.com/blog/?feed=rss2', u'http://www.awaretek.com/python/index.xml', u'http://www.babble.com/Global/Rss/Feeds/toddler.xml', u'http://www.bgkite.com/feed/', u'http://www.boston.com/bigpicture/bpnotes/index.xml', u'http://www.bothsidesofthetable.com/feed/', u'http://www.businessesforsale.com/search/Businesses-for-sale-in-Plovdiv.rss?keywords=Plovdiv', u'http://www.buzzlogic.com/blog/atom.xml', u'http://www.c5bench.com/feed/', u'http://www.capital.bg/rss.php?blog=1', u'http://www.crashplan.com/blog/feed', u'http://www.dailydropcap.com/feed/rss', u'http://www.decocentric.com/feed/', u'http://www.desnite.eu/index.php?format=feed&type=rss', u'http://www.dnevnik.bg/rss/?rubrid=2546', u'http://www.dnevnik.bg/rss/search/?stext=%D0%B4%D0%B8%D0%BC%D0\\u20265D1%81%D0%B5%D0%BD%D0%B5&backurl=&selfurl=&kfor_name=ssearch', u'http://www.dwellstudio.com/blog/rss', u'http://www.eventsplovdiv.info/export/rss', u'http://www.firebirdnews.org/?feed=atom', u'http://www.fmd.bg/?feed=rss2', u'http://www.fmi-plovdiv.org/rss.jsp', u'http://www.gapingvoid.com/atom.xml', u'http://www.hollywoodreporter.com/taxonomy/term/7973/all/feed', u'http://www.hotel-orbita.com/feed/', u'http://www.informationisbeautiful.net/feed/', u'http://www.ivantotev.com/novini/site-feed/RSS', u'http://www.joelonsoftware.com/rss.xml', u'http://www.kitesurf-varna.com/blog/?feed=rss2', u'http://www.kldn.net/?feed=rss2', u'http://www.lstudio.com/rss/lstudiorss.xml', u'http://www.matsays.com/feed/', u'http://www.mobilehtml5.com/rss', u'http://www.nadgraphics.com/feed/', u'http://www.niallkennedy.com/blog/index.atom', u'http://www.pannonrex.com/blog/?feed=rss2', u'http://www.phonegap.com/feed/', u'http://www.phpied.com/feed/', u'http://www.pythonware.com/daily/rss.xml', u'http://www.quirksmode.org/blog/atom.xml', u'http://www.reddit.com/r/AppEngine/.rss', u'http://www.reddit.com/r/AppEngine/comments/f4tpf/what_are_the_best_app_engine_packagesprojects/.rss', u'http://www.reddit.com/r/firebird/.rss', u'http://www.reduta.bg/?feed=rss2', u'http://www.robertnyman.com/feed/', u'http://www.sarajchipps.com/rss.xml', u'http://www.scripting.com/rss.xml', u'http://www.shotton.com/wp/feed/', u'http://www.snook.ca/jonathan/index.rdf', u'http://www.stevesouders.com/blog/feed/', u'http://www.techmeme.com/search/rssquery?q=Twingly&wm=false', u'http://www.techmeme.com/search/rssquery?q=techmeme&wm=false', u'http://www.thecoolhunter.net/index2.php?option=com_rss&feed=RSS2.0&no_html=1', u'http://www.thegrifters.org/feed/', u'http://www.trikorni.com/feed/', u'http://www.watchingwebsites.com/feed', u'http://www.wordyard.com/category/code-reads/feed/', u'http://www.wotzwot.com/rssxl.php?pageurl=http://www.samflemming.com/&sf=<\\u2026n .post -->&ei= &sd=&ed=&linkno=1&vcode=770459162', u'http://xooglers.blogspot.com/atom.xml', u'http://yovko.net/feed', u'http://zooie.wordpress.com/feed/', u'https://amazonsilk.wordpress.com/feed/', u'https://antiideas.wordpress.com/feed/', u'https://bg.wordpress.org/feed/', u'https://bgmindstorms.wordpress.com/feed/', u'https://blog.mozilla.org/ux/feed/', u'https://blogs.msdn.com/b/b8/rss.aspx', u'https://christogrozev.wordpress.com/feed/', u'https://gun.io/feed/', u'https://hacks.mozilla.org/feed/', u'https://nikcub.appspot.com/feed', u'https://sugarfreenora.wordpress.com/feed/', u'https://voreshkov.posterous.com/rss.xml', u'https://www.facebook.com/feeds/page.php?format=rss20&id=197266283722139']",
-			"[u'http://174.129.28.157/feed/', u'http://33bits.org/feed/', u'http://appengine-cookbook.appspot.com/feeds', u'http://artsbeat.blogs.nytimes.com/tag/mad-men-watch/feed/', u'http://aspn.activestate.com/ASPN/Cookbook/Python/index_rss', u'http://awesomepeoplehangingouttogether.tumblr.com/rss', u'http://beta.dailycolorscheme.com/feed/rss', u'http://bg-bg.facebook.com/feeds/page.php?id=184792058258487&format=atom10', u'http://bijansabet.com/rss', u'http://blog.codeclub.org.uk/blog/feed/', u'http://blog.distimo.com/category/android-market/feed/', u'http://blog.floxee.com/rss', u'http://blog.how-to-web.net/feed/', u'http://blog.ianbicking.org/feed/atom/', u'http://blog.kickstarter.com/rss/', u'http://blog.makezine.com/archive/make_store/index.xml', u'http://blog.musiclessons.bg/?feed=rss2', u'http://blog.notdot.net/feeds/atom.xml', u'http://blog.notifo.com/rss.xml', u'http://blog.peio.org/?feed=rss2', u'http://blog.rightscale.com/feed/', u'http://blog.thenounproject.com/rss', u'http://blogs.msdn.com/dthorpe/rss.xml', u'http://blogs.msdn.com/rssteam/rss.xml', u'http://blorn.com/rss', u'http://boyscoutmag.com/feed/', u'http://bunnylava.blogspot.com/feeds/posts/default', u'http://burakkanber.com/blog/feed/', u'http://calendar.perfplanet.com/feed/', u'http://capital-risqueur.blogspot.com/feeds/posts/default', u'http://cdixon.org/?feed=rss2', u'http://code.google.com/feeds/p/asynctools/issueupdates/basic', u'http://code.google.com/feeds/p/django-firebird/issueupdates/basic', u'http://corporateyouth.org/?feed=rss', u'http://coupland.blogs.nytimes.com/atom.xml', u'http://cracking-the-code.blogspot.com/feeds/posts/default', u'http://cvyk.blogspot.com/atom.xml', u'http://dekstop.de/weblog/index.xml', u'http://denitsa33.blogspot.com/feeds/posts/default?alt=rss', u'http://detskiknigi.com/feed/', u'http://dima.kalifish.com/?feed=rss2', u'http://dni.li/feed/', u'http://dunelmtechnology.co.uk/feed/', u'http://dzver.com/blog/?feed=rss2', u'http://edenflamingo.com/feed/', u'http://emurry.com/blog/feed/', u'http://essme.blogspot.com/feeds/posts/default?alt=rss', u'http://feedproxy.google.com/eenk', u'http://feedproxy.google.com/nettuts', u'http://feeds.dantup.com/DanTup', u'http://feeds.feedburner.com/AppEngineFan', u'http://feeds.feedburner.com/BonjourMadame', u'http://feeds.feedburner.com/BuzzMachine', u'http://feeds.feedburner.com/CityKidsbg', u'http://feeds.feedburner.com/DataMining', u'http://feeds.feedburner.com/Designknigoizdavane', u'http://feeds.feedburner.com/GeorgiNedelchevMonitoring', u'http://feeds.feedburner.com/GoogleAppEngineBlog', u'http://feeds.feedburner.com/InformationIsBeautiful', u'http://feeds.feedburner.com/Inkzee', u'http://feeds.feedburner.com/JeremiahGrossman', u'http://feeds.feedburner.com/JoshuaSchachter', u'http://feeds.feedburner.com/ModernLifeIsRubbish', u'http://feeds.feedburner.com/ServiceLevelAutomation', u'http://feeds.feedburner.com/SinticaEN', u'http://feeds.feedburner.com/Startup2Startup', u'http://feeds.feedburner.com/TheGrifters', u'http://feeds.feedburner.com/TheItRoom', u'http://feeds.feedburner.com/TheStartupFoundry', u'http://feeds.feedburner.com/TheUniversalGadget', u'http://feeds.feedburner.com/WSwI', u'http://feeds.feedburner.com/WhatAssociationBlog', u'http://feeds.feedburner.com/WhitehatSecurityBlog', u'http://feeds.feedburner.com/WorkHappy', u'http://feeds.feedburner.com/YlasticBlog', u'http://feeds.feedburner.com/alexanderkirk', u'http://feeds.feedburner.com/blogspot/OGBVh', u'http://feeds.feedburner.com/brettaylor', u'http://feeds.feedburner.com/carpeaqua', u'http://feeds.feedburner.com/catonmat', u'http://feeds.feedburner.com/crunchnotes', u'http://feeds.feedburner.com/directededge', u'http://feeds.feedburner.com/errorceptionBlog', u'http://feeds.feedburner.com/fastcompany/scobleizer', u'http://feeds.feedburner.com/garrettdimoncom', u'http://feeds.feedburner.com/georgiangelov', u'http://feeds.feedburner.com/iwdrm?format=xml', u'http://feeds.feedburner.com/john-nousis', u'http://feeds.feedburner.com/littlebigdetails', u'http://feeds.feedburner.com/mcsweeneys', u'http://feeds.feedburner.com/re-winder/feed', u'http://feeds.feedburner.com/reklama', u'http://feeds.feedburner.com/relevance-llc', u'http://feeds.feedburner.com/startupcompanylawyer', u'http://feeds.feedburner.com/startupping', u'http://feeds.feedburner.com/takaitaka2', u'http://feeds.feedburner.com/thesassway', u'http://feeds.feedburner.com/trendsspotting-feeds', u'http://feeds.feedburner.com/ubervu', u'http://feeds.feedburner.com/united-coders', u'http://feeds.infosthetics.com/infosthetics', u'http://feeds.simonwillison.net/swn-entries', u'http://feeds.sparkabout.net/sparkabout', u'http://feeds.venturehacks.com/venturehacks', u'http://feeds2.feedburner.com/LouisgraycomLive', u'http://feeds2.feedburner.com/Luckyrobotcom-GerryCampbell', u'http://feeds2.feedburner.com/StartupsInTurkey', u'http://feeds2.feedburner.com/asert/', u'http://feeds2.feedburner.com/bradburnham', u'http://feeds2.feedburner.com/openfund', u'http://feeds2.feedburner.com/startup/lessons/learned', u'http://fitsnstarts.tumblr.com/rss', u'http://friendfeed.com/gaberivera?format=atom', u'http://fusible.com/feed/', u'http://fxshaw.wordpress.com/feed/', u'http://gamedev.stackexchange.com/feeds/tag/html5', u'http://glasshouse.waggeneredstrom.com/blogs/frankshaw/rss.aspx', u'http://gloriapetkova.blogspot.com/feeds/posts/default?alt=rss', u'http://gradinadetelina.blogspot.com/feeds/posts/default?alt=rss', u'http://grigorweblog.wordpress.com/feed/', u'http://groups.google.com/group/get-theinfo/feed/rss_v2_0_msgs.xml', u'http://groups.google.com/group/google-appengine-downtime-notify/feed/rss_v2_0_msgs.xml', u'http://headrush.typepad.com/creating_passionate_users/index.rdf', u'http://ibdeveloper.blogspot.com/feeds/posts/default', u'http://ikonomika.org/?feed=rss2', u'http://ivanbedrov.com/?feed=rss2', u'http://jobs.37signals.com/categories/2/jobs.rss', u'http://joehewitt.com/index.xml', u'http://k1tesurf.com/main/component/option,com_rss/feed,RSS2.0/no_html,1/lang,en/', u'http://kanyewesanderson.tumblr.com/rss', u'http://krisibeta.tumblr.com/rss', u'http://krokotak.com/feed/', u'http://launchub.com/blog/?feed=rss2', u'http://levosgien.net/feed/', u'http://lifehacker.com/tag/android/index.xml', u'http://littlebits.cc/feed', u'http://ljato.wordpress.com/feed/', u'http://loveandtheft.org/feed/', u'http://lundxy.com/?feed=rss2', u'http://lydblog.wordpress.com/feed/', u'http://metaoptimize.com/blog/feed/', u'http://mhlegal.eu/bgblog/feed/', u'http://mightbwrong.tumblr.com/rss', u'http://milenafuchedjieva.blogspot.com/feeds/posts/default', u'http://mymilktoof.blogspot.com/feeds/posts/default', u'http://nellyo.wordpress.com/feed/', u'http://news.netcraft.com/feed/', u'http://nslatinski.org/?q=bg/rss.xml', u'http://odeqlo.wordpress.com/feed/', u'http://okdork.com/feed/rss', u'http://omis.me/feed/', u'http://open.blogs.nytimes.com/atom.xml', u'http://particletree.com/rss/', u'http://pavel-yanchev.blogspot.com/feeds/posts/default', u'http://pavlinav.wordpress.com/feed/', u'http://plovediv.com/feed', u'http://pomstar.org/rss', u'http://python-history.blogspot.com/feeds/posts/default?alt=rss', u'http://radankanev.blogspot.com/feeds/posts/default?alt=rss', u'http://reyk.tumblr.com/rss', u'http://rss.babble.com/babblenewthisweek/', u'http://rss.groups.yahoo.com/group/firebird-python/rss', u'http://rss.searchyc.com/techmeme?sort=by_date', u'http://scobleizer.posterous.com/rss.xml', u'http://search.twitter.com/search.atom?q=ececars', u'http://search.twitter.com/search.atom?q=smonev', u'http://seoblackhat.com/feed', u'http://shop.studioreforma.com/?feed=rss2', u'http://showmedo.com/latestVideoFeed/rss2.0?tag=python', u'http://simeons.wordpress.com/feed/', u'http://simoivanov.com/feed', u'http://songibson.wordpress.com/feed/', u'http://soroush.secproject.com/blog/feed/', u'http://sredparcalkitevshkafa.blogspot.com/feeds/posts/default?alt=rss', u'http://stackoverflow.com/feeds/tag?tagnames=translate3d&sort=newest', u'http://stallman.org/rss/rss.xml', u'http://status.blogrolling.com/rss', u'http://svilenivanov.blogspot.com/feeds/243478163996777031/comments/default', u'http://tagschema.com/blogs/tagschema/atom.xml', u'http://techcrunch.posterous.com/rss.xml', u'http://thebigcaption.com/rss', u'http://timurcommandos.blogspot.com/feeds/posts/default?alt=rss', u'http://tochitsa1.blogspot.com/feeds/posts/default?alt=rss', u'http://totalmoral.blogspot.com/feeds/posts/default', u'http://tuk-tame.blogspot.com/feeds/posts/default?alt=rss', u'http://uncrunched.com/feed/', u'http://valery.bgit.net/blog-bg/feed/', u'http://vitelcom.blogspot.com/feeds/posts/default', u'http://wesandersonpalettes.tumblr.com/rss', u'http://whatsthatcrap.blogspot.com/feeds/posts/default?alt=rss', u'http://ws.audioscrobbler.com/1.0/artist/Norah Jones/events.rss', u'http://www.ajaxian.com/index.rdf', u'http://www.all4android.com/feed/', u'http://www.allthingsdistributed.com/index.xml', u'http://www.authenticjobs.com/rss/custom.php?terms=&type=2&cats=&onlyremote=&location=', u'http://www.authenticjobs.com/rss/custom.php?terms=Anywhere&type=1,2,3,4&cats=&onlyremote=&location=', u'http://www.avramov.com/blog/?feed=rss2', u'http://www.awaretek.com/python/index.xml', u'http://www.babble.com/Global/Rss/Feeds/toddler.xml', u'http://www.bgkite.com/feed/', u'http://www.boston.com/bigpicture/bpnotes/index.xml', u'http://www.bothsidesofthetable.com/feed/', u'http://www.businessesforsale.com/search/Businesses-for-sale-in-Plovdiv.rss?keywords=Plovdiv', u'http://www.buzzlogic.com/blog/atom.xml', u'http://www.c5bench.com/feed/', u'http://www.capital.bg/rss.php?blog=1', u'http://www.crashplan.com/blog/feed', u'http://www.dailydropcap.com/feed/rss', u'http://www.decocentric.com/feed/', u'http://www.desnite.eu/index.php?format=feed&type=rss', u'http://www.dnevnik.bg/rss/?rubrid=2546', u'http://www.dnevnik.bg/rss/search/?stext=%D0%B4%D0%B8%D0%BC%D0\\u20265D1%81%D0%B5%D0%BD%D0%B5&backurl=&selfurl=&kfor_name=ssearch', u'http://www.dwellstudio.com/blog/rss', u'http://www.eventsplovdiv.info/export/rss', u'http://www.firebirdnews.org/?feed=atom', u'http://www.fmd.bg/?feed=rss2', u'http://www.fmi-plovdiv.org/rss.jsp', u'http://www.gapingvoid.com/atom.xml', u'http://www.hollywoodreporter.com/taxonomy/term/7973/all/feed', u'http://www.hotel-orbita.com/feed/', u'http://www.informationisbeautiful.net/feed/', u'http://www.ivantotev.com/novini/site-feed/RSS', u'http://www.joelonsoftware.com/rss.xml', u'http://www.kitesurf-varna.com/blog/?feed=rss2', u'http://www.kldn.net/?feed=rss2', u'http://www.lstudio.com/rss/lstudiorss.xml', u'http://www.matsays.com/feed/', u'http://www.mobilehtml5.com/rss', u'http://www.nadgraphics.com/feed/', u'http://www.niallkennedy.com/blog/index.atom', u'http://www.pannonrex.com/blog/?feed=rss2', u'http://www.phonegap.com/feed/', u'http://www.phpied.com/feed/', u'http://www.pythonware.com/daily/rss.xml', u'http://www.quirksmode.org/blog/atom.xml', u'http://www.reddit.com/r/AppEngine/.rss', u'http://www.reddit.com/r/AppEngine/comments/f4tpf/what_are_the_best_app_engine_packagesprojects/.rss', u'http://www.reddit.com/r/firebird/.rss', u'http://www.reduta.bg/?feed=rss2', u'http://www.robertnyman.com/feed/', u'http://www.sarajchipps.com/rss.xml', u'http://www.scripting.com/rss.xml', u'http://www.shotton.com/wp/feed/', u'http://www.snook.ca/jonathan/index.rdf', u'http://www.stevesouders.com/blog/feed/', u'http://www.techmeme.com/search/rssquery?q=Twingly&wm=false', u'http://www.techmeme.com/search/rssquery?q=techmeme&wm=false', u'http://www.thecoolhunter.net/index2.php?option=com_rss&feed=RSS2.0&no_html=1', u'http://www.thegrifters.org/feed/', u'http://www.trikorni.com/feed/', u'http://www.watchingwebsites.com/feed', u'http://www.wordyard.com/category/code-reads/feed/', u'http://www.wotzwot.com/rssxl.php?pageurl=http://www.samflemming.com/&sf=<\\u2026n .post -->&ei= &sd=&ed=&linkno=1&vcode=770459162', u'http://xooglers.blogspot.com/atom.xml', u'http://yovko.net/feed', u'http://zooie.wordpress.com/feed/', u'https://amazonsilk.wordpress.com/feed/', u'https://antiideas.wordpress.com/feed/', u'https://bg.wordpress.org/feed/', u'https://bgmindstorms.wordpress.com/feed/', u'https://blog.mozilla.org/ux/feed/', u'https://blogs.msdn.com/b/b8/rss.aspx', u'https://christogrozev.wordpress.com/feed/', u'https://gun.io/feed/', u'https://hacks.mozilla.org/feed/', u'https://nikcub.appspot.com/feed', u'https://sugarfreenora.wordpress.com/feed/', u'https://voreshkov.posterous.com/rss.xml', u'https://www.facebook.com/feeds/page.php?format=rss20&id=197266283722139']",
-			";",
-			"cronf",
-			"cron",
-			"createf",
-			"query",
-			"UserData",
-			"feeddata.",
-			"feeddata",
-			"prev_item",
-			"FeedDataSettings",
-			"userD",
-			"GetAppUserByEmail",
-			"owner_email",
-			"UserDa",
-			"waiti",
-			"readcac",
-			"readCa",
-			"star",
-			"readCa",
-			"readC",
-			"cache",
-			"star",
-			"getreadda",
-			"GetAppUserByEmail(",
-			".id",
-			"user.",
-			"createF"
+			"set"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -515,6 +548,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"logging.debug",
+			"logging.info",
 			"fds"
 		],
 		"reverse": false,
@@ -531,11 +566,71 @@
 			[
 				{
 					"buffer": 0,
-					"file": "src/js/main.js",
+					"file": "src/js/settings.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 31861,
+						"buffer_size": 22324,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								915,
+								915
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/js/shortcuts.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9420,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8047,
+								8047
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3282.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/js/react-settings.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3967,
 						"regions":
 						{
 						},
@@ -556,37 +651,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/mblrdr.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 52975,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								346,
-								346
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -634,7 +699,7 @@
 	"project": "mblrdr.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -642,6 +707,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"se",
+				"src\\js\\settings.js"
+			],
 			[
 				"mb",
 				"src\\mblrdr.py"
@@ -683,11 +752,11 @@
 	},
 	"select_symbol":
 	{
-		"height": 0.0,
+		"height": 392.0,
 		"selected_items":
 		[
 		],
-		"width": 0.0
+		"width": 392.0
 	},
 	"settings":
 	{

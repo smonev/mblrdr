@@ -148,7 +148,7 @@ MblRdr.settings = function() {
                 });
 
                 MblRdr.scrollTo(0);
-            }, 5000);
+            }, 15000);
 
             return false;
         }).trigger('click');

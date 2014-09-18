@@ -136,6 +136,7 @@ MblRdr.settings = function() {
 
             MblRdr.read = []; MblRdr.star = []; MblRdr.data = [];
 
+            // todo check in 5, 10, 20 seconds
             setTimeout(function() {
                 MblRdr.getFeed({
                     'feedUrl': $newLi.data('url'),
@@ -148,7 +149,7 @@ MblRdr.settings = function() {
                 });
 
                 MblRdr.scrollTo(0);
-            }, 5000);
+            }, 15000);
 
             return false;
         }).trigger('click');

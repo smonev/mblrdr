@@ -114,6 +114,138 @@ class BasicHandler(webapp2.RequestHandler):
 
         return fds
 
+    def GetCurrentDateTime(self):
+        now = datetime.now()
+        return now.strftime("%Y-%m-%d %H:%M")
+
+    def AddSomeData(self, d, feed, items, feedDataSettings, createNew):
+        ## http://devblog.miumeet.com/2012/06/storing-json-efficiently-in-python-on.html
+        ## RequestTooLargeError  http://stackoverflow.com/questions/5022725/how-do-i-measure-the-memory-usage-of-an-object-in-python
+
+        logging.debug('add some data: %s', feed)
+
+        newItemsCount = len(items)
+
+        if feedDataSettings.private_data <> '':
+            oldData = json.loads(feedDataSettings.private_data)
+            items = items + oldData
+
+        feedDataSettings.private_data = json.dumps(items)
+
+        ## remember what has been added, and do not add same data
+        httpId = items[0]['link']
+        if httpId.startswith('https'):
+            httpId = httpId.replace('https', 'http', 1)
+
+        feedDataSettings.latest_item_id = items[0]['id']
+        feedDataSettings.latest_http_link = httpId
+
+        #rememeber modifed and etag
+        if hasattr(d, 'modified'):
+            feedDataSettings.new_modified = str(d.modified)
+        if hasattr(d, 'etag'):
+            feedDataSettings.new_etag = str(d.etag)
+
+        if createNew:
+            feedDataSettings.feedDataCount = feedDataSettings.feedDataCount + 1
+            newKeyName = str(hash(feed) * hash(feed)) + '_' + str(feedDataSettings.feedDataCount)
+            newFeedData = FeedData(url = feed, private_data = feedDataSettings.private_data, id = newKeyName)
+            newFeedData.put()
+
+            feedDataSettings.latest_item = newKeyName
+            feedDataSettings.private_data = ''
+
+        feedDataSettings.article_count = feedDataSettings.article_count + newItemsCount
+
+        logging.debug('[READCOUNT DEBUG] Increase read count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
+        feedDataSettings.put()
+
+
+    def GetAndParse(self, feed, debug):
+        feed = urllib.unquote_plus(feed) ## because of encodeURIComponent
+        feedDataSettings = self.GetFeedDataSettings(feed)
+
+        if (feedDataSettings is None):
+            logging.debug('GetAndParse => feedDataSettings is None: %s', feed)
+
+        etag = getattr(feedDataSettings, 'new_etag', None)
+        modified = getattr(feedDataSettings, 'new_modified', None)
+
+        d = feedparser.parse(feed, etag=etag, modified=modified)
+        logging.debug('parse feed entries: %s', len(d['entries']))
+        
+        items = []
+        itemSize = sys.getsizeof(feedDataSettings.private_data)
+
+        entriesCount = 0
+
+        for e in d['entries']:
+            di = {}
+
+            di['link'] = getattr(e, 'link', 'THIS_WILL_HUNT_ME')
+            di['id'] = str(hash(getattr(e, 'id', di['link']))) ## use hashlib.hexdigest?
+           
+            httpId = di['link']
+            if httpId.startswith('https'):
+                httpId = httpId.replace('https', 'http', 1)
+
+            ## compare by id and by http link (some feeds keep generating radnom(?!?) http or https prefix thus the normalization)
+            if feedDataSettings.latest_item_id == di['id']:
+                if len(items) > 0:
+                    self.AddSomeData(d, feed, items, feedDataSettings, False)
+                    items = []
+
+                break
+
+            if feedDataSettings.latest_http_link == httpId:
+                if len(items) > 0:
+                    self.AddSomeData(d, feed, items, feedDataSettings, False)
+                    items = []
+
+                break
+
+            di['title'] = getattr(e, 'title', '')
+            di['author'] = getattr(e, 'author', '')
+
+            try:  di['published'] = e.published
+            except: di['published'] = self.GetCurrentDateTime()
+
+            try:
+                if hasattr(e, 'content'):
+                    if len(e.content) > 0:
+                        headline_content = ''
+                        lEntries = len(e.content)
+                        for eCount in range(0, lEntries):
+                            headline_content = headline_content + e.content[eCount].value
+                        di['content'] = headline_content
+                else:
+                    di['content'] = e.description
+            except:
+                di['content'] = ''
+
+            if hasattr(d, 'feed'):
+                if hasattr(d['feed'], 'title'):
+                    di['feedTitle'] = d['feed']['title']
+
+            ##feedDataSettings.article_count = feedDataSettings.article_count + 1
+
+            itemSize = itemSize + sys.getsizeof(di)
+            if itemSize < 80000: ## todo more preciese calcs here
+                items.append(di)
+            else:
+                self.AddSomeData(d, feed, items, feedDataSettings, True)
+                itemSize = 0
+                items = []
+
+            entriesCount = entriesCount + 1
+            if entriesCount > 100:
+                ## well, just stop
+                break
+
+        if len(items) > 0:
+            self.AddSomeData(d, feed, items, feedDataSettings, False)
+
+
 class MainHandler(BasicHandler):
     
     def get(self):
@@ -189,7 +321,6 @@ class CronFeedsHandler(BasicHandler):
     def get(self):
         self.response.out.write('-1')
         from google.appengine.api import urlfetch
-        import urllib
 
         self.response.out.write('0')
         urls = self.getUrls(self.request.get('allFeeds') == '1')
@@ -209,16 +340,12 @@ class CronFeedsHandler(BasicHandler):
                 rpcs.append(rpc)
                 resultUrls.append(url)
             except:
-                errorString = 'url error in cronfeed, skipping url: ' + url
-                logging.debug(errorString)
+                logging.debug('url error in cronfeed, skipping url: %s', url)
 
             self.response.out.write('<br>' + url)
 
         for rpc in rpcs:
             rpc.wait()
-
-
-
 
         # ##allFeeds = self.request.get('allFeeds')
         # ##urls = self.get6thFeedEveryTenMinutes(allFeeds == '1')
@@ -250,153 +377,27 @@ class CronFeedsHandler(BasicHandler):
 
 class CronFeedHandler(BasicHandler):
 
-    def GetCurrentDateTime(self):
-        now = datetime.now()
-        return now.strftime("%Y-%m-%d %H:%M")
-
-    def AddSomeData(self, d, feed, items, feedDataSettings, createNew):
-        ## http://devblog.miumeet.com/2012/06/storing-json-efficiently-in-python-on.html
-        ## RequestTooLargeError  http://stackoverflow.com/questions/5022725/how-do-i-measure-the-memory-usage-of-an-object-in-python
-
-        newItemsCount = len(items)
-
-        if feedDataSettings.private_data <> '':
-            oldData = json.loads(feedDataSettings.private_data)
-            items = items + oldData
-
-        feedDataSettings.private_data = json.dumps(items)
-
-        ## remember what have been added, and dont add same data
-        httpId = items[0]['link']
-        if httpId.startswith('https'):
-            httpId = httpId.replace('https', 'http', 1)
-
-        feedDataSettings.latest_item_id = items[0]['id']
-        feedDataSettings.latest_http_link = httpId
-
-        #rememeber modifed and etag
-        if hasattr(d, 'modified'):
-            feedDataSettings.new_modified = str(d.modified)
-        if hasattr(d, 'etag'):
-            feedDataSettings.new_etag = str(d.etag)
-
-        if createNew:
-            feedDataSettings.feedDataCount = feedDataSettings.feedDataCount + 1
-            newKeyName = str(hash(feed) * hash(feed)) + '_' + str(feedDataSettings.feedDataCount)
-            newFeedData = FeedData(url = feed, private_data = feedDataSettings.private_data, id = newKeyName)
-            newFeedData.put()
-
-            feedDataSettings.latest_item = newKeyName
-            feedDataSettings.private_data = ''
-
-        feedDataSettings.article_count = feedDataSettings.article_count + newItemsCount
-
-        logging.debug('[READCOUNT DEBUG] Increase read count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
-
-        feedDataSettings.put()
-
-    def GetAndParse(self, feed, debug):
-        import urllib
-        feed = urllib.unquote_plus(feed) ## because of encodeURIComponent
-        feedDataSettings = self.GetFeedDataSettings(feed)
-
-        etag = getattr(feedDataSettings, 'new_etag', None)
-        modified = getattr(feedDataSettings, 'new_modified', None)
-
-        d = feedparser.parse(feed, etag=etag, modified=modified)
-        items = []
-        itemSize = sys.getsizeof(feedDataSettings.private_data)
-
-        entriesCount = 0
-
-        for e in d['entries']:
-            di = {}
-
-            di['link'] = getattr(e, 'link', 'THIS_WILL_HUNT_ME')
-            di['id'] = str(hash(getattr(e, 'id', di['link']))) ## use hashlib.hexdigest?
-           
-            httpId = di['link']
-            if httpId.startswith('https'):
-                httpId = httpId.replace('https', 'http', 1)
-
-            ## compare by id and by http link (some feeds keep generating radnom(?!?) http or https prefix thus the normalization)
-            if feedDataSettings.latest_item_id == di['id']:
-                if len(items) > 0:
-                    self.AddSomeData(d, feed, items, feedDataSettings, False)
-                    items = []
-
-                break
-
-            if feedDataSettings.latest_http_link == httpId:
-                if len(items) > 0:
-                    self.AddSomeData(d, feed, items, feedDataSettings, False)
-                    items = []
-
-                break
-
-            di['title'] = getattr(e, 'title', '')
-            di['author'] = getattr(e, 'author', '')
-
-            try:  di['published'] = e.published
-            except: di['published'] = self.GetCurrentDateTime()
-
-            try:
-                if hasattr(e, 'content'):
-                    if len(e.content) > 0:
-                        headline_content = ''
-                        lEntries = len(e.content)
-                        for eCount in range(0, lEntries):
-                            headline_content = headline_content + e.content[eCount].value
-                        di['content'] = headline_content
-                else:
-                    di['content'] = e.description
-            except:
-                di['content'] = ''
-
-            if hasattr(d, 'feed'):
-                if hasattr(d['feed'], 'title'):
-                    di['feedTitle'] = d['feed']['title']
-
-            ##feedDataSettings.article_count = feedDataSettings.article_count + 1
-
-            itemSize = itemSize + sys.getsizeof(di)
-            if itemSize < 80000: ## todo more preciese calcs here
-                items.append(di)
-            else:
-                self.AddSomeData(d, feed, items, feedDataSettings, True)
-                itemSize = 0
-                items = []
-
-            entriesCount = entriesCount + 1
-            if entriesCount > 100:
-                ## well, just stop
-                break
-
-        if len(items) > 0:
-            self.AddSomeData(d, feed, items, feedDataSettings, False)
-
     def get(self, feed):
         self.GetAndParse(feed, self.request.get('debug') == '1')
         self.response.out.write('ok')
 
 class FeedHandler(BasicHandler):
 
-    def getNewFeedViaCron(self, feedUrl):
-        feedUrl = 'http://' + self.request.host + '/cronfeed/' + feedUrl
-        result = urllib.urlopen(feedUrl).read()
-
     def getFeedData(self, feedUrl, count):
         keyName = str(hash(feedUrl) * hash(feedUrl)) + '_' + str(count)
 
         feedDataSettings = self.GetFeedDataSettings(feedUrl)
 
-        if count == '-1':
-            feedData = feedDataSettings.private_data
-            priorData = feedDataSettings.feedDataCount
-        else: 
-            fd = FeedData.get_by_id(keyName)
-            feedData = fd.private_data
-            priorData = int(count) - 1
+        if feedDataSettings is None:
+            logging.debug('getFeedData => feedDataSettings is None. Why?!? %s keyName', feedUrl, keyName)
+        else:
+            if count == '-1':
+                feedData = feedDataSettings.private_data
+                priorData = feedDataSettings.feedDataCount
+            else: 
+                fd = FeedData.get_by_id(keyName)
+                feedData = fd.private_data
+                priorData = int(count) - 1
             
         return feedData, keyName, priorData, feedDataSettings.article_count
 
@@ -423,11 +424,6 @@ class FeedHandler(BasicHandler):
 
         feed_url = urllib.unquote_plus(feed_url)
         
-        ## new feed
-        newFeed = self.request.get('newFeed')
-        if int(newFeed) == 1:
-            self.getNewFeedViaCron(feed_url)
-
         ## pagination
         count = self.request.get('count')
         if (count is None):
@@ -442,10 +438,34 @@ class FeedHandler(BasicHandler):
 
         ## NB when logged in as admin, GAE changes these to cache-control: no-cache, must-revalidate. 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.headers['Cache-Control'] = "public, max-age=1800" ##30 minutes
+        ##self.response.headers['Cache-Control'] = "public, max-age=1800" ##30 minutes
+        self.response.headers['Cache-Control'] = "private" ##30 minutes
         self.response.out.write(str(json.dumps(combined)))
 
 class SaveSettingsHandler(BasicHandler):
+
+    # def fetchFeed(self, feedUrl):
+    #     from google.appengine.api import urlfetch
+
+    #     rpcs = []
+    #     try:
+    #         url = urllib.quote_plus(feedUrl)
+    #         url = 'http://' + self.request.host + '/cronfeed/' + url
+    #         rpc = urlfetch.create_rpc(deadline=30.0) 
+    #         urlfetch.make_fetch_call(rpc, url)
+    #         rpcs.append(rpc)
+    #     except:
+    #         logging.debug('url error in fetchFeed, url: %s', url)
+
+
+    #     for rpc in rpcs:
+    #         rpc.wait()
+
+
+    # def fetchFeed(self, feedUrl):
+    #     cronUrl = 'http://' + self.request.host + '/cronfeed/' + urllib.quote_plus(feedUrl)
+    #     logging.debug('crooooooooooooooonurl: %s', cronUrl)
+    #     result = urllib.urlopen(cronUrl)
 
     def addNewFeed(self, feedUrl):
         logging.debug('adding feed: %s', feedUrl)
@@ -455,6 +475,9 @@ class SaveSettingsHandler(BasicHandler):
             fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
         else:
             fds.refCount = fds.refCount + 1
+
+        # self.fetchFeed(feedUrl)
+        self.GetAndParse(feedUrl, False)
 
         fds.put()
     

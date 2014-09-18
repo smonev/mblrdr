@@ -4,7 +4,7 @@ MblRdr = function() {
     "use strict";
 
     var feedsToRender, totalCost = 0;
-
+    
     function loadFolderFeeds(folderName) {
         var $menuList = $(".menuList"), $articlesList = $(".articlesList");
 
