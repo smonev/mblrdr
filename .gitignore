@@ -55,3 +55,6 @@ docs/_build/
 ##sass
 .sass-cache/
 *.sublime-workspace
+
+node_modules/
+*.bat
