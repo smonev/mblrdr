@@ -58,3 +58,7 @@ docs/_build/
 
 node_modules/
 *.bat
+.editorconfig
+.sublime-grunt.cache
+mblrdr.sublime-project
+mblrdr.sublime-workspace
