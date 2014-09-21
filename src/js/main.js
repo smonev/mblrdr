@@ -14,7 +14,7 @@ MblRdr = function() {
             if (folderName === 'root') {
                 for (folder in MblRdr.bloglist) {
                     if (folder !== 'root') {
-                        s = s + '<li class="folder" data-title="' + folder + '"><a><span class="fa fa-folder"></span>' + folder + '</a></li>';
+                        s = s + '<li class="folder" data-title="' + folder + '"><a><span class="fa fa-folder"></span><span class="folderName">' + folder + '</span></a></li>';
                     }
                 }
             }

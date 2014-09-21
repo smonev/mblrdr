@@ -281,6 +281,11 @@ class MainHandler(BasicHandler):
 
         template = jinja_environment.get_template(html_template)
         self.response.headers['Content-Type'] = 'text/html'
+
+        self.response.headers['Content-Security-Policy'] = "script-src 'self'"
+        self.response.headers['Content-Security-Policy'] = "style-src 'self'"
+        self.response.headers['Content-Security-Policy'] = "object-src 'self'"
+
         self.response.out.write(template.render(template_values))
 
 class CronFeedsHandler(BasicHandler):

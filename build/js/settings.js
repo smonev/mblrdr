@@ -215,11 +215,11 @@ MblRdr.settings = function() {
             $this.addClass('selected');
 
             if ($this.data('addtype') === "feed") {
-                $('.feedUrl').attr('placeholder', 'Add Feed').text('').removeClass('displayNone');
+                $('.feedUrl').attr('placeholder', 'add Feed').text('').removeClass('displayNone');
                 $('.addFeedUrl').removeClass('displayNone');
                 $('.omplImportForm').addClass('displayNone');
             } else if ($this.data('addtype') === "folder") {
-                $('.feedUrl').attr('placeholder', 'Add Folder').text('').removeClass('displayNone');
+                $('.feedUrl').attr('placeholder', 'add Folder').text('').removeClass('displayNone');
                 $('.addFeedUrl').removeClass('displayNone');
                 $('.omplImportForm').addClass('displayNone');
             } else if ($this.data('addtype') === "opml") {
@@ -443,11 +443,13 @@ MblRdr.settings = function() {
                 $feedSettings.find('.settingsTitle').val($articlesHeader.find('.headerCaption').text());
                 unsubscribeFeed();
                 markReadSettingsFeed();
+                $feedSettings.find('.feedUnsubscribe').find('.deleteText').text('unsubscribe');
             } else {
                 show(settingType === 1 ? 'root' : 'folder');
                 $feedSettings.find('.settingsTitle').val(MblRdr.currentFolderName);
                 deleteFolderSetting();
                 markReadSettingsFolder();
+                $feedSettings.find('.feedUnsubscribe').find('.deleteText').text('delete folder');
             }
 
             showHideEvent(settingType - 1);

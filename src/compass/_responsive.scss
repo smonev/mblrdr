@@ -8,6 +8,12 @@
   }
 }
 
+@media all and (max-width: 410px) {
+ .folderName:active {
+    width: 85% !important;
+  }
+}
+
 @media all and (max-width: 400px) {
   .articlesList .article .authorAndDate {
     display: none;
