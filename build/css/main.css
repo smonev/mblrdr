@@ -625,7 +625,8 @@ body {
   top: -35px;
   overflow-y: auto;
   opacity: 0.98;
-  width: 98%;
+  opacity: 1;
+  width: 99%;
   min-width: 220px;
   padding-bottom: 5%;
   padding-left: 0px;
@@ -743,10 +744,8 @@ body {
   position: relative;
 }
 .feedSettings .addFeedSetting .inputType {
-  padding: 2px;
-  padding: 3px;
-  margin-right: 3%;
-  text-decoration: underline;
+  padding: 2%;
+  margin-right: 0px;
   cursor: pointer;
   text-align: center;
   float: left;
@@ -759,26 +758,26 @@ body {
 .feedSettings .addFeedSetting .inputType.selected {
   color: white;
   background: #66AA33;
-  padding: 3px;
+  text-decoration: underline;
+}
+.feedSettings .addFeedSetting form {
+  clear: both;
+  margin-top: 26px;
 }
 .feedSettings .feedUrl, .feedSettings .folderName {
   float: left;
   width: 92%;
   margin-left: 3%;
   border: 1px solid #66AA33;
-  /*font-size: 24px;*/
   margin-right: 4%;
   margin-top: -3px;
-  padding: 5px;
+  padding: 8px;
 }
 .feedSettings .addFolder, .feedSettings .addFeedUrl {
   cursor: pointer;
   position: absolute;
-  font-size: 1.7em;
-  border-left: 1px solid #f1f1f1;
-  right: 5%;
-  top: 1em;
-  margin-top: -3px;
+  right: 6%;
+  margin-top: 12px;
 }
 .feedSettings .settingTypeDivider {
   float: left;
@@ -866,7 +865,7 @@ body {
   margin-left: 10px;
   cursor: pointer;
   float: left;
-  margin-top: 18px;
+  margin-top: -5px;
   display: none;
 }
 .feedSettings .opmlText {
@@ -882,7 +881,6 @@ body {
   white-space: nowrap;
   max-width: 29%;
   overflow: hidden;
-  margin-top: 23px;
   margin-left: 11px;
   float: left;
   padding: 3px;
@@ -890,8 +888,9 @@ body {
 .feedSettings .settingTypeContainer {
   width: 92%;
   display: inline-block;
-  height: 23px;
+  height: 22px;
   margin-left: 3%;
+  display: block;
 }
 .feedSettings .settingType {
   float: left;
