@@ -111,7 +111,7 @@ MblRdr.shortcuts = function() {
         //$('html, body').animate({
         //    scrollTop: MblRdr.currentArticle.offset().top
         //}, 300);
-        MblRdr.scrollTo(MblRdr.currentArticle.offset().top, 300)
+        MblRdr.scrollTo(MblRdr.currentArticle.offset().top, 100)
 
     }
 
