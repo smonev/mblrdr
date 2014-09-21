@@ -438,8 +438,8 @@ class FeedHandler(BasicHandler):
 
         ## NB when logged in as admin, GAE changes these to cache-control: no-cache, must-revalidate. 
         self.response.headers['Content-Type'] = 'application/json'
-        ##self.response.headers['Cache-Control'] = "public, max-age=1800" ##30 minutes
-        self.response.headers['Cache-Control'] = "private" ##30 minutes
+        self.response.headers['Cache-Control'] = "public, max-age=1800" ##30 minutes
+        ##self.response.headers['Cache-Control'] = "private" ##30 minutes
         self.response.out.write(str(json.dumps(combined)))
 
 class SaveSettingsHandler(BasicHandler):
