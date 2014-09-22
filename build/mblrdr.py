@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 ## TODO
+## -1. html escape when parsing and when use inputs sth
 ## 0. test the fuck out read and star data cashing
 ## 3. cron user - keep track of feed usasge and decrease/increase cron times
 ## 4. date.js
@@ -11,8 +12,11 @@
 ## 8. @ndb.transactional , async, dont wait urlopen requests
 ## 9. move 'root'
 
+
 #  https://github.com/julien-maurel/jQuery-Storage-API
 #  redirects https://github.com/ether/etherpad-lite/issues/1603
+
+## cron runs every 2 minites and adds every 30 feed in a task to  get and parse new. 
 
 import os, sys
 
@@ -57,7 +61,7 @@ class StarData(ndb.Model):
     starData = ndb.TextProperty()
 
 class FeedDataSettings(ndb.Model):
-    url = ndb.StringProperty(required=True, indexed=False)
+    url = ndb.StringProperty(required=True, indexed=True)
     new_etag = ndb.StringProperty(indexed=False)
     new_modified = ndb.StringProperty(indexed=False)
     article_count = ndb.IntegerProperty(indexed=False)
@@ -67,6 +71,10 @@ class FeedDataSettings(ndb.Model):
     latest_item_id = ndb.StringProperty(indexed=False)
     latest_http_link = ndb.StringProperty(indexed=False) ##latest item, normalized to http - i.e https://foo.bar becomes http://foo.bar
     refCount = ndb.IntegerProperty(indexed=False)
+    # lastModified = ndb.DateTimeProperty(auto_now=True, indexed=False)
+    # updateMeAfterThisTime = ndb.DateTimeProperty()
+    # lastUpdateInterval = ndb.IntegerProperty(indexed=False)
+    # updatesWithoutNewFeeds = ndb.IntegerProperty(default = 1, indexed=False)
 
 class FeedData(ndb.Model):
     url = ndb.StringProperty(required=True, indexed=False)
@@ -112,58 +120,20 @@ class BasicHandler(webapp2.RequestHandler):
             fds = FeedDataSettings(url=feed, id=feed, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
             fds.put()
 
+            user = users.get_current_user()
+            ud = self.GetAppUserByEmail(user.email())
+            if (ud is not None):
+                readDataAttr = 'readData__' + str(feed).translate(None, '.')
+                app_username = ud.app_username
+                ReadData(app_username = app_username, feedUrl = feed, readData = '', readCount = 0, id = readDataAttr)
+
         return fds
 
-    def GetCurrentDateTime(self):
-        now = datetime.now()
-        return now.strftime("%Y-%m-%d %H:%M")
-
-    def AddSomeData(self, d, feed, items, feedDataSettings, createNew):
-        ## http://devblog.miumeet.com/2012/06/storing-json-efficiently-in-python-on.html
-        ## RequestTooLargeError  http://stackoverflow.com/questions/5022725/how-do-i-measure-the-memory-usage-of-an-object-in-python
-
-        logging.debug('add some data: %s', feed)
-
-        newItemsCount = len(items)
-
-        if feedDataSettings.private_data <> '':
-            oldData = json.loads(feedDataSettings.private_data)
-            items = items + oldData
-
-        feedDataSettings.private_data = json.dumps(items)
-
-        ## remember what has been added, and do not add same data
-        httpId = items[0]['link']
-        if httpId.startswith('https'):
-            httpId = httpId.replace('https', 'http', 1)
-
-        feedDataSettings.latest_item_id = items[0]['id']
-        feedDataSettings.latest_http_link = httpId
-
-        #rememeber modifed and etag
-        if hasattr(d, 'modified'):
-            feedDataSettings.new_modified = str(d.modified)
-        if hasattr(d, 'etag'):
-            feedDataSettings.new_etag = str(d.etag)
-
-        if createNew:
-            feedDataSettings.feedDataCount = feedDataSettings.feedDataCount + 1
-            newKeyName = str(hash(feed) * hash(feed)) + '_' + str(feedDataSettings.feedDataCount)
-            newFeedData = FeedData(url = feed, private_data = feedDataSettings.private_data, id = newKeyName)
-            newFeedData.put()
-
-            feedDataSettings.latest_item = newKeyName
-            feedDataSettings.private_data = ''
-
-        feedDataSettings.article_count = feedDataSettings.article_count + newItemsCount
-
-        logging.debug('[READCOUNT DEBUG] Increase read count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
-        feedDataSettings.put()
-
-
     def GetAndParse(self, feed, debug):
+        import urllib
         feed = urllib.unquote_plus(feed) ## because of encodeURIComponent
         feedDataSettings = self.GetFeedDataSettings(feed)
+        someDataWasAdded = False
 
         if (feedDataSettings is None):
             logging.debug('GetAndParse => feedDataSettings is None: %s', feed)
@@ -194,6 +164,7 @@ class BasicHandler(webapp2.RequestHandler):
                 if len(items) > 0:
                     self.AddSomeData(d, feed, items, feedDataSettings, False)
                     items = []
+                    someDataWasAdded = True
 
                 break
 
@@ -201,6 +172,7 @@ class BasicHandler(webapp2.RequestHandler):
                 if len(items) > 0:
                     self.AddSomeData(d, feed, items, feedDataSettings, False)
                     items = []
+                    someDataWasAdded = True
 
                 break
 
@@ -236,6 +208,7 @@ class BasicHandler(webapp2.RequestHandler):
                 self.AddSomeData(d, feed, items, feedDataSettings, True)
                 itemSize = 0
                 items = []
+                someDataWasAdded = True
 
             entriesCount = entriesCount + 1
             if entriesCount > 100:
@@ -244,6 +217,53 @@ class BasicHandler(webapp2.RequestHandler):
 
         if len(items) > 0:
             self.AddSomeData(d, feed, items, feedDataSettings, False)
+            someDataWasAdded = True
+
+        # if not someDataWasAdded:
+        #     self.calcNextUpdateInterval(False)
+
+    def AddSomeData(self, d, feed, items, feedDataSettings, createNew):
+        ## http://devblog.miumeet.com/2012/06/storing-json-efficiently-in-python-on.html
+        ## RequestTooLargeError  http://stackoverflow.com/questions/5022725/how-do-i-measure-the-memory-usage-of-an-object-in-python
+
+        logging.debug('add some data: %s', feed)
+
+        newItemsCount = len(items)
+
+        if feedDataSettings.private_data <> '':
+            oldData = json.loads(feedDataSettings.private_data)
+            items = items + oldData
+
+        feedDataSettings.private_data = json.dumps(items)
+
+        ## remember what have been added, and dont add same data
+        httpId = items[0]['link']
+        if httpId.startswith('https'):
+            httpId = httpId.replace('https', 'http', 1)
+
+        feedDataSettings.latest_item_id = items[0]['id']
+        feedDataSettings.latest_http_link = httpId
+
+        #rememeber modifed and etag
+        if hasattr(d, 'modified'):
+            feedDataSettings.new_modified = str(d.modified)
+        if hasattr(d, 'etag'):
+            feedDataSettings.new_etag = str(d.etag)
+
+        if createNew:
+            feedDataSettings.feedDataCount = feedDataSettings.feedDataCount + 1
+            newKeyName = str(hash(feed) * hash(feed)) + '_' + str(feedDataSettings.feedDataCount)
+            newFeedData = FeedData(url = feed, private_data = feedDataSettings.private_data, id = newKeyName)
+            newFeedData.put()
+
+            feedDataSettings.latest_item = newKeyName
+            feedDataSettings.private_data = ''
+
+        feedDataSettings.article_count = feedDataSettings.article_count + newItemsCount
+
+        logging.debug('[READCOUNT DEBUG] Increase read count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
+        feedDataSettings.put()
+
 
 
 class MainHandler(BasicHandler):
@@ -281,6 +301,7 @@ class MainHandler(BasicHandler):
 
         template = jinja_environment.get_template(html_template)
         self.response.headers['Content-Type'] = 'text/html'
+        
 
         self.response.headers['Content-Security-Policy'] = "script-src 'self'"
         self.response.headers['Content-Security-Policy'] = "style-src 'self'"
@@ -288,105 +309,67 @@ class MainHandler(BasicHandler):
 
         self.response.out.write(template.render(template_values))
 
+
 class CronFeedsHandler(BasicHandler):
 
     def getUrls(self, allFeeds):
-        feeds = [u'http://174.129.28.157/feed/', u'http://33bits.org/feed/', u'http://appengine-cookbook.appspot.com/feeds', u'http://artsbeat.blogs.nytimes.com/tag/mad-men-watch/feed/', u'http://aspn.activestate.com/ASPN/Cookbook/Python/index_rss', u'http://awesomepeoplehangingouttogether.tumblr.com/rss', u'http://beta.dailycolorscheme.com/feed/rss', u'http://bg-bg.facebook.com/feeds/page.php?id=184792058258487&format=atom10', u'http://bijansabet.com/rss', u'http://blog.codeclub.org.uk/blog/feed/', u'http://blog.distimo.com/category/android-market/feed/', u'http://blog.floxee.com/rss', u'http://blog.how-to-web.net/feed/', u'http://blog.ianbicking.org/feed/atom/', u'http://blog.kickstarter.com/rss/', u'http://blog.makezine.com/archive/make_store/index.xml', u'http://blog.musiclessons.bg/?feed=rss2', u'http://blog.notdot.net/feeds/atom.xml', u'http://blog.notifo.com/rss.xml', u'http://blog.peio.org/?feed=rss2', u'http://blog.rightscale.com/feed/', u'http://blog.thenounproject.com/rss', u'http://blogs.msdn.com/dthorpe/rss.xml', u'http://blogs.msdn.com/rssteam/rss.xml', u'http://blorn.com/rss', u'http://boyscoutmag.com/feed/', u'http://bunnylava.blogspot.com/feeds/posts/default', u'http://burakkanber.com/blog/feed/', u'http://calendar.perfplanet.com/feed/', u'http://capital-risqueur.blogspot.com/feeds/posts/default', u'http://cdixon.org/?feed=rss2', u'http://code.google.com/feeds/p/asynctools/issueupdates/basic', u'http://code.google.com/feeds/p/django-firebird/issueupdates/basic', u'http://corporateyouth.org/?feed=rss', u'http://coupland.blogs.nytimes.com/atom.xml', u'http://cracking-the-code.blogspot.com/feeds/posts/default', u'http://cvyk.blogspot.com/atom.xml', u'http://dekstop.de/weblog/index.xml', u'http://denitsa33.blogspot.com/feeds/posts/default?alt=rss', u'http://detskiknigi.com/feed/', u'http://dima.kalifish.com/?feed=rss2', u'http://dni.li/feed/', u'http://dunelmtechnology.co.uk/feed/', u'http://dzver.com/blog/?feed=rss2', u'http://edenflamingo.com/feed/', u'http://emurry.com/blog/feed/', u'http://essme.blogspot.com/feeds/posts/default?alt=rss', u'http://feedproxy.google.com/eenk', u'http://feedproxy.google.com/nettuts', u'http://feeds.dantup.com/DanTup', u'http://feeds.feedburner.com/AppEngineFan', u'http://feeds.feedburner.com/BonjourMadame', u'http://feeds.feedburner.com/BuzzMachine', u'http://feeds.feedburner.com/CityKidsbg', u'http://feeds.feedburner.com/DataMining', u'http://feeds.feedburner.com/Designknigoizdavane', u'http://feeds.feedburner.com/GeorgiNedelchevMonitoring', u'http://feeds.feedburner.com/GoogleAppEngineBlog', u'http://feeds.feedburner.com/InformationIsBeautiful', u'http://feeds.feedburner.com/Inkzee', u'http://feeds.feedburner.com/JeremiahGrossman', u'http://feeds.feedburner.com/JoshuaSchachter', u'http://feeds.feedburner.com/ModernLifeIsRubbish', u'http://feeds.feedburner.com/ServiceLevelAutomation', u'http://feeds.feedburner.com/SinticaEN', u'http://feeds.feedburner.com/Startup2Startup', u'http://feeds.feedburner.com/TheGrifters', u'http://feeds.feedburner.com/TheItRoom', u'http://feeds.feedburner.com/TheStartupFoundry', u'http://feeds.feedburner.com/TheUniversalGadget', u'http://feeds.feedburner.com/WSwI', u'http://feeds.feedburner.com/WhatAssociationBlog', u'http://feeds.feedburner.com/WhitehatSecurityBlog', u'http://feeds.feedburner.com/WorkHappy', u'http://feeds.feedburner.com/YlasticBlog', u'http://feeds.feedburner.com/alexanderkirk', u'http://feeds.feedburner.com/blogspot/OGBVh', u'http://feeds.feedburner.com/brettaylor', u'http://feeds.feedburner.com/carpeaqua', u'http://feeds.feedburner.com/catonmat', u'http://feeds.feedburner.com/crunchnotes', u'http://feeds.feedburner.com/directededge', u'http://feeds.feedburner.com/errorceptionBlog', u'http://feeds.feedburner.com/fastcompany/scobleizer', u'http://feeds.feedburner.com/garrettdimoncom', u'http://feeds.feedburner.com/georgiangelov', u'http://feeds.feedburner.com/iwdrm?format=xml', u'http://feeds.feedburner.com/john-nousis', u'http://feeds.feedburner.com/littlebigdetails', u'http://feeds.feedburner.com/mcsweeneys', u'http://feeds.feedburner.com/re-winder/feed', u'http://feeds.feedburner.com/reklama', u'http://feeds.feedburner.com/relevance-llc', u'http://feeds.feedburner.com/startupcompanylawyer', u'http://feeds.feedburner.com/startupping', u'http://feeds.feedburner.com/takaitaka2', u'http://feeds.feedburner.com/thesassway', u'http://feeds.feedburner.com/trendsspotting-feeds', u'http://feeds.feedburner.com/ubervu', u'http://feeds.feedburner.com/united-coders', u'http://feeds.infosthetics.com/infosthetics', u'http://feeds.simonwillison.net/swn-entries', u'http://feeds.sparkabout.net/sparkabout', u'http://feeds.venturehacks.com/venturehacks', u'http://feeds2.feedburner.com/LouisgraycomLive', u'http://feeds2.feedburner.com/Luckyrobotcom-GerryCampbell', u'http://feeds2.feedburner.com/StartupsInTurkey', u'http://feeds2.feedburner.com/asert/', u'http://feeds2.feedburner.com/bradburnham', u'http://feeds2.feedburner.com/openfund', u'http://feeds2.feedburner.com/startup/lessons/learned', u'http://fitsnstarts.tumblr.com/rss', u'http://friendfeed.com/gaberivera?format=atom', u'http://fusible.com/feed/', u'http://fxshaw.wordpress.com/feed/', u'http://gamedev.stackexchange.com/feeds/tag/html5', u'http://glasshouse.waggeneredstrom.com/blogs/frankshaw/rss.aspx', u'http://gloriapetkova.blogspot.com/feeds/posts/default?alt=rss', u'http://gradinadetelina.blogspot.com/feeds/posts/default?alt=rss', u'http://grigorweblog.wordpress.com/feed/', u'http://groups.google.com/group/get-theinfo/feed/rss_v2_0_msgs.xml', u'http://groups.google.com/group/google-appengine-downtime-notify/feed/rss_v2_0_msgs.xml', u'http://headrush.typepad.com/creating_passionate_users/index.rdf', u'http://ibdeveloper.blogspot.com/feeds/posts/default', u'http://ikonomika.org/?feed=rss2', u'http://ivanbedrov.com/?feed=rss2', u'http://jobs.37signals.com/categories/2/jobs.rss', u'http://joehewitt.com/index.xml', u'http://k1tesurf.com/main/component/option,com_rss/feed,RSS2.0/no_html,1/lang,en/', u'http://kanyewesanderson.tumblr.com/rss', u'http://krisibeta.tumblr.com/rss', u'http://krokotak.com/feed/', u'http://launchub.com/blog/?feed=rss2', u'http://levosgien.net/feed/', u'http://lifehacker.com/tag/android/index.xml', u'http://littlebits.cc/feed', u'http://ljato.wordpress.com/feed/', u'http://loveandtheft.org/feed/', u'http://lundxy.com/?feed=rss2', u'http://lydblog.wordpress.com/feed/', u'http://metaoptimize.com/blog/feed/', u'http://mhlegal.eu/bgblog/feed/', u'http://mightbwrong.tumblr.com/rss', u'http://milenafuchedjieva.blogspot.com/feeds/posts/default', u'http://mymilktoof.blogspot.com/feeds/posts/default', u'http://nellyo.wordpress.com/feed/', u'http://news.netcraft.com/feed/', u'http://nslatinski.org/?q=bg/rss.xml', u'http://odeqlo.wordpress.com/feed/', u'http://okdork.com/feed/rss', u'http://omis.me/feed/', u'http://open.blogs.nytimes.com/atom.xml', u'http://particletree.com/rss/', u'http://pavel-yanchev.blogspot.com/feeds/posts/default', u'http://pavlinav.wordpress.com/feed/', u'http://plovediv.com/feed', u'http://pomstar.org/rss', u'http://python-history.blogspot.com/feeds/posts/default?alt=rss', u'http://radankanev.blogspot.com/feeds/posts/default?alt=rss', u'http://reyk.tumblr.com/rss', u'http://rss.babble.com/babblenewthisweek/', u'http://rss.groups.yahoo.com/group/firebird-python/rss', u'http://rss.searchyc.com/techmeme?sort=by_date', u'http://scobleizer.posterous.com/rss.xml', u'http://search.twitter.com/search.atom?q=ececars', u'http://search.twitter.com/search.atom?q=smonev', u'http://seoblackhat.com/feed', u'http://shop.studioreforma.com/?feed=rss2', u'http://showmedo.com/latestVideoFeed/rss2.0?tag=python', u'http://simeons.wordpress.com/feed/', u'http://simoivanov.com/feed', u'http://songibson.wordpress.com/feed/', u'http://soroush.secproject.com/blog/feed/', u'http://sredparcalkitevshkafa.blogspot.com/feeds/posts/default?alt=rss', u'http://stackoverflow.com/feeds/tag?tagnames=translate3d&sort=newest', u'http://stallman.org/rss/rss.xml', u'http://status.blogrolling.com/rss', u'http://svilenivanov.blogspot.com/feeds/243478163996777031/comments/default', u'http://tagschema.com/blogs/tagschema/atom.xml', u'http://techcrunch.posterous.com/rss.xml', u'http://thebigcaption.com/rss', u'http://timurcommandos.blogspot.com/feeds/posts/default?alt=rss', u'http://tochitsa1.blogspot.com/feeds/posts/default?alt=rss', u'http://totalmoral.blogspot.com/feeds/posts/default', u'http://tuk-tame.blogspot.com/feeds/posts/default?alt=rss', u'http://uncrunched.com/feed/', u'http://valery.bgit.net/blog-bg/feed/', u'http://vitelcom.blogspot.com/feeds/posts/default', u'http://wesandersonpalettes.tumblr.com/rss', u'http://whatsthatcrap.blogspot.com/feeds/posts/default?alt=rss', u'http://ws.audioscrobbler.com/1.0/artist/Norah Jones/events.rss', u'http://www.ajaxian.com/index.rdf', u'http://www.all4android.com/feed/', u'http://www.allthingsdistributed.com/index.xml', u'http://www.authenticjobs.com/rss/custom.php?terms=&type=2&cats=&onlyremote=&location=', u'http://www.authenticjobs.com/rss/custom.php?terms=Anywhere&type=1,2,3,4&cats=&onlyremote=&location=', u'http://www.avramov.com/blog/?feed=rss2', u'http://www.awaretek.com/python/index.xml', u'http://www.babble.com/Global/Rss/Feeds/toddler.xml', u'http://www.bgkite.com/feed/', u'http://www.boston.com/bigpicture/bpnotes/index.xml', u'http://www.bothsidesofthetable.com/feed/', u'http://www.businessesforsale.com/search/Businesses-for-sale-in-Plovdiv.rss?keywords=Plovdiv', u'http://www.buzzlogic.com/blog/atom.xml', u'http://www.c5bench.com/feed/', u'http://www.capital.bg/rss.php?blog=1', u'http://www.crashplan.com/blog/feed', u'http://www.dailydropcap.com/feed/rss', u'http://www.decocentric.com/feed/', u'http://www.desnite.eu/index.php?format=feed&type=rss', u'http://www.dnevnik.bg/rss/?rubrid=2546', u'http://www.dnevnik.bg/rss/search/?stext=%D0%B4%D0%B8%D0%BC%D0\u20265D1%81%D0%B5%D0%BD%D0%B5&backurl=&selfurl=&kfor_name=ssearch', u'http://www.dwellstudio.com/blog/rss', u'http://www.eventsplovdiv.info/export/rss', u'http://www.firebirdnews.org/?feed=atom', u'http://www.fmd.bg/?feed=rss2', u'http://www.fmi-plovdiv.org/rss.jsp', u'http://www.gapingvoid.com/atom.xml', u'http://www.hollywoodreporter.com/taxonomy/term/7973/all/feed', u'http://www.hotel-orbita.com/feed/', u'http://www.informationisbeautiful.net/feed/', u'http://www.ivantotev.com/novini/site-feed/RSS', u'http://www.joelonsoftware.com/rss.xml', u'http://www.kitesurf-varna.com/blog/?feed=rss2', u'http://www.kldn.net/?feed=rss2', u'http://www.lstudio.com/rss/lstudiorss.xml', u'http://www.matsays.com/feed/', u'http://www.mobilehtml5.com/rss', u'http://www.nadgraphics.com/feed/', u'http://www.niallkennedy.com/blog/index.atom', u'http://www.pannonrex.com/blog/?feed=rss2', u'http://www.phonegap.com/feed/', u'http://www.phpied.com/feed/', u'http://www.pythonware.com/daily/rss.xml', u'http://www.quirksmode.org/blog/atom.xml', u'http://www.reddit.com/r/AppEngine/.rss', u'http://www.reddit.com/r/AppEngine/comments/f4tpf/what_are_the_best_app_engine_packagesprojects/.rss', u'http://www.reddit.com/r/firebird/.rss', u'http://www.reduta.bg/?feed=rss2', u'http://www.robertnyman.com/feed/', u'http://www.sarajchipps.com/rss.xml', u'http://www.scripting.com/rss.xml', u'http://www.shotton.com/wp/feed/', u'http://www.snook.ca/jonathan/index.rdf', u'http://www.stevesouders.com/blog/feed/', u'http://www.techmeme.com/search/rssquery?q=Twingly&wm=false', u'http://www.techmeme.com/search/rssquery?q=techmeme&wm=false', u'http://www.thecoolhunter.net/index2.php?option=com_rss&feed=RSS2.0&no_html=1', u'http://www.thegrifters.org/feed/', u'http://www.trikorni.com/feed/', u'http://www.watchingwebsites.com/feed', u'http://www.wordyard.com/category/code-reads/feed/', u'http://www.wotzwot.com/rssxl.php?pageurl=http://www.samflemming.com/&sf=<\u2026n .post -->&ei= &sd=&ed=&linkno=1&vcode=770459162', u'http://xooglers.blogspot.com/atom.xml', u'http://yovko.net/feed', u'http://zooie.wordpress.com/feed/', u'https://amazonsilk.wordpress.com/feed/', u'https://antiideas.wordpress.com/feed/', u'https://bg.wordpress.org/feed/', u'https://bgmindstorms.wordpress.com/feed/', u'https://blog.mozilla.org/ux/feed/', u'https://blogs.msdn.com/b/b8/rss.aspx', u'https://christogrozev.wordpress.com/feed/', u'https://gun.io/feed/', u'https://hacks.mozilla.org/feed/', u'https://nikcub.appspot.com/feed', u'https://sugarfreenora.wordpress.com/feed/', u'https://voreshkov.posterous.com/rss.xml', u'https://www.facebook.com/feeds/page.php?format=rss20&id=197266283722139']
-        return feeds if allFeeds else feeds[datetime.now().minute / 3::20] ## every 20th feed
+        cacheKey = 'feed_data_settings___all'
+        feeds = memcache.get(cacheKey)
+        if (feeds is None):
+            allFeedDataSettings = FeedDataSettings.query()
+            feeds = [feed.url for feed in allFeedDataSettings];
+            memcache.set(cacheKey, feeds, 3600) ## 1h
+            logging.debug('adding allFeedDataSettings to cache. Size: %s', sys.getsizeof(feeds))
 
-    def get6thFeedEveryTenMinutes(self, allFeeds):
-
-        feeds = [u'http://174.129.28.157/feed/', u'http://33bits.org/feed/', u'http://appengine-cookbook.appspot.com/feeds', u'http://artsbeat.blogs.nytimes.com/tag/mad-men-watch/feed/', u'http://aspn.activestate.com/ASPN/Cookbook/Python/index_rss', u'http://awesomepeoplehangingouttogether.tumblr.com/rss', u'http://beta.dailycolorscheme.com/feed/rss', u'http://bg-bg.facebook.com/feeds/page.php?id=184792058258487&format=atom10', u'http://bijansabet.com/rss', u'http://blog.codeclub.org.uk/blog/feed/', u'http://blog.distimo.com/category/android-market/feed/', u'http://blog.floxee.com/rss', u'http://blog.how-to-web.net/feed/', u'http://blog.ianbicking.org/feed/atom/', u'http://blog.kickstarter.com/rss/', u'http://blog.makezine.com/archive/make_store/index.xml', u'http://blog.musiclessons.bg/?feed=rss2', u'http://blog.notdot.net/feeds/atom.xml', u'http://blog.notifo.com/rss.xml', u'http://blog.peio.org/?feed=rss2', u'http://blog.rightscale.com/feed/', u'http://blog.thenounproject.com/rss', u'http://blogs.msdn.com/dthorpe/rss.xml', u'http://blogs.msdn.com/rssteam/rss.xml', u'http://blorn.com/rss', u'http://boyscoutmag.com/feed/', u'http://bunnylava.blogspot.com/feeds/posts/default', u'http://burakkanber.com/blog/feed/', u'http://calendar.perfplanet.com/feed/', u'http://capital-risqueur.blogspot.com/feeds/posts/default', u'http://cdixon.org/?feed=rss2', u'http://code.google.com/feeds/p/asynctools/issueupdates/basic', u'http://code.google.com/feeds/p/django-firebird/issueupdates/basic', u'http://corporateyouth.org/?feed=rss', u'http://coupland.blogs.nytimes.com/atom.xml', u'http://cracking-the-code.blogspot.com/feeds/posts/default', u'http://cvyk.blogspot.com/atom.xml', u'http://dekstop.de/weblog/index.xml', u'http://denitsa33.blogspot.com/feeds/posts/default?alt=rss', u'http://detskiknigi.com/feed/', u'http://dima.kalifish.com/?feed=rss2', u'http://dni.li/feed/', u'http://dunelmtechnology.co.uk/feed/', u'http://dzver.com/blog/?feed=rss2', u'http://edenflamingo.com/feed/', u'http://emurry.com/blog/feed/', u'http://essme.blogspot.com/feeds/posts/default?alt=rss', u'http://feedproxy.google.com/eenk', u'http://feedproxy.google.com/nettuts', u'http://feeds.dantup.com/DanTup', u'http://feeds.feedburner.com/AppEngineFan', u'http://feeds.feedburner.com/BonjourMadame', u'http://feeds.feedburner.com/BuzzMachine', u'http://feeds.feedburner.com/CityKidsbg', u'http://feeds.feedburner.com/DataMining', u'http://feeds.feedburner.com/Designknigoizdavane', u'http://feeds.feedburner.com/GeorgiNedelchevMonitoring', u'http://feeds.feedburner.com/GoogleAppEngineBlog', u'http://feeds.feedburner.com/InformationIsBeautiful', u'http://feeds.feedburner.com/Inkzee', u'http://feeds.feedburner.com/JeremiahGrossman', u'http://feeds.feedburner.com/JoshuaSchachter', u'http://feeds.feedburner.com/ModernLifeIsRubbish', u'http://feeds.feedburner.com/ServiceLevelAutomation', u'http://feeds.feedburner.com/SinticaEN', u'http://feeds.feedburner.com/Startup2Startup', u'http://feeds.feedburner.com/TheGrifters', u'http://feeds.feedburner.com/TheItRoom', u'http://feeds.feedburner.com/TheStartupFoundry', u'http://feeds.feedburner.com/TheUniversalGadget', u'http://feeds.feedburner.com/WSwI', u'http://feeds.feedburner.com/WhatAssociationBlog', u'http://feeds.feedburner.com/WhitehatSecurityBlog', u'http://feeds.feedburner.com/WorkHappy', u'http://feeds.feedburner.com/YlasticBlog', u'http://feeds.feedburner.com/alexanderkirk', u'http://feeds.feedburner.com/blogspot/OGBVh', u'http://feeds.feedburner.com/brettaylor', u'http://feeds.feedburner.com/carpeaqua', u'http://feeds.feedburner.com/catonmat', u'http://feeds.feedburner.com/crunchnotes', u'http://feeds.feedburner.com/directededge', u'http://feeds.feedburner.com/errorceptionBlog', u'http://feeds.feedburner.com/fastcompany/scobleizer', u'http://feeds.feedburner.com/garrettdimoncom', u'http://feeds.feedburner.com/georgiangelov', u'http://feeds.feedburner.com/iwdrm?format=xml', u'http://feeds.feedburner.com/john-nousis', u'http://feeds.feedburner.com/littlebigdetails', u'http://feeds.feedburner.com/mcsweeneys', u'http://feeds.feedburner.com/re-winder/feed', u'http://feeds.feedburner.com/reklama', u'http://feeds.feedburner.com/relevance-llc', u'http://feeds.feedburner.com/startupcompanylawyer', u'http://feeds.feedburner.com/startupping', u'http://feeds.feedburner.com/takaitaka2', u'http://feeds.feedburner.com/thesassway', u'http://feeds.feedburner.com/trendsspotting-feeds', u'http://feeds.feedburner.com/ubervu', u'http://feeds.feedburner.com/united-coders', u'http://feeds.infosthetics.com/infosthetics', u'http://feeds.simonwillison.net/swn-entries', u'http://feeds.sparkabout.net/sparkabout', u'http://feeds.venturehacks.com/venturehacks', u'http://feeds2.feedburner.com/LouisgraycomLive', u'http://feeds2.feedburner.com/Luckyrobotcom-GerryCampbell', u'http://feeds2.feedburner.com/StartupsInTurkey', u'http://feeds2.feedburner.com/asert/', u'http://feeds2.feedburner.com/bradburnham', u'http://feeds2.feedburner.com/openfund', u'http://feeds2.feedburner.com/startup/lessons/learned', u'http://fitsnstarts.tumblr.com/rss', u'http://friendfeed.com/gaberivera?format=atom', u'http://fusible.com/feed/', u'http://fxshaw.wordpress.com/feed/', u'http://gamedev.stackexchange.com/feeds/tag/html5', u'http://glasshouse.waggeneredstrom.com/blogs/frankshaw/rss.aspx', u'http://gloriapetkova.blogspot.com/feeds/posts/default?alt=rss', u'http://gradinadetelina.blogspot.com/feeds/posts/default?alt=rss', u'http://grigorweblog.wordpress.com/feed/', u'http://groups.google.com/group/get-theinfo/feed/rss_v2_0_msgs.xml', u'http://groups.google.com/group/google-appengine-downtime-notify/feed/rss_v2_0_msgs.xml', u'http://headrush.typepad.com/creating_passionate_users/index.rdf', u'http://ibdeveloper.blogspot.com/feeds/posts/default', u'http://ikonomika.org/?feed=rss2', u'http://ivanbedrov.com/?feed=rss2', u'http://jobs.37signals.com/categories/2/jobs.rss', u'http://joehewitt.com/index.xml', u'http://k1tesurf.com/main/component/option,com_rss/feed,RSS2.0/no_html,1/lang,en/', u'http://kanyewesanderson.tumblr.com/rss', u'http://krisibeta.tumblr.com/rss', u'http://krokotak.com/feed/', u'http://launchub.com/blog/?feed=rss2', u'http://levosgien.net/feed/', u'http://lifehacker.com/tag/android/index.xml', u'http://littlebits.cc/feed', u'http://ljato.wordpress.com/feed/', u'http://loveandtheft.org/feed/', u'http://lundxy.com/?feed=rss2', u'http://lydblog.wordpress.com/feed/', u'http://metaoptimize.com/blog/feed/', u'http://mhlegal.eu/bgblog/feed/', u'http://mightbwrong.tumblr.com/rss', u'http://milenafuchedjieva.blogspot.com/feeds/posts/default', u'http://mymilktoof.blogspot.com/feeds/posts/default', u'http://nellyo.wordpress.com/feed/', u'http://news.netcraft.com/feed/', u'http://nslatinski.org/?q=bg/rss.xml', u'http://odeqlo.wordpress.com/feed/', u'http://okdork.com/feed/rss', u'http://omis.me/feed/', u'http://open.blogs.nytimes.com/atom.xml', u'http://particletree.com/rss/', u'http://pavel-yanchev.blogspot.com/feeds/posts/default', u'http://pavlinav.wordpress.com/feed/', u'http://plovediv.com/feed', u'http://pomstar.org/rss', u'http://python-history.blogspot.com/feeds/posts/default?alt=rss', u'http://radankanev.blogspot.com/feeds/posts/default?alt=rss', u'http://reyk.tumblr.com/rss', u'http://rss.babble.com/babblenewthisweek/', u'http://rss.groups.yahoo.com/group/firebird-python/rss', u'http://rss.searchyc.com/techmeme?sort=by_date', u'http://scobleizer.posterous.com/rss.xml', u'http://search.twitter.com/search.atom?q=ececars', u'http://search.twitter.com/search.atom?q=smonev', u'http://seoblackhat.com/feed', u'http://shop.studioreforma.com/?feed=rss2', u'http://showmedo.com/latestVideoFeed/rss2.0?tag=python', u'http://simeons.wordpress.com/feed/', u'http://simoivanov.com/feed', u'http://songibson.wordpress.com/feed/', u'http://soroush.secproject.com/blog/feed/', u'http://sredparcalkitevshkafa.blogspot.com/feeds/posts/default?alt=rss', u'http://stackoverflow.com/feeds/tag?tagnames=translate3d&sort=newest', u'http://stallman.org/rss/rss.xml', u'http://status.blogrolling.com/rss', u'http://svilenivanov.blogspot.com/feeds/243478163996777031/comments/default', u'http://tagschema.com/blogs/tagschema/atom.xml', u'http://techcrunch.posterous.com/rss.xml', u'http://thebigcaption.com/rss', u'http://timurcommandos.blogspot.com/feeds/posts/default?alt=rss', u'http://tochitsa1.blogspot.com/feeds/posts/default?alt=rss', u'http://totalmoral.blogspot.com/feeds/posts/default', u'http://tuk-tame.blogspot.com/feeds/posts/default?alt=rss', u'http://uncrunched.com/feed/', u'http://valery.bgit.net/blog-bg/feed/', u'http://vitelcom.blogspot.com/feeds/posts/default', u'http://wesandersonpalettes.tumblr.com/rss', u'http://whatsthatcrap.blogspot.com/feeds/posts/default?alt=rss', u'http://ws.audioscrobbler.com/1.0/artist/Norah Jones/events.rss', u'http://www.ajaxian.com/index.rdf', u'http://www.all4android.com/feed/', u'http://www.allthingsdistributed.com/index.xml', u'http://www.authenticjobs.com/rss/custom.php?terms=&type=2&cats=&onlyremote=&location=', u'http://www.authenticjobs.com/rss/custom.php?terms=Anywhere&type=1,2,3,4&cats=&onlyremote=&location=', u'http://www.avramov.com/blog/?feed=rss2', u'http://www.awaretek.com/python/index.xml', u'http://www.babble.com/Global/Rss/Feeds/toddler.xml', u'http://www.bgkite.com/feed/', u'http://www.boston.com/bigpicture/bpnotes/index.xml', u'http://www.bothsidesofthetable.com/feed/', u'http://www.businessesforsale.com/search/Businesses-for-sale-in-Plovdiv.rss?keywords=Plovdiv', u'http://www.buzzlogic.com/blog/atom.xml', u'http://www.c5bench.com/feed/', u'http://www.capital.bg/rss.php?blog=1', u'http://www.crashplan.com/blog/feed', u'http://www.dailydropcap.com/feed/rss', u'http://www.decocentric.com/feed/', u'http://www.desnite.eu/index.php?format=feed&type=rss', u'http://www.dnevnik.bg/rss/?rubrid=2546', u'http://www.dnevnik.bg/rss/search/?stext=%D0%B4%D0%B8%D0%BC%D0\u20265D1%81%D0%B5%D0%BD%D0%B5&backurl=&selfurl=&kfor_name=ssearch', u'http://www.dwellstudio.com/blog/rss', u'http://www.eventsplovdiv.info/export/rss', u'http://www.firebirdnews.org/?feed=atom', u'http://www.fmd.bg/?feed=rss2', u'http://www.fmi-plovdiv.org/rss.jsp', u'http://www.gapingvoid.com/atom.xml', u'http://www.hollywoodreporter.com/taxonomy/term/7973/all/feed', u'http://www.hotel-orbita.com/feed/', u'http://www.informationisbeautiful.net/feed/', u'http://www.ivantotev.com/novini/site-feed/RSS', u'http://www.joelonsoftware.com/rss.xml', u'http://www.kitesurf-varna.com/blog/?feed=rss2', u'http://www.kldn.net/?feed=rss2', u'http://www.lstudio.com/rss/lstudiorss.xml', u'http://www.matsays.com/feed/', u'http://www.mobilehtml5.com/rss', u'http://www.nadgraphics.com/feed/', u'http://www.niallkennedy.com/blog/index.atom', u'http://www.pannonrex.com/blog/?feed=rss2', u'http://www.phonegap.com/feed/', u'http://www.phpied.com/feed/', u'http://www.pythonware.com/daily/rss.xml', u'http://www.quirksmode.org/blog/atom.xml', u'http://www.reddit.com/r/AppEngine/.rss', u'http://www.reddit.com/r/AppEngine/comments/f4tpf/what_are_the_best_app_engine_packagesprojects/.rss', u'http://www.reddit.com/r/firebird/.rss', u'http://www.reduta.bg/?feed=rss2', u'http://www.robertnyman.com/feed/', u'http://www.sarajchipps.com/rss.xml', u'http://www.scripting.com/rss.xml', u'http://www.shotton.com/wp/feed/', u'http://www.snook.ca/jonathan/index.rdf', u'http://www.stevesouders.com/blog/feed/', u'http://www.techmeme.com/search/rssquery?q=Twingly&wm=false', u'http://www.techmeme.com/search/rssquery?q=techmeme&wm=false', u'http://www.thecoolhunter.net/index2.php?option=com_rss&feed=RSS2.0&no_html=1', u'http://www.thegrifters.org/feed/', u'http://www.trikorni.com/feed/', u'http://www.watchingwebsites.com/feed', u'http://www.wordyard.com/category/code-reads/feed/', u'http://www.wotzwot.com/rssxl.php?pageurl=http://www.samflemming.com/&sf=<\u2026n .post -->&ei= &sd=&ed=&linkno=1&vcode=770459162', u'http://xooglers.blogspot.com/atom.xml', u'http://yovko.net/feed', u'http://zooie.wordpress.com/feed/', u'https://amazonsilk.wordpress.com/feed/', u'https://antiideas.wordpress.com/feed/', u'https://bg.wordpress.org/feed/', u'https://bgmindstorms.wordpress.com/feed/', u'https://blog.mozilla.org/ux/feed/', u'https://blogs.msdn.com/b/b8/rss.aspx', u'https://christogrozev.wordpress.com/feed/', u'https://gun.io/feed/', u'https://hacks.mozilla.org/feed/', u'https://nikcub.appspot.com/feed', u'https://sugarfreenora.wordpress.com/feed/', u'https://voreshkov.posterous.com/rss.xml', u'https://www.facebook.com/feeds/page.php?format=rss20&id=197266283722139']
-        return feeds if allFeeds else feeds[datetime.now().minute / 10::6] ## every 6th feed
-
-        ##return ['http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider', u'http://www.engadget.com/rss.xml', u'http://feeds.paidcontent.org/pcorg']
-        i = -1
-        d = datetime.now()
-        minute = d.minute / 10 ## process every 6th blog every 10 minutes = 1h for all
-        blogToProcess = []
-
-        # cacheKey = 'feed_data_settings___all'
-        # feeds = None 
-        # feeds = memcache.get(cacheKey)
-        # if (feeds is None):
-        #     feeds = FeedDataSettings.query()
-        #     memcache.set(cacheKey, feeds, 1800) ## 1h
-
-        # for f in feeds:
-        #     i = i + 1
-        #     if (i == minute) or (allFeeds):
-        #         i = -1
-        #         blogToProcess.append(f)
-
-        blogToProcess = feeds[0::100]
-
-        self.response.out.write(blogToProcess)
-        return blogToProcess
+        return feeds if allFeeds else feeds[datetime.now().minute / 2::30] ## every 30th feed
 
     def get(self):
-        self.response.out.write('-1')
-        from google.appengine.api import urlfetch
-
-        self.response.out.write('0')
         urls = self.getUrls(self.request.get('allFeeds') == '1')
-        self.response.out.write('1')
-
-        rpcs = []
-        resultUrls = []
-        self.response.out.write('2')
-        
         for url in urls:
-            try:
-                url = urllib.quote_plus(url)
-                url = 'http://' + self.request.host + '/cronfeed/' + url
-                ##rpc = urlfetch.create_rpc(deadline=15.0) 
-                rpc = urlfetch.create_rpc(deadline=15.0) 
-                urlfetch.make_fetch_call(rpc, url)
-                rpcs.append(rpc)
-                resultUrls.append(url)
-            except:
-                logging.debug('url error in cronfeed, skipping url: %s', url)
+            taskqueue.add(queue_name='cron-feeds', url='/cronfeed', params={'url': url})
 
-            self.response.out.write('<br>' + url)
+        logging.debug('tasks added: %s', len(urls))
 
-        for rpc in rpcs:
-            rpc.wait()
-
-        # ##allFeeds = self.request.get('allFeeds')
-        # ##urls = self.get6thFeedEveryTenMinutes(allFeeds == '1')
-        # urls = self.get6thFeedEveryTenMinutes(False)
-        # self.response.out.write(urls)
-
-        # for url in urls:
-        #     taskqueue.add(queue_name='cronFeeds', url='/cronfeed/' + urllib.quote_plus(url))
-
-        # logging.debug('tasks added')
-
-        ##urls = self.get6thFeedEveryTenMinutes(self.request.get('allFeeds') == '1')
-
-        ##rpcs = []
-        ##resultUrls = []
-        
-            # for url in urls:
-            #     url = urllib.quote_plus(url)
-            #     url = 'http://' + self.request.host + '/cronfeed/' + url
-            #     rpc = urlfetch.create_rpc() ##deadline=1.0s
-            #     urlfetch.make_fetch_call(rpc, url)
-            #     rpcs.append(rpc)
-            #     resultUrls.append(url)
-
-            #     ##self.response.out.write('<br>' + url)
-
-            # for rpc in rpcs:
-            #     rpc.wait()
 
 class CronFeedHandler(BasicHandler):
 
-    def get(self, feed):
+    def GetCurrentDateTime(self):
+        now = datetime.now()
+        return now.strftime("%Y-%m-%d %H:%M")
+
+    # def calcNextUpdateInterval(slef, feedWasUpdated):
+    #     if feedWasUpdated:
+    #         interval = feedDataSettings.lastUpdateInterval + (feedDataSettings.lastUpdateInterval / 10)
+    #         feedDataSettings.updatesWithoutNewFeeds = 0
+    #     else:
+    #         interval = feedDataSettings.lastUpdateInterval - (feedDataSettings.lastUpdateInterval / 10)
+    #         feedDataSettings.updatesWithoutNewFeeds = feedDataSettings.updatesWithoutNewFeeds + 1
+
+    #     ## save orignal value for future references
+    #     FeedDataSettings.lastUpdateInterval = interval
+        
+    #     ## one day max
+    #     if interval > 86400:
+    #         interval = 86400
+
+    #     FeedDataSettings.updateMeAfterThisTime = datetime.now() + timedelta(seconds=interval)
+
+    def get(self):
+        feed = self.request.get('url')
+        logging.debug('process cronfeed for: %s', feed)
         self.GetAndParse(feed, self.request.get('debug') == '1')
-        self.response.out.write('ok')
+        self.response.out.write('ok') 
+
+    def post(self):
+        feed = self.request.get('url')
+        self.GetAndParse(feed, self.request.get('debug') == '1')
+        self.response.out.write('ok') 
 
 class FeedHandler(BasicHandler):
+
+    def getNewFeedViaCron(self, feedUrl):
+        feedUrl = 'http://' + self.request.host + '/cronfeed/' + feedUrl
+        result = urllib.urlopen(feedUrl).read()
 
     def getFeedData(self, feedUrl, count):
         keyName = str(hash(feedUrl) * hash(feedUrl)) + '_' + str(count)
@@ -429,6 +412,11 @@ class FeedHandler(BasicHandler):
 
         feed_url = urllib.unquote_plus(feed_url)
         
+        ## new feed
+        newFeed = self.request.get('newFeed')
+        if int(newFeed) == 1:
+            self.getNewFeedViaCron(feed_url)
+
         ## pagination
         count = self.request.get('count')
         if (count is None):
@@ -449,39 +437,17 @@ class FeedHandler(BasicHandler):
 
 class SaveSettingsHandler(BasicHandler):
 
-    # def fetchFeed(self, feedUrl):
-    #     from google.appengine.api import urlfetch
-
-    #     rpcs = []
-    #     try:
-    #         url = urllib.quote_plus(feedUrl)
-    #         url = 'http://' + self.request.host + '/cronfeed/' + url
-    #         rpc = urlfetch.create_rpc(deadline=30.0) 
-    #         urlfetch.make_fetch_call(rpc, url)
-    #         rpcs.append(rpc)
-    #     except:
-    #         logging.debug('url error in fetchFeed, url: %s', url)
-
-
-    #     for rpc in rpcs:
-    #         rpc.wait()
-
-
-    # def fetchFeed(self, feedUrl):
-    #     cronUrl = 'http://' + self.request.host + '/cronfeed/' + urllib.quote_plus(feedUrl)
-    #     logging.debug('crooooooooooooooonurl: %s', cronUrl)
-    #     result = urllib.urlopen(cronUrl)
-
     def addNewFeed(self, feedUrl):
+        newFeed = False
         logging.debug('adding feed: %s', feedUrl)
         fds = FeedDataSettings.get_by_id(feedUrl)
         
         if fds is None:
             fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
+            newFeed = True
         else:
             fds.refCount = fds.refCount + 1
 
-        # self.fetchFeed(feedUrl)
         self.GetAndParse(feedUrl, False)
 
         fds.put()
@@ -498,6 +464,11 @@ class SaveSettingsHandler(BasicHandler):
             else:
                 fds.key.delete()
 
+    def cronNewFeed(self, newFeed):
+        import urllib
+        logging.debug('triggering cronfeed for: ' + 'http://' + self.request.host + '/cronfeed/' + newFeed)
+        urllib.urlopen('http://' + self.request.host + '/cronfeed/' + newFeed).read()
+
     def post(self):
         from google.appengine.api import users
 
@@ -509,7 +480,9 @@ class SaveSettingsHandler(BasicHandler):
 
                 newFeed = self.request.get('newFeed')
                 if newFeed:
-                    self.addNewFeed(newFeed)
+                    if self.addNewFeed(newFeed):
+                        self.cronNewFeed(newFeed)
+
 
                 deleteFeed = self.request.get('deleteFeed')
                 if deleteFeed:
@@ -658,9 +631,86 @@ class GetUserFeedsHandler(BasicHandler):
             if ud is not None:
                 self.response.out.write(ud.private_data)
 
+class GetUserReadDataHandler(BasicHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Cache-Control'] = "private, max-age=0"
+
+        user = users.get_current_user()
+        if user:
+            ud = self.GetAppUserByEmail(user.email())
+            if ud is not None:  
+
+                ## rebuild indexs
+                # allFeedDataSettings = FeedDataSettings.query()
+                # for feed in allFeedDataSettings:
+                #     feed.url = feed.url
+                #     feed.put()
+
+                allUserRead = ReadData.query(ReadData.app_username == ud.app_username).fetch()
+
+                ##data = [{'url': read.feedUrl, 'readCount': read.readCount} for read in allUserRead]
+                ##data = [{read.feedUrl: {read: read.readCount} for read in allUserRead]
+
+                data = {}
+
+                for read in allUserRead:
+                    data[read.feedUrl] = {
+                        'readCount': read.readCount
+                    }
+
+                ##futures = [FeedDataSettings.query(FeedDataSettings.url == read.feedUrl).fetch_async(1) for read in allUserRead]
+                futures = [FeedDataSettings.get_by_id_async(read.feedUrl) for read in allUserRead]
+
+                ## todo:
+                ## get read keys
+                ## read mylti async
+                ##fdss = [ndb.get_multi_async(for read in allUserRead]
+                    # @ndb.tasklet
+                    # def get_cart_plus_offers(acct):
+                    #   cart, offers = yield get_cart_async(acct), get_offers_async(acct)
+                    #   raise ndb.Return((cart, offers))
+                    # https://developers.google.com/appengine/docs/python/ndb/async#using
+
+                ## todo test keys only and then multy async
+                # (70) 2014-05-26 14:15:05.645 "GET /GetUserReadData" 200 real=4603ms api=0ms overhead=201ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
+                # (71) 2014-05-26 14:15:01.630 "GET /GetUserReadData" 200 real=3819ms api=0ms overhead=201ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
+                # (72) 2014-05-26 14:14:57.326 "GET /GetUserReadData" 200 real=4030ms api=0ms overhead=196ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
+                # (73) 2014-05-26 14:14:52.344 "GET /GetUserReadData" 200 real=4707ms api=0ms overhead=134ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
+
+                # (1)  2014-05-26 14:50:43.065 "GET /GetUserReadData" 200 real=737ms api=0ms overhead=2ms (3 RPCs, cost=9520, billed_ops=[DATASTORE_READ:136])
+                # (2)  2014-05-26 14:50:41.645 "GET /GetUserReadData" 200 real=781ms api=0ms overhead=4ms (3 RPCs, cost=9520, billed_ops=[DATASTORE_READ:136])
+                # (3)  2014-05-26 14:50:39.951 "GET /GetUserReadData" 200 real=859ms api=0ms overhead=4ms (3 RPCs, cost=9520, billed_ops=[DATASTORE_READ:136])
+                # (4)  2014-05-26 14:50:38.157 "GET /GetUserReadData" 200 real=856ms api=0ms overhead=5ms (3 RPCs, cost=9520, billed_ops=[DATASTORE_READ:136])                 
+
+                for future in futures:
+                    fds = future.get_result()
+                    if fds is not None:
+                        data[fds.url]['totalCount'] = fds.article_count
+                    else: 
+                        logging.debug('empty future %s', future)
+
+                self.response.out.write(str(json.dumps(data)))
+
+class GetUserArticleCountHandler(BasicHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Cache-Control'] = "private, max-age=0"
+
+        user = users.get_current_user()
+        if user:
+            ud = self.GetAppUserByEmail(user.email())
+            if ud is not None:
+                
+                allUserRead = FeedData.query(ReadData.app_username == ud.app_username).fetch()
+
+                ##data = [{'url': read.feedUrl, 'readCount': read.readCount} for read in allUserRead]
+                data = [{read.feedUrl: read.readCount} for read in allUserRead]
+
+                self.response.out.write(str(json.dumps(data)))
+
+
 class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
-    ##jsonBlogList = '{"username":"' + username + '", "bloglist":{"1":[{"url":"3","title":"3"},{"url":"4","title":"4"}],"2":[{"url":"http://www.engadget.com/rss.xml","title":"Engadget RSS Feed"},{"url":"http://feeds.gawker.com/gizmodo/full","title":"Gizmodo"},{"url":"http://feeds.feedburner.com/TheBoyGeniusReport","title":"BGR"}]}}'
-    ##jsonBlogList = '{"username":"' + username + '", "bloglist":{ ## }'
 
     def addFeedToDataStore(self, feedUrl):
         fds = FeedDataSettings.get_by_id(feedUrl)
@@ -766,7 +816,9 @@ ROUTES = [
     ('/403.html', UnauthorizedHandler),
     ('/404.html', NotFoundHandler),
 
-    ('/GetUserFeeds',GetUserFeedsHandler),
+    ('/GetUserFeeds', GetUserFeedsHandler),
+    ('/GetUserReadData', GetUserReadDataHandler),
+    
     ('/SaveSettings',SaveSettingsHandler),
     ('/MarkArticlesAsRead',MarkArticlesAsRead),
     ('/StarArticle',StarArticle),

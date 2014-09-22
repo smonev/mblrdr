@@ -70,7 +70,7 @@ body {
     margin-left: 20px;
   }
 
-  .fa-file, .fa-spinner {
+  .fa-file, .fa-spinner, .fa-folder {
     /*margin-right: 2%;*/
     min-width: 30px;
     float: left;
@@ -138,6 +138,30 @@ body {
     padding: 0 1px;
     font-size: 0.36em;
     color: white;
+  }
+
+  .folder .unreadCount {
+    float: left;
+    margin-top: -30px;
+    cursor: pointer;
+    width: 31px;
+    line-height: 2em;
+    font-size: 0.33em;
+    text-align: center;
+    color: #fcd114;
+    font-weight: bold;
+  }
+
+  .feed .unreadCount {
+    float: left;
+    margin-top: -29px;
+    cursor: pointer;
+    width: 23px;
+    line-height: 2em;
+    font-size: 0.33em;
+    text-align: center;
+    color: #fcd114;
+    font-weight: bold;
   }
 
   .noUnreadCount {

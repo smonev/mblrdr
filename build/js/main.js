@@ -14,7 +14,7 @@ MblRdr = function() {
             if (folderName === 'root') {
                 for (folder in MblRdr.bloglist) {
                     if (folder !== 'root') {
-                        s = s + '<li class="folder" data-title="' + folder + '"><a><span class="fa fa-folder"></span><span class="folderName">' + folder + '</span></a></li>';
+                        s = s + '<li class="folder" data-title="' + folder + '"><a><span class="fa fa-folder"></span><span class="feedTitle">' + folder + '</span><span class="unreadCount"></span></a></li>';
                     }
                 }
             }
@@ -590,7 +590,10 @@ MblRdr = function() {
             forceGetFromServer = '&v=' + Math.random(); // +1 always get from server if not sure
             MblRdr.lastVersion[settings.feedUrl] = forceGetFromServer;
         }
-
+        if (settings.feedUrl === '') {
+            console.log('empty feed')
+            return
+        }
         $.getJSON('/feed/' + encodeURIComponent(settings.feedUrl) + '?count=' + settings.nextcount + '&newFeed=' + settings.newFeed + forceGetFromServer).done(function(data, status, xhr) {
             var $articlesList = $('.articlesList'), i, readData, starData, unreadCount;
 
@@ -651,10 +654,15 @@ MblRdr = function() {
                 settings.$feedLi.removeClass('displayNone');
             }
 
-            unreadCount = data.article_count - data.read_count;
+            if (typeof MblRdr.readCacheUnreadCount[settings.feedUrl] !== "undefined") {
+                unreadCount = MblRdr.readCacheUnreadCount[settings.feedUrl];
+            } else {
+                unreadCount = data.article_count - data.read_count;
+            }
+
             if (unreadCount > 0) {
                 settings.$feedLi.addClass('unread').removeClass('displayNone').data('unread-count', unreadCount);
-                settings.$feedLi.find('.unreadCount').text(MblRdr.readCacheUnreadCount[settings.feedUrl] ? MblRdr.readCacheUnreadCount[settings.feedUrl] : unreadCount);
+                settings.$feedLi.find('.unreadCount').text(typeof MblRdr.readCacheUnreadCount[settings.feedUrl] !== "undefined" ? MblRdr.readCacheUnreadCount[settings.feedUrl] : unreadCount);
             } else {
                 settings.$feedLi.find('.unreadCount').addClass('displayNone');
                 settings.$feedLi.find('.feedTitle').addClass('noUnreadCount');
@@ -782,6 +790,63 @@ MblRdr = function() {
         //todo persist this
     }
 
+    function getReadData() {
+        var str = '/GetUserReadData';
+        $.getJSON(str, function(data) {
+            var folder, feedUrl;
+            function updateFeedUnreadCount(url, urlData) {
+                var $feedLi = $('ul').find('li.feed[data-url="' + url + '"]'), unreadCount;
+
+                unreadCount = urlData.totalCount - urlData.readCount;
+
+                if (unreadCount === 0) {
+                    $feedLi.removeClass('unread');
+                    $feedLi.find('.unreadCount').addClass('displayNone');
+                    $feedLi.find('.feedTitle').addClass('noUnreadCount');
+                } else {
+                    $feedLi.addClass('unread');
+                    if ($feedLi.find('.feedTitle').hasClass('noUnreadCount')) {
+                        $feedLi.find('.unreadCount').removeClass('displayNone');
+                        $feedLi.find('.feedTitle').removeClass('noUnreadCount');
+                    }
+                }
+
+                $feedLi.find('.unreadCount').text(unreadCount);
+                $feedLi.data('unread-count', unreadCount);
+                MblRdr.readCacheUnreadCount[data.feedUrl] = unreadCount;
+            }
+
+            $.each(Object.keys(data), function(j, url) {
+                updateFeedUnreadCount(url, data[url]); 
+            });
+
+            for (folder in MblRdr.bloglist) {
+                var folderUnreadCount = 0;
+
+                //get all folder feeds
+                for (var i=0; i < MblRdr.bloglist[folder].length; i++) {
+                    feedUrl = MblRdr.bloglist[folder][i].url;
+                    if (typeof data[feedUrl] !== "undefined") {
+                        if (data[feedUrl].totalCount - data[feedUrl].readCount > 0) {
+                            folderUnreadCount = folderUnreadCount + data[feedUrl].totalCount - data[feedUrl].readCount
+                        }
+                    } else {
+                        //console.log('no data for ' + feedUrl);
+                    }
+                }
+                // set folder count
+                $('li.folder[data-title="' + folder + '"]').data('unread', folderUnreadCount);
+                if (folderUnreadCount > 0) {
+                    $('li.folder[data-title="' + folder + '"]').find('.unreadCount').text(folderUnreadCount);
+                }
+                
+                console.log('folder ' + folder + ' unread count: ' + folderUnreadCount)
+            }
+
+        });
+    }
+
+
     return {
         bloglist: 0,
         readCache: {},
@@ -797,12 +862,14 @@ MblRdr = function() {
         folderView: folderView,
         moreLinkEvents: moreLinkEvents,
         pushState: pushState,
-        loadAndRenderFeed: loadAndRenderFeed
+        loadAndRenderFeed: loadAndRenderFeed,
+        getReadData: getReadData
     }
 }();
 
 $(document).ready(function() {
     MblRdr.settings.getSettings();
+    MblRdr.getReadData();
     MblRdr.moreLinkEvents();
 });
 
@@ -813,8 +880,12 @@ $(document).ready(function() {
             MblRdr.loadAndRenderFeed(state.data);
         } else if (typeof state.data.folderName !== "undefined") {
             MblRdr.loadFolderFeeds(state.data.folderName);
+            if (state.data.folderName === 'root') {
+                MblRdr.getReadData();
+            }
         } else {
             MblRdr.loadFolderFeeds('root');
+            MblRdr.getReadData();
         }
     });
 });
