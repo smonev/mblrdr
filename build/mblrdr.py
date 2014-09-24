@@ -354,12 +354,6 @@ class CronFeedHandler(BasicHandler):
 
     #     FeedDataSettings.updateMeAfterThisTime = datetime.now() + timedelta(seconds=interval)
 
-    def get(self):
-        feed = self.request.get('url')
-        logging.debug('process cronfeed for: %s', feed)
-        self.GetAndParse(feed, self.request.get('debug') == '1')
-        self.response.out.write('ok') 
-
     def post(self):
         feed = self.request.get('url')
         self.GetAndParse(feed, self.request.get('debug') == '1')
@@ -824,7 +818,7 @@ ROUTES = [
     ('/StarArticle',StarArticle),
 
     ('/cronfeeds', CronFeedsHandler),
-    ('/cronfeed/(.*)', CronFeedHandler),
+    ('/cronfeed', CronFeedHandler),
     ('/feed/(.*)', FeedHandler),
     
     ('/uploadOPML', UploadOPMLHandler),
