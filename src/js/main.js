@@ -35,12 +35,11 @@ MblRdr = function() {
             // up button
             if (folderName !== 'root') {
                 $(".up").html('<span class="fa fa-long-arrow-left"></span>');
+                $(".headerCaption").text(folderName);
             } else {
                 $(".up").html('<span class="fa fa-home"></span>');
+                $(".headerCaption").html('&nbsp');
             }
-
-            // title
-            $(".headerCaption").html(folderName);
         }
 
         function fetchFolderFeeds(folderName) {
@@ -208,6 +207,15 @@ MblRdr = function() {
     function renderData(feedUrl, feedFolder, $li, nextcount) {
         var entry, $articlesHeader = $('.articlesHeader'), $articlesList = $('.articlesList'), feedTitle;
 
+        function generateTitle(content, wordCount) {
+            // strip html
+            content = content.replace(/<(?:.|\n)*?>/gm, '');
+            // get first n words
+            content = content.split(' ').slice(0,wordCount).join(' ');
+
+            return content;
+        }
+
         function getArticles() {
             var html = '', id, unread, i, star, entryAuthor = '', entryAuthorLine = '', showRead = false, feedNavigation, 
             fontColor = MblRdr.userSettings.nightmode === 2 ? 'rgb(248, 248, 242)': '#444444';
@@ -256,7 +264,10 @@ MblRdr = function() {
                 }
 
                 if (entry.title === "") {
-                    entry.title = Globalize.format(entry.publishedObject, 'MMM d');
+                    //here we go Dave Winer
+                    entry.title = generateTitle(entry.content, 20);
+                    //entry.title = Globalize.format(entry.publishedObject, 'MMM d');
+                    
                 }
 
                 html = html +
@@ -799,6 +810,12 @@ MblRdr = function() {
 
                 unreadCount = urlData.totalCount - urlData.readCount;
 
+                if (unreadCount < 0) {
+                    console.log('unreadCount < 0, url:' + url, urlData);
+                    unreadCount = 0;
+                }
+
+
                 if (unreadCount === 0) {
                     $feedLi.removeClass('unread');
                     $feedLi.find('.unreadCount').addClass('displayNone');
@@ -840,7 +857,7 @@ MblRdr = function() {
                     $('li.folder[data-title="' + folder + '"]').find('.unreadCount').text(folderUnreadCount);
                 }
                 
-                console.log('folder ' + folder + ' unread count: ' + folderUnreadCount)
+                //console.log('folder ' + folder + ' unread count: ' + folderUnreadCount)
             }
 
         });

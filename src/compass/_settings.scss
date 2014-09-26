@@ -164,6 +164,12 @@
         text-decoration: underline;
         width: 34%;
       }
+
+      &.middle {
+        border: 3px solid rgb(230, 230, 230);  
+        border-top: 0;  
+        border-bottom: 0;
+      }
     }
 
     form {

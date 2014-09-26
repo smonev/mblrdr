@@ -127,6 +127,7 @@ body {
 }
 .menu .fa-folder {
   margin-right: 2%;
+  margin-top: 7px;
 }
 .menu .feedTitle {
   /*margin: 0 39px; unreadCount change*/
@@ -809,6 +810,11 @@ body {
   background: #66AA33;
   text-decoration: underline;
   width: 34%;
+}
+.feedSettings .addFeedSetting .inputType.middle {
+  border: 3px solid #e6e6e6;
+  border-top: 0;
+  border-bottom: 0;
 }
 .feedSettings .addFeedSetting form {
   clear: both;

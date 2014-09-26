@@ -215,11 +215,11 @@ MblRdr.settings = function() {
             $this.addClass('selected');
 
             if ($this.data('addtype') === "feed") {
-                $('.feedUrl').attr('placeholder', 'add Feed').text('').removeClass('displayNone');
+                $('.feedUrl').attr('placeholder', 'add feed').text('').removeClass('displayNone');
                 $('.addFeedUrl').removeClass('displayNone');
                 $('.omplImportForm').addClass('displayNone');
             } else if ($this.data('addtype') === "folder") {
-                $('.feedUrl').attr('placeholder', 'add Folder').text('').removeClass('displayNone');
+                $('.feedUrl').attr('placeholder', 'add folder').text('').removeClass('displayNone');
                 $('.addFeedUrl').removeClass('displayNone');
                 $('.omplImportForm').addClass('displayNone');
             } else if ($this.data('addtype') === "opml") {
