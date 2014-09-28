@@ -14,6 +14,7 @@ MblRdr = function() {
             if (folderName === 'root') {
                 for (folder in MblRdr.bloglist) {
                     if (folder !== 'root') {
+                        folder = MblRdr.Utils.htmlEncode(folder);
                         s = s + '<li class="folder" data-title="' + folder + '"><a><span class="fa fa-folder"></span><span class="feedTitle">' + folder + '</span><span class="unreadCount"></span></a></li>';
                     }
                 }
@@ -25,6 +26,10 @@ MblRdr = function() {
                         MblRdr.bloglist[folderName][i].title = MblRdr.bloglist[folderName][i].url;
                     }
                     feedTitle = (typeof MblRdr.bloglist[folderName][i].userTitle !== "undefined" && MblRdr.bloglist[folderName][i].userTitle !== "") ? MblRdr.bloglist[folderName][i].userTitle : MblRdr.bloglist[folderName][i].title;
+
+                    feedTitle = MblRdr.Utils.htmlEncode(feedTitle);
+                    folderName = MblRdr.Utils.htmlEncode(folderName);
+
                     s = s + '<li class="feed displayNone" data-title="' + feedTitle + '" data-cat="' + folderName + '" data-url="' + MblRdr.bloglist[folderName][i].url + '"><a><span class="fa fa-file"></span><span class="feedTitle">' + feedTitle + '</span><span class="unreadCount"></span></a></li>';
                 }
             }
@@ -246,6 +251,8 @@ MblRdr = function() {
                     unread = 'displayNone';
                 }
 
+                entry.author = MblRdr.Utils.htmlEncode(entry.author);
+
                 if (entry.author !== "") {
                     entryAuthor = "<br>" + entry.author;
                     entryAuthorLine = ", " + entry.author;
@@ -269,6 +276,8 @@ MblRdr = function() {
                     //entry.title = Globalize.format(entry.publishedObject, 'MMM d');
                     
                 }
+
+                entry.title = MblRdr.Utils.htmlEncode(entry.title);
 
                 html = html +
                     '<li data-url="' + feedUrl + '" data-id="' + entry.id + '" data-published="' + entry.published + '" class="article ' + unread + '">' +
@@ -317,6 +326,7 @@ MblRdr = function() {
         nextcount = nextcount || 0;
 
         feedTitle = $li.length > 0 ? $li.data('title') : (MblRdr.data.length > 0) ? MblRdr.data[0].feedTitle : '';
+        feedTitle = MblRdr.Utils.htmlEncode(feedTitle);
         $(".headerCaption").html(feedTitle);
         document.title = MblRdr.currentFolderName + ' | ' + feedTitle;
 
@@ -374,6 +384,7 @@ MblRdr = function() {
             function preloadNextTwoArticles() {
                 var $nextArticle = $article.next();
                 if ($nextArticle.length > 0) {
+                    //MblRdr.Utils.htmlEncode() hmm
                     $nextArticle.find('.content').html(MblRdr.data[$article.find('.content').data('id')].content);
                     $nextArticle = $nextArticle.next();
                     if ($nextArticle.length > 0) {
@@ -387,7 +398,6 @@ MblRdr = function() {
             }
 
             MblRdr.currentArticle = $article;
-
             $('.selectedArticle').removeClass('selectedArticle');
             MblRdr.currentArticle.find('.header').addClass('selectedArticle');
 
@@ -419,7 +429,6 @@ MblRdr = function() {
                     $article.addClass('unread');
                     $article.find('.footer').css('display', 'none');
                     $article.find('.content').css('display', 'none').prev().addClass('displayNone').css('display', 'block'); //todo clean this up
-                    $article.find('.content').html();
                 });
 
                 $article.find('.fa.fa-angle-double-right').off('click').on('click', function() {
@@ -471,7 +480,6 @@ MblRdr = function() {
             } else {
                 $article.find('.footer').css('display', 'none');
                 $article.find('.content').css('display', 'none').prev().addClass('displayNone').css('display', 'block'); //todo clean this up
-                $article.find('.content').html();
                 $('.selectedArticle').removeClass('selectedArticle');
             }
 
@@ -773,7 +781,7 @@ MblRdr = function() {
     }
 
     function pushState(appState) {
-        var urlState = '?folderName=root';
+        var urlState = '?folderName=root', stateCaption;
 
         // don't push the folder in the url (privacy)
         // if ((typeof appState.feedUrl !== "undefined") && (typeof appState.folderName !== "undefined")) {
@@ -785,8 +793,8 @@ MblRdr = function() {
         if ((typeof appState.feedUrl !== "undefined") && (typeof appState.folderName !== "undefined")) {
             urlState = '?feedUrl=' + appState.feedUrl;
         }
-
-        History.pushState(appState, appState.folderName ? appState.folderName: 'root', urlState);
+        stateCaption = appState.folderName ? (appState.folderName === 'root' ? 'home':appState.folderName) : 'root';
+        History.pushState(appState, stateCaption, urlState);
     }
 
     function processXhr(caller, xhr) {
@@ -852,6 +860,7 @@ MblRdr = function() {
                     }
                 }
                 // set folder count
+                folder = MblRdr.Utils.htmlEncode(folder);
                 $('li.folder[data-title="' + folder + '"]').data('unread', folderUnreadCount);
                 if (folderUnreadCount > 0) {
                     $('li.folder[data-title="' + folder + '"]').find('.unreadCount').text(folderUnreadCount);

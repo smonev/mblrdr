@@ -20,14 +20,12 @@
   }
 
   .title {
-    width: 82%;
+    margin: 0px 7% 0px 0px !important;
   }
+
 }
 
 @media all and (max-width: 270px) {
-  .title {
-    width: 80%;
-  }
 }
 
 @media all and (max-width: 370px) and (min-width: 1px) {
@@ -44,10 +42,6 @@
 
   .backToMenu span:nth-child(2) {
     display: none;
-  }
-
-  .title {
-    margin-left: 2%;
   }
 
   .leftCaption {

@@ -261,7 +261,7 @@ class BasicHandler(webapp2.RequestHandler):
 
         feedDataSettings.article_count = feedDataSettings.article_count + newItemsCount
 
-        logging.debug('[READCOUNT DEBUG] Increase read count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
+        logging.debug('[READCOUNT DEBUG] Increase article count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
         feedDataSettings.put()
 
 

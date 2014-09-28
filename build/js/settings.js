@@ -87,6 +87,7 @@ MblRdr.settings = function() {
 
         for (folder in MblRdr.bloglist) {
             selected = folder === MblRdr.currentFolderName ? 'selected' : '';
+            folder = MblRdr.Utils.htmlEncode(folder);
             html = html + '<option class="' + selected + '">' + folder + '</option>';
         }
 

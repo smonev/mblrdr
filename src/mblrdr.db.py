@@ -501,6 +501,7 @@ class FeedHandler(BasicHandler):
         
         newFeed = self.request.get('newFeed')
         if int(newFeed) == 1:
+            ## todo use GetAndParse
             self.getNewFeedViaCron(feed_url)
 
         count = self.request.get('count')
