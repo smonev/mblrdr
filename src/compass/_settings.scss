@@ -230,9 +230,17 @@
   }
 
   .settingHeader {
-    height: 30  px;
+    height: 30px;
     border-bottom: 1px solid #5e5e5e;
     width: 100%;
+
+    .fa-check {
+      position: relative;
+      top: -30px;
+      left: 90%;
+      cursor: pointer;
+      display: none;
+    };
   }
 
   .fa-remove-sign {

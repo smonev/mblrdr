@@ -28,9 +28,7 @@ MblRdr = function() {
                     feedTitle = (typeof MblRdr.bloglist[folderName][i].userTitle !== "undefined" && MblRdr.bloglist[folderName][i].userTitle !== "") ? MblRdr.bloglist[folderName][i].userTitle : MblRdr.bloglist[folderName][i].title;
 
                     feedTitle = MblRdr.Utils.htmlEncode(feedTitle);
-                    folderName = MblRdr.Utils.htmlEncode(folderName);
-
-                    s = s + '<li class="feed displayNone" data-title="' + feedTitle + '" data-cat="' + folderName + '" data-url="' + MblRdr.bloglist[folderName][i].url + '"><a><span class="fa fa-file"></span><span class="feedTitle">' + feedTitle + '</span><span class="unreadCount"></span></a></li>';
+                    s = s + '<li class="feed displayNone" data-title="' + feedTitle + '" data-cat="' + MblRdr.Utils.htmlEncode(folderName) + '" data-url="' + MblRdr.bloglist[folderName][i].url + '"><a><span class="fa fa-file"></span><span class="feedTitle">' + feedTitle + '</span><span class="unreadCount"></span></a></li>';
                 }
             }
 
@@ -274,7 +272,6 @@ MblRdr = function() {
                     //here we go Dave Winer
                     entry.title = generateTitle(entry.content, 20);
                     //entry.title = Globalize.format(entry.publishedObject, 'MMM d');
-                    
                 }
 
                 entry.title = MblRdr.Utils.htmlEncode(entry.title);
@@ -296,8 +293,8 @@ MblRdr = function() {
                     '<span class="fa fa-facebook displayNone"></span>' +
                     '<span class="fa fa-google-plus displayNone"></span>' +
                 '<div class="contentSubHeader"> ' +
-                    '<span class="date">' + Globalize.format(entry.publishedObject, 'MMM d') + entryAuthorLine + '</span>' +
-                    '<a href="' + entry.link + '" target="_blank"><span class="fa fa-external-link"></span></a>' +
+                    //'<span class="date">' + Globalize.format(entry.publishedObject, 'MMM d') + entryAuthorLine + '</span>' +
+                    '<a href="' + entry.link + '" target="_blank"><span class="date">' + Globalize.format(entry.publishedObject, 'MMM d') + entryAuthorLine + '</span><span class="fa fa-external-link"></span></a>' +
                     '</div>' +
 
                     '<div class="fontSizeContainer">' +

@@ -374,6 +374,8 @@ body {
   margin-left: 0%;
   font-size: 0.9em;
   margin-bottom: 20px;
+  cursor: pointer;
+  color: #000;
 }
 .articlesList .contentSubHeader .fa-undo, .articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
   color: #66AA33;
@@ -856,9 +858,16 @@ body {
   /*border-radius: 4px;*/
 }
 .feedSettings .settingHeader {
-  height: 30  px;
+  height: 30px;
   border-bottom: 1px solid #5e5e5e;
   width: 100%;
+}
+.feedSettings .settingHeader .fa-check {
+  position: relative;
+  top: -30px;
+  left: 90%;
+  cursor: pointer;
+  display: none;
 }
 .feedSettings .fa-remove-sign {
   color: red;

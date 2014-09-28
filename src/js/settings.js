@@ -291,6 +291,38 @@ MblRdr.settings = function() {
 
     }
 
+    function enableRenameFolder() {
+        var $settingHeader = $('.settingHeader'), $submitButton = $settingHeader.find('.fa-check');
+
+        function renameFolder() {
+            var oldName = $settingHeader.find('.settingsTitle').data('foldertitle'), newName = $settingHeader.find('.settingsTitle').val();
+
+            newName = MblRdr.Utils.htmlEncode(newName);
+
+            MblRdr.bloglist[newName] = MblRdr.bloglist[oldName];
+            delete MblRdr.bloglist[oldName];
+            saveSettings(function() {
+                close();
+                MblRdr.pushState({
+                    folderName: newName
+                });
+            });
+        }
+
+        $submitButton.hide();
+
+        $settingHeader.find('.settingsTitle').off('keypress').on('keypress', function() {
+            //
+            if (!$submitButton.is(':visible')) {
+                $submitButton.show();
+            }
+        });
+
+        $submitButton.off('click').on('click', function() {
+            renameFolder();
+        })
+    }
+
     function enableChangeFolder() {
         //change feed folder
         $('.changeFolder').off('click').on('click', function() {
@@ -447,7 +479,7 @@ MblRdr.settings = function() {
                 $feedSettings.find('.feedUnsubscribe').find('.deleteText').text('unsubscribe');
             } else {
                 show(settingType === 1 ? 'root' : 'folder');
-                $feedSettings.find('.settingsTitle').val(MblRdr.currentFolderName);
+                $feedSettings.find('.settingsTitle').val(MblRdr.currentFolderName).data('foldertitle', MblRdr.currentFolderName);
                 deleteFolderSetting();
                 markReadSettingsFolder();
                 $feedSettings.find('.feedUnsubscribe').find('.deleteText').text('delete folder');
@@ -460,6 +492,7 @@ MblRdr.settings = function() {
 
             enableAddSettings();
             enableChangeFolder();
+            enableRenameFolder();
             
             enableNightmode();
             setNightmodeState();
@@ -604,8 +637,6 @@ MblRdr.settings = function() {
 
     return {
         close: close,
-        //enableFolderSettings: enableFolderSettings,
-        //enableFeedSettings: enableFeedSettings,
         enableSettings: enableSettings,
         saveSettings: saveSettings,
         getSettings: getSettings
