@@ -240,6 +240,13 @@ body {
   white-space: nowrap;
   display: block;
 }
+.articlesList .article .header .title:active {
+  height: 42px;
+  border-color: #66AA33;
+  border-style: solid;
+  border-top-width: 1px;
+  border-left-width: 20px;
+}
 .articlesList .article .header .headerUrl {
   float: right;
   margin-top: -43px;
@@ -508,6 +515,9 @@ body {
 }
 .nightmode .menu .feedTitle {
   color: #dad0b5;
+}
+.nightmode .date {
+  color: #dad0b5 !important;
 }
 .nightmode .menu .menuList > .folder a {
   color: #dad0b5;

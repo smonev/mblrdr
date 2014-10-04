@@ -105,8 +105,8 @@ class BasicHandler(webapp2.RequestHandler):
 
         jsonBlogList = '{"username":"' + username + '", "bloglist":{"1":[{"url":"http://feeds.feedburner.com/TechCrunch","title":"TechCrunch"},{"url":"http://feeds.feedburner.com/ommalik","title":"GigaOM"},{"url":"http://feeds.feedburner.com/readwriteweb","title":"ReadWrite"},{"url":"http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider","title":"SAI"},{"url":"http://feeds.arstechnica.com/arstechnica/index","title":"Ars Technica"},{"url":"http://feeds.paidcontent.org/pcorg","title":"paidContent"}],"2":[{"url":"http://www.engadget.com/rss.xml","title":"Engadget RSS Feed"},{"url":"http://feeds.gawker.com/gizmodo/full","title":"Gizmodo"},{"url":"http://feeds.feedburner.com/TheBoyGeniusReport","title":"BGR"}]}}'
         ud = UserData(app_username = username, id = user.email(), private_data = jsonBlogList, isActive = False)
-        
-        ud.put()
+
+        ud.put(use_cache=False, use_memcache=False) ##!
 
         logging.debug('create first time user: %s', username)
 
@@ -285,7 +285,7 @@ class MainHandler(BasicHandler):
                 return
 
             if ud.isActive == False:
-                logging.debug('user not active: %s', ud)
+                logging.debug('user not active: %s', ud.app_username)
                 html_template = 'html/hello.htm'
                 template_values = {
                     'login_url': users.create_login_url(self.request.uri),
@@ -301,7 +301,6 @@ class MainHandler(BasicHandler):
 
         template = jinja_environment.get_template(html_template)
         self.response.headers['Content-Type'] = 'text/html'
-        
 
         self.response.headers['Content-Security-Policy'] = "script-src 'self'"
         self.response.headers['Content-Security-Policy'] = "style-src 'self'"

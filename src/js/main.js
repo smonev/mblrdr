@@ -207,6 +207,100 @@ MblRdr = function() {
         MblRdr.readCacheUnreadCount[data.feedUrl] = unreadCount;
     }
 
+    function fixImagesWidth($container) {
+        var screenWidth = $('body').innerWidth() * 0.88; //88 because of margins, todo think of sth else here
+        $container.find('img').each(function(i, el) {
+            if ($(el).width() > screenWidth) {
+                $(el).addClass('imgScaled');
+            }
+        });
+    }
+
+    function openArticle($article) {
+        var url, markReadData;
+        $article.find('.footer').css('display', 'block');
+        $article.find('.content').css('display', 'block').prev().removeClass('displayNone').css('display', 'block');
+        $article.find('.content').html(MblRdr.data[$article.find('.content').data('id')].content);
+        fixImagesWidth($article);
+        //fixExternalLinks($article);
+        $article.find('.content *').removeAttr('style');
+        $article.find('img').load(function() {
+            fixImagesWidth($article);
+        });
+
+        $article.find('.contentSubHeader .fa fa-star-o, .contentSubHeader .fa fa-star').off().on('click', function() {
+            $article.find('.star').trigger('click');
+        });
+
+        url = $article.data('url');
+        $article.find('.fa.fa-undo').off('click').on('click', function() {
+            markReadData = {};
+            markReadData[url] = markReadData[url] || [];
+            markReadData[url].push($article.data('id'));
+
+            fireMarkArticlesAsRead(markReadData, true, false, function(data) {
+                updateFeedReadCount(url, data, true, markReadData, false);
+            });
+
+            $article.addClass('unread');
+            $article.find('.footer').css('display', 'none');
+            $article.find('.content').css('display', 'none').prev().addClass('displayNone').css('display', 'block'); //todo clean this up
+        });
+
+        $article.find('.fa.fa-angle-double-right').off('click').on('click', function() {
+            MblRdr.currentArticle = $article;
+            MblRdr.shortcuts.openNextArticle();
+        });
+
+        $article.find('.fa.fa-angle-double-left').off('click').on('click', function() {
+            MblRdr.currentArticle = $article;
+            MblRdr.shortcuts.openPrevArticle();
+        });
+
+        $article.find('.fa.fa-angle-double-up').off('click').on('click', function() {
+            MblRdr.shortcuts.gotoTop()
+        });
+
+        $article.find('.fa.fa-minus').off('click').on('click', function() {
+            MblRdr.currentArticle = $article;
+            MblRdr.shortcuts.zoomContent(-1);
+        });
+
+        $article.find('.fa.fa-plus').off('click').on('click', function() {
+            MblRdr.currentArticle = $article;
+            MblRdr.shortcuts.zoomContent(1);
+        });
+
+        $article.find('.fa.fa-font').off('click').on('click', function() {
+            MblRdr.currentArticle = $article;
+            MblRdr.shortcuts.zoomContent(0);
+        });
+
+        $article.find('.fa.fa-share').off('click').on('click', function() {
+            $article.find('.fa.fa-twitter').removeClass('displayNone');
+            $article.find('.fa.fa-facebook').removeClass('displayNone');
+            $article.find('.fa.fa-google-plus').removeClass('displayNone');
+            //$article.find('.fa.fa-share').addClass('displayNone');
+        });
+
+        // if (Modernizr.touch) {
+        //     MblRdr.shortcuts.initGestureEvents($article);
+        // }
+
+        if ($article.hasClass('unread')) {
+            markReadData = {};
+            markReadData[url] = markReadData[url] || [];
+            markReadData[url].push($article.data('id'));
+
+            fireMarkArticlesAsRead(markReadData, false, false, function(data) {
+                updateFeedReadCount(url, data, false, markReadData, false);
+            });
+
+            $article.removeClass('unread');
+        }
+    }
+
+
     function renderData(feedUrl, feedFolder, $li, nextcount) {
         var entry, $articlesHeader = $('.articlesHeader'), $articlesList = $('.articlesList'), feedTitle;
 
@@ -311,15 +405,6 @@ MblRdr = function() {
             return html;
         }
 
-        function fixImagesWidth($container) {
-            var screenWidth = $('body').innerWidth() * 0.88; //88 because of margins, todo think of sth else here
-            $container.find('img').each(function(i, el) {
-                if ($(el).width() > screenWidth) {
-                    $(el).addClass('imgScaled');
-                }
-            });
-        }
-
         nextcount = nextcount || 0;
 
         feedTitle = $li.length > 0 ? $li.data('title') : (MblRdr.data.length > 0) ? MblRdr.data[0].feedTitle : '';
@@ -376,7 +461,7 @@ MblRdr = function() {
         });
 
         $articlesList.find('a.title').off('click').on('click', function(event) {
-            var $article = $(this).closest('li'), markReadData, url;
+            var $article = $(this).closest('li');
 
             function preloadNextTwoArticles() {
                 var $nextArticle = $article.next();
@@ -390,94 +475,20 @@ MblRdr = function() {
                 }
             }
 
-            function clearStyle($article) {
-                $article.find('.content *').removeAttr('style');
+            function closeArticle() {
+                $article.find('.footer').css('display', 'none');
+                $article.find('.content').css('display', 'none').prev().addClass('displayNone').css('display', 'block'); //todo clean this up
+                $('.selectedArticle').removeClass('selectedArticle');
             }
 
             MblRdr.currentArticle = $article;
             $('.selectedArticle').removeClass('selectedArticle');
-            MblRdr.currentArticle.find('.header').addClass('selectedArticle');
+            $article.find('.header').addClass('selectedArticle');
 
             if ($article.find('.content').css('display') === 'none') {
-                $article.find('.footer').css('display', 'block');
-                $article.find('.content').css('display', 'block').prev().removeClass('displayNone').css('display', 'block');
-                $article.find('.content').html(MblRdr.data[$article.find('.content').data('id')].content);
-                fixImagesWidth($article);
-                //fixExternalLinks($article);
-                clearStyle($article);
-                $article.find('img').load(function() {
-                    fixImagesWidth($article);
-                });
-
-                $article.find('.contentSubHeader .fa fa-star-o, .contentSubHeader .fa fa-star').off().on('click', function() {
-                    $article.find('.star').trigger('click');
-                });
-
-                url = $article.data('url');
-                $article.find('.fa.fa-undo').off('click').on('click', function() {
-                    markReadData = {};
-                    markReadData[url] = markReadData[url] || [];
-                    markReadData[url].push($article.data('id'));
-
-                    fireMarkArticlesAsRead(markReadData, true, false, function(data) {
-                        updateFeedReadCount(url, data, true, markReadData, false);
-                    });
-
-                    $article.addClass('unread');
-                    $article.find('.footer').css('display', 'none');
-                    $article.find('.content').css('display', 'none').prev().addClass('displayNone').css('display', 'block'); //todo clean this up
-                });
-
-                $article.find('.fa.fa-angle-double-right').off('click').on('click', function() {
-                    MblRdr.shortcuts.openNextArticle();
-                });
-
-                $article.find('.fa.fa-angle-double-left').off('click').on('click', function() {
-                    MblRdr.shortcuts.openPrevArticle();
-                });
-
-                $article.find('.fa.fa-angle-double-up').off('click').on('click', function() {
-                    MblRdr.shortcuts.gotoTop()
-                });
-
-                $article.find('.fa.fa-minus').off('click').on('click', function() {
-                    MblRdr.shortcuts.zoomContent(-1);
-                });
-
-                $article.find('.fa.fa-plus').off('click').on('click', function() {
-                    MblRdr.shortcuts.zoomContent(1);
-                });
-
-                $article.find('.fa.fa-font').off('click').on('click', function() {
-                    MblRdr.shortcuts.zoomContent(0);
-                });
-
-                $article.find('.fa.fa-share').off('click').on('click', function() {
-                    $article.find('.fa.fa-twitter').removeClass('displayNone');
-                    $article.find('.fa.fa-facebook').removeClass('displayNone');
-                    $article.find('.fa.fa-google-plus').removeClass('displayNone');
-                    //$article.find('.fa.fa-share').addClass('displayNone');
-                });
-
-                if (Modernizr.touch) {
-                    MblRdr.shortcuts.initGestureEvents($article);
-                }
-
-                if ($article.hasClass('unread')) {
-                    markReadData = {};
-                    markReadData[url] = markReadData[url] || [];
-                    markReadData[url].push($article.data('id'));
-
-                    fireMarkArticlesAsRead(markReadData, false, false, function(data) {
-                        updateFeedReadCount(url, data, false, markReadData, false);
-                    });
-
-                    $article.removeClass('unread');
-                }
+                openArticle($article);
             } else {
-                $article.find('.footer').css('display', 'none');
-                $article.find('.content').css('display', 'none').prev().addClass('displayNone').css('display', 'block'); //todo clean this up
-                $('.selectedArticle').removeClass('selectedArticle');
+                closeArticle();
             }
 
             scrollTo($article.find('.contentHeader').offset().top, 300);
@@ -886,7 +897,8 @@ MblRdr = function() {
         moreLinkEvents: moreLinkEvents,
         pushState: pushState,
         loadAndRenderFeed: loadAndRenderFeed,
-        getReadData: getReadData
+        getReadData: getReadData,
+        openArticle: openArticle
     }
 }();
 

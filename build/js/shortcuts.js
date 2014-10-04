@@ -3,8 +3,36 @@
 MblRdr.shortcuts = function() {
     "use strict";
 
+    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.oRequestAnimationFrame;
+
+    (function() {
+        var lastTime = 0;
+        var vendors = ['ms', 'moz', 'webkit', 'o'];
+        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                       || window[vendors[x]+'CancelRequestAnimationFrame'];
+        }
+     
+        if (!window.requestAnimationFrame)
+            window.requestAnimationFrame = function(callback, element) {
+                var currTime = new Date().getTime();
+                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+                  timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
+            };
+     
+        if (!window.cancelAnimationFrame)
+            window.cancelAnimationFrame = function(id) {
+                clearTimeout(id);
+            };
+    }());
+
     function openNextArticle() {
-        findNextArticle();
+        setCurrentArticle();
         openCurrentArticle();
     }
 
@@ -14,7 +42,7 @@ MblRdr.shortcuts = function() {
         };
     }
 
-    function findNextArticle() {
+    function setCurrentArticle() {
         var nextCanidate;
         if ((typeof MblRdr.currentArticle !== "undefined") && (MblRdr.currentArticle.length > 0)) {
             nextCanidate = MblRdr.currentArticle.nextAll(':visible:first');
@@ -59,36 +87,10 @@ MblRdr.shortcuts = function() {
         } else {
             $('.selectedArticle').removeClass('selectedArticle');
             MblRdr.currentArticle.find('.header').addClass('selectedArticle');
+            MblRdr.openArticle(MblRdr.currentArticle);
         }
 
-        //$('html, body').animate({
-        //    scrollTop: MblRdr.currentArticle.offset().top
-        //}, 300);
-        //MblRdr.scrollTo($(document).scrollTop() - 200, 1300);
         MblRdr.scrollTo(MblRdr.currentArticle.find('.contentHeader').offset().top, 300);
-
-        //$('html, body').animate({
-        //    scrollTop: $(document).scrollTop() - 200
-        //}, 300).animate({
-        //    scrollTop: MblRdr.currentArticle.find('.contentHeader').offset().top
-        //}, 1300);
-
-        // var diff = $(document).scrollTop() > MblRdr.currentArticle.find('.contentHeader').offset().top ? -20: 20;
-        // $('html, body').animate({
-        //     scrollTop: MblRdr.currentArticle.find('.contentHeader').offset().top + diff
-        // }, 300, function() {
-        //     $('html, body').animate({
-        //         scrollTop: MblRdr.currentArticle.find('.contentHeader').offset().top
-        //     }, 300 / 2);
-        // });
-
-        // $('#card').css({
-        //   'transition': 'transform 1s',
-        //   'transform': 'translate3d(687px, 443px, 0px)'
-        // }).on('transitionend', function() {
-        //   deferred.resolve();
-        // });
-
     }
 
     function toggleCurrentArticle() {
@@ -108,15 +110,11 @@ MblRdr.shortcuts = function() {
             MblRdr.currentArticle.find('.header').addClass('selectedArticle');
         }
 
-        //$('html, body').animate({
-        //    scrollTop: MblRdr.currentArticle.offset().top
-        //}, 300);
         MblRdr.scrollTo(MblRdr.currentArticle.offset().top, 100)
-
     }
 
     function moveToNextArticle() {
-        findNextArticle();
+        setCurrentArticle();
         moveToCurrentArticle();
     }
 
@@ -228,38 +226,128 @@ MblRdr.shortcuts = function() {
         MblRdr.scrollTo(0, 300);
     }
 
+    var hammertime;
+
+    function initGestureEvents2() {
+        var options = {
+            prevent_default: false, 
+            dragBlockHorizontal: false,
+            behavior: {
+                userSelect: "text"
+            },
+            velocity: 0.1
+        };
+
+        if (hammertime) {
+            hammertime.destroy();
+        }
+
+        hammertime = new Hammer( document.body );
+        hammertime.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
+        hammertime.add(new Hammer.Pinch());
+
+        hammertime.on('panmove', function(e){
+            MblRdr.currentArticle.css({
+                position: 'relative', 
+                transform: "translate3d("+ Math.round(e.deltaX) + "px, 0, 0)"
+            });
+        });
+
+        hammertime.on('panend', function(e){
+            var article = MblRdr.currentArticle;
+
+            article.css({
+                position: 'relative', 
+                transform: "translate3d(10000, 0, 0)"
+            });
+
+            hammertime.destroy();
+
+            if (e.deltaX > 100) {
+                openNextArticle();
+            } else if (e.deltaX < -100) {
+                openPrevArticle();
+            }
+
+            article.css({
+                position: 'relative', 
+                transform: "translate3d(0, 0, 0)"
+            });
+        });
+    }
+
     function initGestureEvents(el) {
+        alert('wtf');
         var options = {
             prevent_default: false, 
             dragBlockHorizontal: true,
             behavior: {
                 userSelect: "text"
-            }
-        }, hammertime = new Hammer($(el.find(".content"))[0], options);
+            },
+            velocity: 0.1
+        };
 
-        hammertime.on("doubletap swipeleft swiperight pinchin pinchout", function(ev){ 
+
+
+
+        // if ($progress.length === 0) {
+        //     $progress = $('<div id="progress" style="position: fixed; top: 0px; height: 2px;background: red; width: 0%;"/>').insertBefore('.articlesHeader');;
+        // }
+
+        // function step (){
+        //     var div = document.getElementById("progress");
+        //     if (div.style.width != "100%"){
+        //         div.style.width = (parseInt(div.style.width, 10) + 5) + "%";
+        //         requestAnimationFrame(step);
+        //     }
+        // }
+
+        // var pos = 0;
+
+        // function draw() {
+        //     setTimeout(function() {
+        //         if (pos < 100){
+        //             window.requestAnimationFrame(draw);
+        //         } else {
+        //             $progress.css('width', '0px');
+        //             dragging = false;
+        //             pos = 0;
+        //             return;
+        //         }
+
+        //         pos += 1 + pos / 6;
+        //         $progress.css('width', pos + '%');
+
+        //     }, 1000 / 60);
+        // }
+        
+
+        hammertime.on("swipeleft swiperight pinchin pinchout", function(ev){ 
+            var oldCurrentArticle = MblRdr.currentArticle;
+
             MblRdr.currentArticle = el;
 
             if (ev.type === "doubletap") {
                 openCurrentArticle();
                 zoomContent(0);
-                ev.gesture.preventDefault(); //ptevent mobile zoomin/zoomout
+                ev.preventDefault(); //ptevent mobile zoomin/zoomout
             } else if (ev.type === "swipeleft") {
                 openPrevArticle();
             } else if (ev.type === "swiperight") {
                 openNextArticle();
             } else if (ev.type === "pinchin") {
                 zoomContent(-1);
-                ev.gesture.preventDefault();
-                ev.gesture.stopPropagation();
+                ev.preventDefault();
             } else if (ev.type === "pinchout") {
                 zoomContent(1);
-                ev.gesture.preventDefault();
-                ev.gesture.stopPropagation();
+                ev.preventDefault();
             } else {
-                alert(ev.type);
+                console.log(ev.type);
             }
 
+            oldCurrentArticle.css({
+                left: '0px'
+            });
         });
         
         return;
@@ -267,7 +355,7 @@ MblRdr.shortcuts = function() {
 
     return {
         initKeyboardEvents: initKeyboardEvents,
-        initGestureEvents: initGestureEvents,
+        initGestureEvents: initGestureEvents2,
         openNextArticle: openNextArticle,
         openPrevArticle: openPrevArticle,
         zoomContent: zoomContent,
