@@ -103,12 +103,18 @@ class BasicHandler(webapp2.RequestHandler):
     def CreateFirstTimeUser(self, user):
         username = self.CreateUsername(user.email())
 
-        jsonBlogList = '{"username":"' + username + '", "bloglist":{"1":[{"url":"http://feeds.feedburner.com/TechCrunch","title":"TechCrunch"},{"url":"http://feeds.feedburner.com/ommalik","title":"GigaOM"},{"url":"http://feeds.feedburner.com/readwriteweb","title":"ReadWrite"},{"url":"http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider","title":"SAI"},{"url":"http://feeds.arstechnica.com/arstechnica/index","title":"Ars Technica"},{"url":"http://feeds.paidcontent.org/pcorg","title":"paidContent"}],"2":[{"url":"http://www.engadget.com/rss.xml","title":"Engadget RSS Feed"},{"url":"http://feeds.gawker.com/gizmodo/full","title":"Gizmodo"},{"url":"http://feeds.feedburner.com/TheBoyGeniusReport","title":"BGR"}]}}'
-        ud = UserData(app_username = username, id = user.email(), private_data = jsonBlogList, isActive = False)
+        blogs = [{"url":"http://feeds.feedburner.com/TechCrunch","title":"TechCrunch"}, {"url":"http://feeds.feedburner.com/ommalik","title":"GigaOM"}, {"url":"http://feeds.feedburner.com/readwriteweb","title":"ReadWrite"},{"url":"http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider","title":"SAI"},{"url":"http://feeds.arstechnica.com/arstechnica/index","title":"Ars Technica"},{"url":"http://feeds.paidcontent.org/pcorg","title":"paidContent"},{"url":"http://www.engadget.com/rss.xml","title":"Engadget RSS Feed"},{"url":"http://feeds.gawker.com/gizmodo/full","title":"Gizmodo"},{"url":"http://feeds.feedburner.com/TheBoyGeniusReport","title":"BGR"}]
+        jsonBlogList = '{"username":"' + username + '", "bloglist":{"root":[{"url":"http://feeds.feedburner.com/TechCrunch","title":"TechCrunch"}], "1":[{"url":"http://feeds.feedburner.com/ommalik","title":"GigaOM"},{"url":"http://feeds.feedburner.com/readwriteweb","title":"ReadWrite"},{"url":"http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider","title":"SAI"},{"url":"http://feeds.arstechnica.com/arstechnica/index","title":"Ars Technica"},{"url":"http://feeds.paidcontent.org/pcorg","title":"paidContent"}],"2":[{"url":"http://www.engadget.com/rss.xml","title":"Engadget RSS Feed"},{"url":"http://feeds.gawker.com/gizmodo/full","title":"Gizmodo"}, {"url":"http://feeds.feedburner.com/TheBoyGeniusReport","title":"BGR"}]}}'
+        ud = UserData(app_username = username, id = user.email(), private_data = jsonBlogList, isActive = True)
 
-        ud.put(use_cache=False, use_memcache=False) ##!
+        ud.put_async(use_cache=False, use_memcache=False) ##!
 
         logging.debug('create first time user: %s', username)
+
+        for feed in blogs:
+            readDataAttr = 'readData__' + str(feed['url']).translate(None, '.')
+            rd = ReadData(app_username = username, feedUrl = feed['url'], readData = '', readCount = 0, id = readDataAttr)
+            rd.put_async()
 
         return username
 
@@ -142,7 +148,7 @@ class BasicHandler(webapp2.RequestHandler):
         modified = getattr(feedDataSettings, 'new_modified', None)
 
         d = feedparser.parse(feed, etag=etag, modified=modified)
-        logging.debug('parse feed entries: %s', len(d['entries']))
+        logging.debug('parse (%s) entries for %s', len(d['entries']), feed)
         
         items = []
         itemSize = sys.getsizeof(feedDataSettings.private_data)
@@ -267,7 +273,7 @@ class BasicHandler(webapp2.RequestHandler):
 
 
 class MainHandler(BasicHandler):
-    
+    @ndb.toplevel
     def get(self):
         user = users.get_current_user()
 
@@ -819,7 +825,7 @@ ROUTES = [
     ('/cronfeeds', CronFeedsHandler),
     ('/cronfeed', CronFeedHandler),
     ('/feed/(.*)', FeedHandler),
-    
+
     ('/uploadOPML', UploadOPMLHandler),
     ('/redirect', RedirectHandler),
 

@@ -6,6 +6,12 @@
   .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
     right: 1%;
   }
+
+  .feedUnsubscribe {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
 }
 
 @media all and (max-width: 410px) {
@@ -22,7 +28,6 @@
   .title {
     margin: 0px 7% 0px 0px !important;
   }
-
 }
 
 @media all and (max-width: 270px) {

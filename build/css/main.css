@@ -551,7 +551,7 @@ body {
   background: #212324;
   color: #ddd;
 }
-.nightmode .feedSettings .setting .markReadOption, .nightmode .feedSettings .setting .showHideOption, .nightmode .feedSettings .setting .nightmodeOption {
+.nightmode .feedSettings .setting .markReadOption, .nightmode .feedSettings .setting .showHideOption, .nightmode .feedSettings .setting .nightmodeOption, .nightmode .feedSettings .setting .feedUnsubscribe {
   color: #dad0b5;
 }
 .nightmode .feedSettings .settingType {
@@ -619,57 +619,6 @@ body {
   color: green;
 }
 
-@media all and (max-width: 640px) {
-  .articles, .articlesHeader, .menu {
-    margin-right: 1%;
-  }
-
-  .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
-    right: 1%;
-  }
-}
-@media all and (max-width: 410px) {
-  .folderName:active {
-    width: 85% !important;
-  }
-}
-@media all and (max-width: 400px) {
-  .articlesList .article .authorAndDate {
-    display: none;
-  }
-
-  .title {
-    margin: 0px 7% 0px 0px !important;
-  }
-}
-@media all and (max-width: 370px) and (min-width: 1px) {
-  .feedFoldersContainer {
-    display: none;
-  }
-
-  .backToMenu {
-    max-width: 34px;
-    min-width: 34px;
-    text-overflow: ellipsis;
-    margin-left: 10%;
-  }
-
-  .backToMenu span:nth-child(2) {
-    display: none;
-  }
-
-  .leftCaption {
-    display: none;
-  }
-
-  .rightCaption {
-    width: 55%;
-  }
-
-  .showHideOption.second:after {
-    content: "unread" !important;
-  }
-}
 .feedSettings {
   position: relative;
   background-color: white;
@@ -714,7 +663,7 @@ body {
   display: inline-block;
   margin-top: 9%;
 }
-.feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption {
+.feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption, .feedSettings .setting .feedUnsubscribe {
   text-align: center;
   text-decoration: none;
   color: black;
@@ -727,7 +676,10 @@ body {
   margin-top: 1px;
   float: left;
 }
-.feedSettings .setting .showHideOption:hover, .feedSettings .setting .showHideOption.selected, .feedSettings .setting .markReadOption:hover, .feedSettings .setting .markReadOption.selected, .feedSettings .setting .nightmodeOption:hover, .feedSettings .setting .nightmodeOption.selected {
+.feedSettings .setting .showHideOption:hover, .feedSettings .setting .showHideOption.selected,
+.feedSettings .setting .markReadOption:hover, .feedSettings .setting .markReadOption.selected,
+.feedSettings .setting .nightmodeOption:hover, .feedSettings .setting .nightmodeOption.selected,
+.feedSettings .setting .feedUnsubscribe:hover, .feedSettings .setting .feedUnsubscribe.selected {
   background: #66AA33;
   color: white;
   /*border-radius: 5px;*/
@@ -744,22 +696,15 @@ body {
 .feedSettings .setting .nightmodeOption {
   width: 22%;
 }
+.feedSettings .setting .feedUnsubscribe {
+  width: 44%;
+}
 .feedSettings .feedTitleUndo {
   text-decoration: none;
   margin-right: 2%;
   margin-top: 6px;
   float: left;
   margin-left: 1%;
-}
-.feedSettings .feedUnsubscribe {
-  margin-left: 2%;
-  color: black;
-  text-decoration: none;
-  font-size: 1.5em;
-}
-.feedSettings .feedUnsubscribe span:last-child {
-  margin-left: 4px;
-  text-decoration: underline;
 }
 .feedSettings .fa-times {
   color: red;
@@ -826,7 +771,7 @@ body {
 .feedSettings .feedUrl, .feedSettings .folderName {
   float: left;
   width: 92%;
-  margin-left: 3%;
+  margin-left: 4%;
   border: 1px solid #66AA33;
   margin-right: 4%;
   margin-top: -3px;
@@ -895,7 +840,7 @@ body {
   float: left;
   margin-left: 4%;
   margin-top: 5px;
-  width: 90%;
+  width: 92%;
   height: 40px;
   font-size: 2em;
 }
@@ -956,7 +901,7 @@ body {
   width: 92%;
   display: inline-block;
   height: 22px;
-  margin-left: 3%;
+  margin-left: 4%;
   display: block;
 }
 .feedSettings .settingType {
@@ -974,6 +919,12 @@ body {
   margin-left: 1%;
   margin-top: 6%;
   margin-bottom: 2%;
+}
+.feedSettings .deleteFolder .feedUnsubscribe {
+  text-align: left;
+}
+.feedSettings .deleteFolder .fa-times {
+  margin-left: 3%;
 }
 .feedSettings .closeButton {
   margin-top: 4%;
@@ -1002,4 +953,61 @@ body {
   margin-left: 2%;
   position: relative;
   top: 1px;
+}
+
+@media all and (max-width: 640px) {
+  .articles, .articlesHeader, .menu {
+    margin-right: 1%;
+  }
+
+  .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
+    right: 1%;
+  }
+
+  .feedUnsubscribe {
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+@media all and (max-width: 410px) {
+  .folderName:active {
+    width: 85% !important;
+  }
+}
+@media all and (max-width: 400px) {
+  .articlesList .article .authorAndDate {
+    display: none;
+  }
+
+  .title {
+    margin: 0px 7% 0px 0px !important;
+  }
+}
+@media all and (max-width: 370px) and (min-width: 1px) {
+  .feedFoldersContainer {
+    display: none;
+  }
+
+  .backToMenu {
+    max-width: 34px;
+    min-width: 34px;
+    text-overflow: ellipsis;
+    margin-left: 10%;
+  }
+
+  .backToMenu span:nth-child(2) {
+    display: none;
+  }
+
+  .leftCaption {
+    display: none;
+  }
+
+  .rightCaption {
+    width: 55%;
+  }
+
+  .showHideOption.second:after {
+    content: "unread" !important;
+  }
 }
