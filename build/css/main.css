@@ -468,8 +468,12 @@ body {
 .up {
   float: left;
   width: 30px;
-  margin-top: -30px;
+  margin-top: -31px;
   cursor: pointer;
+}
+
+span.fa.fa-long-arrow-left {
+  margin-top: -2px;
 }
 
 .moreLink {

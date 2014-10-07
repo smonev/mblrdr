@@ -283,9 +283,9 @@ MblRdr = function() {
             //$article.find('.fa.fa-share').addClass('displayNone');
         });
 
-        // if (Modernizr.touch) {
-        //     MblRdr.shortcuts.initGestureEvents($article);
-        // }
+        if (Modernizr.touch) {
+             MblRdr.shortcuts.initGestureEvents2($article);
+        }
 
         if ($article.hasClass('unread')) {
             markReadData = {};

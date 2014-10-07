@@ -229,6 +229,42 @@ MblRdr.shortcuts = function() {
     var hammertime;
 
     function initGestureEvents2() {
+
+        function drawLoader() {
+            //setTimeout(function() {
+                if (pos < screenWidth){
+                    window.requestAnimationFrame(drawLoader);
+                } else {
+                    drawLoaderEnd();
+                    loaderDrawn = true;
+                    pos = 0;
+                    if (typeof onLoaderDrawn === "function") {
+                        drawLoaderEnd();
+                        onLoaderDrawn.call();
+                        onLoaderDrawn = null;
+
+                    }
+
+                    return;
+                }
+
+                pos += 1 + pos / 5;
+
+                var moveRight = (-1 * screenWidth) + pos;
+
+                $progress.css({
+                   transform: "translate3d(" + moveRight + "px, 0, 0)"
+                });
+
+            //}, 1000 / 60);
+        }
+
+        function drawLoaderEnd() {
+            $progress.css({
+               transform: "translate3d(" + ((-1) * screenWidth) + "px, 0, 0)"
+            });
+        }
+
         var options = {
             prevent_default: false, 
             dragBlockHorizontal: false,
@@ -236,7 +272,7 @@ MblRdr.shortcuts = function() {
                 userSelect: "text"
             },
             velocity: 0.1
-        };
+        }, $progress = $('#progress'), pos = 0, screenWidth = window.innerWidth;
 
         if (hammertime) {
             hammertime.destroy();
@@ -244,35 +280,51 @@ MblRdr.shortcuts = function() {
 
         hammertime = new Hammer( document.body );
         hammertime.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
-        hammertime.add(new Hammer.Pinch());
+        //hammertime.add(new Hammer.Pinch());
+
+        var showLoader = false, loaderDrawn = false, drawInProgress = false, onLoaderDrawn;
 
         hammertime.on('panmove', function(e){
-            MblRdr.currentArticle.css({
-                position: 'relative', 
-                transform: "translate3d("+ Math.round(e.deltaX) + "px, 0, 0)"
-            });
+            if (showLoader) {
+                if (!drawInProgress) {
+                    drawInProgress = true;
+                    drawLoader($progress);
+                }
+            } else {
+                if ((e.deltaX > 100) || (e.deltaX < -100)) {
+                    showLoader = true;
+                    if ($progress.length === 0) {
+                        $progress = $('<div id="progress" style="position: fixed; z-index: 1; top: 0px; height: 2px;background: red; width:' + screenWidth + 'px;"/>').insertBefore('.articlesHeader');;
+                    }
+                }
+            }
         });
 
         hammertime.on('panend', function(e){
-            var article = MblRdr.currentArticle;
-
-            article.css({
-                position: 'relative', 
-                transform: "translate3d(10000, 0, 0)"
-            });
-
-            hammertime.destroy();
-
-            if (e.deltaX > 100) {
-                openNextArticle();
-            } else if (e.deltaX < -100) {
-                openPrevArticle();
-            }
-
-            article.css({
-                position: 'relative', 
-                transform: "translate3d(0, 0, 0)"
-            });
+                    if (e.deltaX > 100) {
+                        drawLoaderEnd();
+                        openNextArticle();
+                    } else if (e.deltaX < -100) {
+                        drawLoaderEnd();
+                        openPrevArticle();
+                    }
+            // if ((e.deltaX > 100) || (e.deltaX < -100)) {
+            //     if (loaderDrawn) {
+            //         if (e.deltaX > 100) {
+            //             drawLoaderEnd();
+            //             openNextArticle();
+            //         } else if (e.deltaX < -100) {
+            //             drawLoaderEnd();
+            //             openPrevArticle();
+            //         }
+            //     } else {
+            //         if (e.deltaX > 100) {
+            //             onLoaderDrawn = openNextArticle;
+            //         } else if (e.deltaX < -100) {
+            //             onLoaderDrawn = openPrevArticle;
+            //         }
+            //     }
+            // }
         });
     }
 
@@ -286,41 +338,6 @@ MblRdr.shortcuts = function() {
             },
             velocity: 0.1
         };
-
-
-
-
-        // if ($progress.length === 0) {
-        //     $progress = $('<div id="progress" style="position: fixed; top: 0px; height: 2px;background: red; width: 0%;"/>').insertBefore('.articlesHeader');;
-        // }
-
-        // function step (){
-        //     var div = document.getElementById("progress");
-        //     if (div.style.width != "100%"){
-        //         div.style.width = (parseInt(div.style.width, 10) + 5) + "%";
-        //         requestAnimationFrame(step);
-        //     }
-        // }
-
-        // var pos = 0;
-
-        // function draw() {
-        //     setTimeout(function() {
-        //         if (pos < 100){
-        //             window.requestAnimationFrame(draw);
-        //         } else {
-        //             $progress.css('width', '0px');
-        //             dragging = false;
-        //             pos = 0;
-        //             return;
-        //         }
-
-        //         pos += 1 + pos / 6;
-        //         $progress.css('width', pos + '%');
-
-        //     }, 1000 / 60);
-        // }
-        
 
         hammertime.on("swipeleft swiperight pinchin pinchout", function(ev){ 
             var oldCurrentArticle = MblRdr.currentArticle;
@@ -355,7 +372,7 @@ MblRdr.shortcuts = function() {
 
     return {
         initKeyboardEvents: initKeyboardEvents,
-        initGestureEvents: initGestureEvents2,
+        initGestureEvents2: initGestureEvents2,
         openNextArticle: openNextArticle,
         openPrevArticle: openPrevArticle,
         zoomContent: zoomContent,
