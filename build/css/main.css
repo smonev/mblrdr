@@ -301,20 +301,20 @@ body {
 }
 .articlesList .article .contentHeader .fa-undo, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-long-arrow-left, .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .contentHeader .fa-star-o, .articlesList .article .contentHeader .fa-share, .articlesList .article .contentHeader .fa-facebook, .articlesList .article .contentHeader .fa-twitter, .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-undo, .articlesList .article .content .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-long-arrow-left, .articlesList .article .content .fa-angle-double-up, .articlesList .article .content .fa-star-o, .articlesList .article .content .fa-share, .articlesList .article .content .fa-facebook, .articlesList .article .content .fa-twitter, .articlesList .article .content .fa-google-plus {
   position: absolute;
-  right: 2%;
+  right: 1%;
   color: #fcd114;
   cursor: pointer;
-  font-size: 2em;
+  font-size: 3em;
 }
 .articlesList .article .contentHeader .fa-undo, .articlesList .article .content .fa-undo {
   top: 110px;
   font-size: 1.4em;
 }
 .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .content .fa-angle-double-right {
-  top: 10px;
+  top: 0px;
 }
 .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .content .fa-angle-double-left {
-  top: 60px;
+  top: 70px;
 }
 .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .content .fa-angle-double-up {
   top: 110px;
@@ -504,7 +504,7 @@ span.fa.fa-long-arrow-left {
 }
 .fontSizeContainer span {
   color: #fcd114;
-  padding: 0 2%;
+  padding: 0 3%;
   cursor: pointer;
   font-size: 1.2em;
 }

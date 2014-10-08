@@ -277,10 +277,10 @@ body {
 
       .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .fa-long-arrow-left, .fa-angle-double-up, .fa-star-o, .fa-share, .fa-facebook, .fa-twitter, .fa-google-plus {
         position: absolute;
-        right: 2%;
+        right: 0%;
         color: #fcd114;
         cursor: pointer;
-        font-size: 2em;
+        font-size: 3em;
       }
 
       .fa-undo {
@@ -289,11 +289,11 @@ body {
       }
 
       .fa-angle-double-right {
-        top: 10px;
+        top: 0px;
       }
 
       .fa-angle-double-left {
-        top: 60px;
+        top: 70px;
       }
 
       .fa-angle-double-up {
@@ -511,7 +511,7 @@ span.fa.fa-long-arrow-left {
 
   span {
       color: #fcd114;
-      padding: 0 2%;
+      padding: 0 3%;
       cursor: pointer;
       font-size: 1.2em;
   }
