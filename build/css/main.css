@@ -301,7 +301,7 @@ body {
 }
 .articlesList .article .contentHeader .fa-undo, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-long-arrow-left, .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .contentHeader .fa-star-o, .articlesList .article .contentHeader .fa-share, .articlesList .article .contentHeader .fa-facebook, .articlesList .article .contentHeader .fa-twitter, .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-undo, .articlesList .article .content .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-long-arrow-left, .articlesList .article .content .fa-angle-double-up, .articlesList .article .content .fa-star-o, .articlesList .article .content .fa-share, .articlesList .article .content .fa-facebook, .articlesList .article .content .fa-twitter, .articlesList .article .content .fa-google-plus {
   position: absolute;
-  right: 1%;
+  right: 0%;
   color: #fcd114;
   cursor: pointer;
   font-size: 3em;
