@@ -112,15 +112,15 @@ MblRdr.settings = function() {
         $('.menuList').append('<li class="feed" data-title="' + newFeed + '" data-cat="' + selectedCategory + '" data-url="' + newFeed + '"><a href="#"><span class="fa fa-file"></span><span class="feedTitle">' + newFeed + '</span><span class="unreadCount"></span></a></li>');
         $newLi = $('.menuList').find('li:last')
 
-        MblRdr.getFeed({
-            'feedUrl': $newLi.data('url'),
-            'feedFolder': $newLi.data('cat'),
-            '$feedLi': $newLi,
-            'loadMultiple': false,
-            'nextcount': undefined,
-            'shouldRenderData': false,
-            'newFeed': true
-        });
+        // MblRdr.getFeed({
+        //     'feedUrl': $newLi.data('url'),
+        //     'feedFolder': $newLi.data('cat'),
+        //     '$feedLi': $newLi,
+        //     'loadMultiple': false,
+        //     'nextcount': undefined,
+        //     'shouldRenderData': true,
+        //     'newFeed': true
+        // });
 
         close();
 
@@ -128,16 +128,35 @@ MblRdr.settings = function() {
             $('.feedUrl').val("");
         });
 
-        $('.menuList').find('li:last').click(function() {
+        $('.menu').css('display', 'none');
+        $('.articlesHeader').removeClass('displayNone');
+        $('.articlesList').html('').removeClass('displayNone');
+
+        $newLi.click(function() {
+
+            function showSpinner() {
+                //$('.fa fa-spinner').removeClass('displayNone');
+                var html = '<div class="loader" style="width 100%; text-align:center;">Loading ... <i class="fa fa-refresh fa-spin"></i></div>';
+                $('.articlesList').prepend(html);
+            }
+
+            function hideSpinner() {
+                $('.articlesList').find('.loader').remove();
+                //setTimeout(function() {
+                //    $('.fa fa-spinner').addClass('displayNone');
+                //}, 400);
+            }
+
+            showSpinner();
+
             MblRdr.currentFeedName = $(this).data('url');
 
             $('.selected').removeClass('selected');
             $(this).addClass('selected');
-            $('.articlesList').html("");
 
             MblRdr.read = []; MblRdr.star = []; MblRdr.data = [];
 
-            // todo check in 5, 10, 20 seconds
+            // todo check in 5, 10, 20 seconds, promisses
             setTimeout(function() {
                 MblRdr.getFeed({
                     'feedUrl': $newLi.data('url'),
@@ -150,7 +169,7 @@ MblRdr.settings = function() {
                 });
 
                 MblRdr.scrollTo(0);
-            }, 15000);
+            }, 10000);
 
             return false;
         }).trigger('click');

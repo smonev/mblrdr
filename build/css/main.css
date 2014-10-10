@@ -50,7 +50,7 @@ a img {
   border: none;
 }
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
 
@@ -70,7 +70,7 @@ body {
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: none;
   -webkit-highlight: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
   max-width: 800px;
   margin: 0px auto;
 }
@@ -126,7 +126,7 @@ body {
   margin-top: 4px;
 }
 .menu .fa-folder {
-  margin-right: 2%;
+  margin-right: 1%;
   margin-top: 7px;
 }
 .menu .feedTitle {

@@ -599,8 +599,6 @@ MblRdr = function() {
         settings.newFeed = settings.newFeed ? 1 : 0;
         feedView(settings.$feedLi);
 
-        showSpinner();
-
         if (typeof MblRdr.lastVersion[settings.feedUrl] !== "undefined") {
             // if last request was from server with "v=" => use last "v="", so correct cached feed is returned
             forceGetFromServer = MblRdr.lastVersion[settings.feedUrl];
@@ -621,6 +619,11 @@ MblRdr = function() {
             console.log('empty feed')
             return
         }
+
+        if (settings.newFeed === 1) {
+            showSpinner();    
+        }
+
         $.getJSON('/feed/' + encodeURIComponent(settings.feedUrl) + '?count=' + settings.nextcount + '&newFeed=' + settings.newFeed + forceGetFromServer).done(function(data, status, xhr) {
             var $articlesList = $('.articlesList'), i, readData, starData, unreadCount;
 
@@ -730,13 +733,16 @@ MblRdr = function() {
     }
 
     function showSpinner() {
-        $('.fa fa-spinner').removeClass('displayNone');
+        //$('.fa fa-spinner').removeClass('displayNone');
+        var html = '<div class="loader" style="width 100%; text-align:center;">Loading ... <i class="fa fa-refresh fa-spin"></i></div>';
+        $('.articlesList').prepend(html);
     }
 
     function hideSpinner() {
-        setTimeout(function() {
-            $('.fa fa-spinner').addClass('displayNone');
-        }, 400);
+        $('.articlesList').find('.loader').remove();
+        //setTimeout(function() {
+        //    $('.fa fa-spinner').addClass('displayNone');
+        //}, 400);
     }
 
     function moreLinkEvents() {

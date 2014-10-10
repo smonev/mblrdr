@@ -124,7 +124,7 @@ class BasicHandler(webapp2.RequestHandler):
         if fds is None:
             logging.debug('Create FeedDataSettings for: %s', feed)
             fds = FeedDataSettings(url=feed, id=feed, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
-            fds.put()
+            fds.put(use_cache=False, use_memcache=False)
 
             user = users.get_current_user()
             ud = self.GetAppUserByEmail(user.email())
@@ -135,10 +135,11 @@ class BasicHandler(webapp2.RequestHandler):
 
         return fds
 
-    def GetAndParse(self, feed, debug):
+    def GetAndParse(self, feed, debug, feedDataSettings):
         import urllib
         feed = urllib.unquote_plus(feed) ## because of encodeURIComponent
-        feedDataSettings = self.GetFeedDataSettings(feed)
+        if feedDataSettings is None:
+            feedDataSettings = self.GetFeedDataSettings(feed)
         someDataWasAdded = False
 
         if (feedDataSettings is None):
@@ -361,14 +362,10 @@ class CronFeedHandler(BasicHandler):
 
     def post(self):
         feed = self.request.get('url')
-        self.GetAndParse(feed, self.request.get('debug') == '1')
+        self.GetAndParse(feed, self.request.get('debug') == '1', None)
         self.response.out.write('ok') 
 
 class FeedHandler(BasicHandler):
-
-    def getNewFeedViaCron(self, feedUrl):
-        feedUrl = 'http://' + self.request.host + '/cronfeed/' + feedUrl
-        result = urllib.urlopen(feedUrl).read()
 
     def getFeedData(self, feedUrl, count):
         keyName = str(hash(feedUrl) * hash(feedUrl)) + '_' + str(count)
@@ -411,11 +408,6 @@ class FeedHandler(BasicHandler):
 
         feed_url = urllib.unquote_plus(feed_url)
         
-        ## new feed
-        newFeed = self.request.get('newFeed')
-        if int(newFeed) == 1:
-            self.getNewFeedViaCron(feed_url)
-
         ## pagination
         count = self.request.get('count')
         if (count is None):
@@ -444,13 +436,13 @@ class SaveSettingsHandler(BasicHandler):
         if fds is None:
             fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
             newFeed = True
+            fds.put(use_cache=False, use_memcache=False) ##!
+            logging.debug('adding feed, fds is None: %s', feedUrl)
+            self.GetAndParse(feedUrl, False, fds)
         else:
             fds.refCount = fds.refCount + 1
+            fds.put()
 
-        self.GetAndParse(feedUrl, False)
-
-        fds.put()
-    
     def deleteFeed(self, feedUrl):
         logging.debug('deleting feed: %s', feedUrl)
         fds = FeedDataSettings.get_by_id(feedUrl)
@@ -467,6 +459,10 @@ class SaveSettingsHandler(BasicHandler):
         import urllib
         logging.debug('triggering cronfeed for: ' + 'http://' + self.request.host + '/cronfeed/' + newFeed)
         urllib.urlopen('http://' + self.request.host + '/cronfeed/' + newFeed).read()
+
+        feedUrl = 'http://' + self.request.host + '/cronfeed/' + feedUrl
+        result = urllib.urlopen(feedUrl).read()
+
 
     def post(self):
         from google.appengine.api import users
