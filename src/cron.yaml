@@ -1,4 +1,4 @@
 cron:
-- description: parse feeds every 10 minutes
+- description: parse feeds every hour
   url: /cronfeeds
-  schedule: every 2 minutes
+  schedule: every 1 hours

@@ -11,20 +11,20 @@ MblRdr.shortcuts = function() {
         var vendors = ['ms', 'moz', 'webkit', 'o'];
         for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
             window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
                                        || window[vendors[x]+'CancelRequestAnimationFrame'];
         }
-     
+
         if (!window.requestAnimationFrame)
             window.requestAnimationFrame = function(callback, element) {
                 var currTime = new Date().getTime();
                 var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
                   timeToCall);
                 lastTime = currTime + timeToCall;
                 return id;
             };
-     
+
         if (!window.cancelAnimationFrame)
             window.cancelAnimationFrame = function(id) {
                 clearTimeout(id);
@@ -266,7 +266,7 @@ MblRdr.shortcuts = function() {
         }
 
         var options = {
-            prevent_default: false, 
+            prevent_default: false,
             dragBlockHorizontal: false,
             behavior: {
                 userSelect: "text"
@@ -284,30 +284,35 @@ MblRdr.shortcuts = function() {
 
         var showLoader = false, loaderDrawn = false, drawInProgress = false, onLoaderDrawn;
 
-        hammertime.on('panmove', function(e){
-            if (showLoader) {
+        hammertime.on('panmove', function(e) {
+
+           if (showLoader) {
                 if (!drawInProgress) {
                     drawInProgress = true;
                     drawLoader($progress);
                 }
             } else {
-                if ((e.deltaX > 100) || (e.deltaX < -100)) {
-                    showLoader = true;
-                    if ($progress.length === 0) {
-                        $progress = $('<div id="progress" style="position: fixed; z-index: 1; top: 0px; height: 2px;background: red; width:' + screenWidth + 'px;transform: "translate3d("-' + screenWidth + '"px, 0, 0)"/>').insertBefore('.articlesHeader');;
+                if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                    if ((e.deltaX > 100) || (e.deltaX < -100)) {
+                        showLoader = true;
+                        if ($progress.length === 0) {
+                            $progress = $('<div id="progress" style="position: fixed; z-index: 1; top: 0px; height: 2px;background: red; width:' + screenWidth + 'px;transform: "translate3d("-' + screenWidth + '"px, 0, 0)"/>').insertBefore('.articlesHeader');
+                        }
                     }
                 }
             }
         });
 
         hammertime.on('panend', function(e){
-                    if (e.deltaX > 100) {
-                        drawLoaderEnd();
-                        openNextArticle();
-                    } else if (e.deltaX < -100) {
-                        drawLoaderEnd();
-                        openPrevArticle();
-                    }
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                if (e.deltaX > 100) {
+                    drawLoaderEnd();
+                    openNextArticle();
+                } else if (e.deltaX < -100) {
+                    drawLoaderEnd();
+                    openPrevArticle();
+                }
+            }
             // if ((e.deltaX > 100) || (e.deltaX < -100)) {
             //     if (loaderDrawn) {
             //         if (e.deltaX > 100) {
@@ -331,7 +336,7 @@ MblRdr.shortcuts = function() {
     function initGestureEvents(el) {
         alert('wtf');
         var options = {
-            prevent_default: false, 
+            prevent_default: false,
             dragBlockHorizontal: true,
             behavior: {
                 userSelect: "text"
@@ -339,7 +344,7 @@ MblRdr.shortcuts = function() {
             velocity: 0.1
         };
 
-        hammertime.on("swipeleft swiperight pinchin pinchout", function(ev){ 
+        hammertime.on("swipeleft swiperight pinchin pinchout", function(ev){
             var oldCurrentArticle = MblRdr.currentArticle;
 
             MblRdr.currentArticle = el;
@@ -366,7 +371,7 @@ MblRdr.shortcuts = function() {
                 left: '0px'
             });
         });
-        
+
         return;
     }
 
@@ -386,9 +391,9 @@ var overscroll = function(el) {
     var top = el.scrollTop, totalScroll = el.scrollHeight, currentScroll = top + el.offsetHeight;
 
     // If we're at the top or the bottom of the containers
-    // scroll, push up or down one pixel. 
+    // scroll, push up or down one pixel.
     // This prevents the scroll from "passing through" tothe body.
-    
+
     if(top === 0) {
       el.scrollTop = 1
     } else if(currentScroll === totalScroll) {

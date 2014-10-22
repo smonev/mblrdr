@@ -1,9 +1,11 @@
 application: fdjsfkdsfhkjdshfkjsdhfkjsdhkj
-# application: orbrdrfdsflasfkaskjdaskj
-version: 3
+##application: blabla32relwihflkdjfhjdskjd
+module: default
+version: 7
 runtime: python27
-api_version: 1
 threadsafe: true
+instance_class: F1
+api_version: 1
 
 skip_files: |
  ^(.*/)?(
@@ -43,7 +45,7 @@ handlers:
   script: mblrdr.app
 
 builtins:
-- appstats: on
+- appstats: off
 
 libraries:
 - name: jinja2

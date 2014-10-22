@@ -1,0 +1,30 @@
+application: fdjsfkdsfhkjdshfkjsdhfkjsdhkj
+
+dispatch:
+
+  - url: "*/css"
+    module: default
+
+  - url: "*/js"
+    module: default
+
+  - url: "*/fonts"
+    module: default
+
+  - url: "*/images"
+    module: default
+
+  - url: "*/favicon.ico"
+    module: default
+
+  - url: "*/robots.txt"
+    module: default
+
+  - url: "*/cronfeeds"
+    module: cronfeeds
+
+  - url: "*/cronfeed"
+    module: cronfeeds
+
+  - url: "*/xxxx"
+    module: default

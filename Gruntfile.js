@@ -43,6 +43,9 @@ module.exports = function(grunt){
               {
                 expand: true, flatten: true, src: ['src/*.py', 'src/*.yaml'], dest: 'build/', filter: 'isFile'
               },
+              {
+                cwd: 'src/py', expand: true, src: ['**'], dest: 'build/py/'
+              },
              ]
           },        
         },
@@ -83,7 +86,7 @@ module.exports = function(grunt){
     });
  
     // define the default task that executes when we run 'grunt' from inside the project
-    grunt.registerTask('dev', ['clean:all', 'copy', 'gae']);
+    grunt.registerTask('dev', ['clean:all', 'copy']);
     grunt.registerTask('release', ['clean:all', 'copy', 'uglify', 'clean:js', 'concat', 'clean:temp', 'gae']);
     
     grunt.registerTask('default', ['dev']);
