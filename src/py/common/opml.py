@@ -5,7 +5,6 @@ class OutlineElement(object):
         self._root = root
 
     def __getattr__(self, attr):
-
         if attr in self._root.attrib:
             return self._root.attrib[attr]
 

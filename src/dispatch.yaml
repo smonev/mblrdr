@@ -23,8 +23,5 @@ dispatch:
   - url: "*/cronfeeds"
     module: cronfeeds
 
-  - url: "*/cronfeed"
-    module: cronfeeds
-
-  - url: "*/xxxx"
-    module: default
+  # - url: "*/cronfeed"
+  #   module: cronfeeds

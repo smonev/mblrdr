@@ -3,15 +3,12 @@
 
 ## TODO
 ## -1. html escape when parsing and when use inputs sth
-## 0. test the fuck out read and star data cashing
 ## 3. cron user - keep track of feed usasge and decrease/increase cron times
 ## 4. date.js
 ## 5. star folder
 ## 6. move from hash to somelib.hash
 ## 7. star cache
 ## 8. @ndb.transactional , async, dont wait urlopen requests
-## 9. move 'root'
-
 
 #  https://github.com/julien-maurel/jQuery-Storage-API
 #  redirects https://github.com/ether/etherpad-lite/issues/1603
@@ -77,6 +74,51 @@ class MainHandler(webapp2.RequestHandler):
             else:
                 upload_url = blobstore.create_upload_url('/uploadOPML')
                 html_template = 'html/app.htm'
+                template_values = {
+                    'logout':users.create_logout_url(self.request.uri),
+                    'upload_url': upload_url
+                }
+
+                logging.debug('MainHandler for user: %s', ud.app_username)
+
+        template = jinja_environment.get_template(html_template)
+        self.response.headers['Content-Type'] = 'text/html'
+
+        self.response.headers['Content-Security-Policy'] = "script-src 'self'"
+        self.response.headers['Content-Security-Policy'] = "style-src 'self'"
+        self.response.headers['Content-Security-Policy'] = "object-src 'self'"
+
+        self.response.out.write(template.render(template_values))
+
+
+class BlaHandler(webapp2.RequestHandler):
+    @ndb.toplevel
+    def get(self):
+        user = users.get_current_user()
+
+        if not user: ## NOT LOGGED IN
+            html_template = 'html/hello.htm'
+            template_values = {
+                'login_url': users.create_login_url(self.request.uri)
+            }
+        else: ## LOGGED IN
+            ud = GetAppUserByEmail(user.email())
+
+            if ud is None:
+                CreateFirstTimeUser(user)
+                self.redirect('/')
+                return
+
+            if ud.isActive == False:
+                logging.debug('user not active: %s', ud.app_username)
+                html_template = 'html/hello.htm'
+                template_values = {
+                    'login_url': users.create_login_url(self.request.uri),
+                    'waiting': 'Waiting for activation'
+                }
+            else:
+                upload_url = blobstore.create_upload_url('/uploadOPML')
+                html_template = 'html/index.react.html'
                 template_values = {
                     'logout':users.create_logout_url(self.request.uri),
                     'upload_url': upload_url
@@ -552,7 +594,8 @@ ROUTES = [
     ('/uploadOPML', UploadOPMLHandler),
     ('/redirect', RedirectHandler),
 
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/bla', BlaHandler)
 ]
 
 app = webapp2.WSGIApplication(ROUTES, debug=DEBUG)

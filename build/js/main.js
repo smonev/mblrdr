@@ -4,7 +4,7 @@ MblRdr = function() {
     "use strict";
 
     var feedsToRender, totalCost = 0;
-    
+
     function loadFolderFeeds(folderName) {
         var $menuList = $(".menuList"), $articlesList = $(".articlesList");
 
@@ -28,7 +28,7 @@ MblRdr = function() {
                     feedTitle = (typeof MblRdr.bloglist[folderName][i].userTitle !== "undefined" && MblRdr.bloglist[folderName][i].userTitle !== "") ? MblRdr.bloglist[folderName][i].userTitle : MblRdr.bloglist[folderName][i].title;
 
                     feedTitle = MblRdr.Utils.htmlEncode(feedTitle);
-                    s = s + '<li class="feed displayNone" data-title="' + feedTitle + '" data-cat="' + MblRdr.Utils.htmlEncode(folderName) + '" data-url="' + MblRdr.bloglist[folderName][i].url + '"><a><span class="fa fa-file"></span><span class="feedTitle">' + feedTitle + '</span><span class="unreadCount"></span></a></li>';
+                    s = s + '<li class="feed displayNone" data-title="' + feedTitle + '" data-cat="' + MblRdr.Utils.htmlEncode(folderName) + '" data-url="' + MblRdr.bloglist[folderName][i].url + '"><a><span class="unreadHandle"></span><span class="fa fa-file"></span><span class="feedTitle">' + feedTitle + '</span><span class="unreadCount"></span></a></li>';
                 }
             }
 
@@ -47,7 +47,7 @@ MblRdr = function() {
 
         function fetchFolderFeeds(folderName) {
             var i;
-            
+
             MblRdr.read = []; MblRdr.star = []; MblRdr.data = [];
             // promisses, async.js, sth else, when time (or not ?)
 
@@ -314,7 +314,7 @@ MblRdr = function() {
         }
 
         function getArticles() {
-            var html = '', id, unread, i, star, entryAuthor = '', entryAuthorLine = '', showRead = false, feedNavigation, 
+            var html = '', id, unread, i, star, entryAuthor = '', entryAuthorLine = '', showRead = false, feedNavigation,
             fontColor = MblRdr.userSettings.nightmode === 2 ? 'rgb(248, 248, 242)': '#444444';
 
             if (shouldShowFeedArticles(MblRdr.currentFolderName, MblRdr.currentFeedName)) {
@@ -368,17 +368,22 @@ MblRdr = function() {
                     //entry.title = Globalize.format(entry.publishedObject, 'MMM d');
                 }
 
+                if (entry.title === "") {
+                    entry.title = Globalize.format(entry.publishedObject, 'MMM d');
+                }
+
                 entry.title = MblRdr.Utils.htmlEncode(entry.title);
 
                 html = html +
                     '<li data-url="' + feedUrl + '" data-id="' + entry.id + '" data-published="' + entry.published + '" class="article ' + unread + '">' +
                     '<section class="header">' +
+                    '<span class="unreadHandle"></span>' +
                     '<a class="star"><span class="' + star + '"></span></a>' +
                     '<a href="' + entry.link + '" class="title">' + entry.title + '</a>' +
                     '<a href="' + entry.link + '" target="_blank" class="headerUrl"><span class="fa fa-external-link"></span><span class="authorAndDate">' + Globalize.format(entry.publishedObject, 'MMM d') + entryAuthor + '</span></a>' +
                     '<section class="contentHeader displayNone">' +
                     '<span class="title"> ' + entry.title + '</span> ' +
-                //'<span class="fa fa-undo"></span>' + 
+                //'<span class="fa fa-undo"></span>' +
                 '<span class="fa fa-angle-double-right"></span>' +
                     '<span class="fa fa-angle-double-left"></span>' +
                     '<span class="fa fa-angle-double-up displayNone"></span>' +
@@ -621,7 +626,7 @@ MblRdr = function() {
         }
 
         if (settings.newFeed === 1) {
-            showSpinner();    
+            showSpinner();
         }
 
         $.getJSON('/feed/' + encodeURIComponent(settings.feedUrl) + '?count=' + settings.nextcount + '&newFeed=' + settings.newFeed + forceGetFromServer).done(function(data, status, xhr) {
@@ -856,7 +861,7 @@ MblRdr = function() {
             }
 
             $.each(Object.keys(data), function(j, url) {
-                updateFeedUnreadCount(url, data[url]); 
+                updateFeedUnreadCount(url, data[url]);
             });
 
             for (folder in MblRdr.bloglist) {
@@ -879,7 +884,7 @@ MblRdr = function() {
                 if (folderUnreadCount > 0) {
                     $('li.folder[data-title="' + folder + '"]').find('.unreadCount').text(folderUnreadCount);
                 }
-                
+
                 //console.log('folder ' + folder + ' unread count: ' + folderUnreadCount)
             }
 

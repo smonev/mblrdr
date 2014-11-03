@@ -1,4 +1,8 @@
+application: fdjsfkdsfhkjdshfkjsdhfkjsdhkj
+
 cron:
 - description: parse feeds every hour
   url: /cronfeeds
   schedule: every 1 hours
+
+##queues.yaml, cron.yaml and cronfeeds.py are related.

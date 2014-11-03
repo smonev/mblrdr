@@ -3,34 +3,6 @@
 MblRdr.shortcuts = function() {
     "use strict";
 
-    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                              window.webkitRequestAnimationFrame || window.oRequestAnimationFrame;
-
-    (function() {
-        var lastTime = 0;
-        var vendors = ['ms', 'moz', 'webkit', 'o'];
-        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-                                       || window[vendors[x]+'CancelRequestAnimationFrame'];
-        }
-
-        if (!window.requestAnimationFrame)
-            window.requestAnimationFrame = function(callback, element) {
-                var currTime = new Date().getTime();
-                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-                  timeToCall);
-                lastTime = currTime + timeToCall;
-                return id;
-            };
-
-        if (!window.cancelAnimationFrame)
-            window.cancelAnimationFrame = function(id) {
-                clearTimeout(id);
-            };
-    }());
-
     function openNextArticle() {
         setCurrentArticle();
         openCurrentArticle();
@@ -229,50 +201,28 @@ MblRdr.shortcuts = function() {
     var hammertime;
 
     function initGestureEvents2() {
+        var $progress = $('#progress'), pos = 0, screenWidth = window.innerWidth;
 
         function drawLoader() {
-            //setTimeout(function() {
+            var moveRight;
+            setTimeout(function() {
                 if (pos < screenWidth){
                     window.requestAnimationFrame(drawLoader);
                 } else {
-                    drawLoaderEnd();
-                    loaderDrawn = true;
                     pos = 0;
-                    if (typeof onLoaderDrawn === "function") {
-                        drawLoaderEnd();
-                        onLoaderDrawn.call();
-                        onLoaderDrawn = null;
-
-                    }
-
+                    $progress.css({
+                       transform: "translate3d(" + ((-1) * screenWidth) + "px, 0, 0)"
+                    });
                     return;
                 }
 
                 pos += 1 + pos / 5;
-
-                var moveRight = (-1 * screenWidth) + pos;
-
+                moveRight = (-1 * screenWidth) + pos;
                 $progress.css({
                    transform: "translate3d(" + moveRight + "px, 0, 0)"
                 });
-
-            //}, 1000 / 60);
+            }, 500 / 60);
         }
-
-        function drawLoaderEnd() {
-            $progress.css({
-               transform: "translate3d(" + ((-1) * screenWidth) + "px, 0, 0)"
-            });
-        }
-
-        var options = {
-            prevent_default: false,
-            dragBlockHorizontal: false,
-            behavior: {
-                userSelect: "text"
-            },
-            velocity: 0.1
-        }, $progress = $('#progress'), pos = 0, screenWidth = window.innerWidth;
 
         if (hammertime) {
             hammertime.destroy();
@@ -280,99 +230,20 @@ MblRdr.shortcuts = function() {
 
         hammertime = new Hammer( document.body );
         hammertime.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
-        //hammertime.add(new Hammer.Pinch());
-
-        var showLoader = false, loaderDrawn = false, drawInProgress = false, onLoaderDrawn;
-
-        hammertime.on('panmove', function(e) {
-
-           if (showLoader) {
-                if (!drawInProgress) {
-                    drawInProgress = true;
-                    drawLoader($progress);
-                }
-            } else {
-                if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-                    if ((e.deltaX > 100) || (e.deltaX < -100)) {
-                        showLoader = true;
-                        if ($progress.length === 0) {
-                            $progress = $('<div id="progress" style="position: fixed; z-index: 1; top: 0px; height: 2px;background: red; width:' + screenWidth + 'px;transform: "translate3d("-' + screenWidth + '"px, 0, 0)"/>').insertBefore('.articlesHeader');
-                        }
-                    }
-                }
-            }
-        });
-
-        hammertime.on('panend', function(e){
+        hammertime.on('panend', function(e) {
             if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+                if ($progress.length === 0) {
+                    $progress = $('<div id="progress" style="position: fixed; z-index: 1; top: 0px; height: 2px;background: red; width:' + screenWidth + 'px;transform: "translate3d("-' + screenWidth + '"px, 0, 0)"/>').insertBefore('body');
+                }
+                drawLoader($progress);
+
                 if (e.deltaX > 100) {
-                    drawLoaderEnd();
                     openNextArticle();
                 } else if (e.deltaX < -100) {
-                    drawLoaderEnd();
                     openPrevArticle();
                 }
             }
-            // if ((e.deltaX > 100) || (e.deltaX < -100)) {
-            //     if (loaderDrawn) {
-            //         if (e.deltaX > 100) {
-            //             drawLoaderEnd();
-            //             openNextArticle();
-            //         } else if (e.deltaX < -100) {
-            //             drawLoaderEnd();
-            //             openPrevArticle();
-            //         }
-            //     } else {
-            //         if (e.deltaX > 100) {
-            //             onLoaderDrawn = openNextArticle;
-            //         } else if (e.deltaX < -100) {
-            //             onLoaderDrawn = openPrevArticle;
-            //         }
-            //     }
-            // }
         });
-    }
-
-    function initGestureEvents(el) {
-        alert('wtf');
-        var options = {
-            prevent_default: false,
-            dragBlockHorizontal: true,
-            behavior: {
-                userSelect: "text"
-            },
-            velocity: 0.1
-        };
-
-        hammertime.on("swipeleft swiperight pinchin pinchout", function(ev){
-            var oldCurrentArticle = MblRdr.currentArticle;
-
-            MblRdr.currentArticle = el;
-
-            if (ev.type === "doubletap") {
-                openCurrentArticle();
-                zoomContent(0);
-                ev.preventDefault(); //ptevent mobile zoomin/zoomout
-            } else if (ev.type === "swipeleft") {
-                openPrevArticle();
-            } else if (ev.type === "swiperight") {
-                openNextArticle();
-            } else if (ev.type === "pinchin") {
-                zoomContent(-1);
-                ev.preventDefault();
-            } else if (ev.type === "pinchout") {
-                zoomContent(1);
-                ev.preventDefault();
-            } else {
-                console.log(ev.type);
-            }
-
-            oldCurrentArticle.css({
-                left: '0px'
-            });
-        });
-
-        return;
     }
 
     return {
@@ -386,13 +257,11 @@ MblRdr.shortcuts = function() {
 }();
 
 
+//todo move these out of here
+// optimizations
 var overscroll = function(el) {
   el.addEventListener('touchstart', function() {
     var top = el.scrollTop, totalScroll = el.scrollHeight, currentScroll = top + el.offsetHeight;
-
-    // If we're at the top or the bottom of the containers
-    // scroll, push up or down one pixel.
-    // This prevents the scroll from "passing through" tothe body.
 
     if(top === 0) {
       el.scrollTop = 1
@@ -402,8 +271,6 @@ var overscroll = function(el) {
   })
 
   el.addEventListener('touchmove', function(evt) {
-    //if the content is actually scrollable, i.e. the content is long enough
-    //that scrolling can occur
     if(el.offsetHeight < el.scrollHeight)
       evt._isScroller = true
   })
@@ -412,10 +279,37 @@ var overscroll = function(el) {
 overscroll(document.querySelector('body'));
 
 document.body.addEventListener('touchmove', function(evt) {
-  //In this case, the default behavior is scrolling the body, which
-  //would result in an overflow.  Since we don't want that, we preventDefault.
   if(!evt._isScroller) {
     evt.preventDefault();
-    alert('no overflow for you');
   }
 })
+
+
+//polyfills
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                          window.webkitRequestAnimationFrame || window.oRequestAnimationFrame;
+
+(function() {
+    var lastTime = 0;
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+
+    if (!window.requestAnimationFrame)
+        window.requestAnimationFrame = function(callback, element) {
+            var currTime = new Date().getTime();
+            var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+              timeToCall);
+            lastTime = currTime + timeToCall;
+            return id;
+        };
+
+    if (!window.cancelAnimationFrame)
+        window.cancelAnimationFrame = function(id) {
+            clearTimeout(id);
+        };
+}());

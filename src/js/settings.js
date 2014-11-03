@@ -469,7 +469,7 @@ MblRdr.settings = function() {
                         $('.articlesList').find('.article.unread').removeClass('unread');
                     }
 
-                    // give the server some time between requests 
+                    // give the server some time between requests
                     (function(el) {
                         setTimeout(function() {
                             $(el).find('.fa.fa-file').removeClass('fa-file').addClass('fa-spinner fa-spin');
@@ -512,7 +512,7 @@ MblRdr.settings = function() {
             enableAddSettings();
             enableChangeFolder();
             enableRenameFolder();
-            
+
             enableNightmode();
             setNightmodeState();
 
@@ -588,9 +588,9 @@ MblRdr.settings = function() {
         $.getJSON(str, function(data) {
             function getURLParameter(name) {
                 return decodeURI(
-                    //black box starts here 
+                    //black box starts here
                     (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
-                    //black box ends here 
+                    //black box ends here
                 );
             }
 
@@ -604,7 +604,7 @@ MblRdr.settings = function() {
                 MblRdr.userSettings.nightmode = 1;
             }
 
-            
+
 
             var folderName = getURLParameter('folderName'),
             feedUrl = getURLParameter('feedUrl'),

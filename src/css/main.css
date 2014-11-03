@@ -155,22 +155,6 @@ body {
   border-top-width: 1px;
   border-left-width: 20px;
 }
-.menu .oldUnreadCount {
-  float: right;
-  margin-top: -36px;
-  cursor: pointer;
-  min-width: 25px;
-  max-width: 25px;
-  font-size: 0.5em;
-  color: #737373;
-  height: 30px;
-  width: 25px;
-  background: #FAFAB0;
-  line-height: 2em;
-  text-align: right;
-  font-weight: normal;
-  padding: 0 2px;
-}
 .menu .unreadCount {
   float: left;
   margin-top: -29px;
@@ -239,6 +223,7 @@ body {
   overflow: hidden;
   white-space: nowrap;
   display: block;
+  text-decoration: none;
 }
 .articlesList .article .header .title:active {
   height: 42px;
@@ -509,6 +494,19 @@ span.fa.fa-long-arrow-left {
   font-size: 1.2em;
 }
 
+span.unreadHand2le {
+  float: left;
+  width: 1px;
+  height: 1em;
+  margin-top: 7px;
+  margin-right: 10px;
+  margin-left: -1%;
+}
+
+.unread span.unr2eadHandle {
+  background: red;
+}
+
 .nightmode {
   /*background: black;*/
   /*color: #dad0b5;*/
@@ -579,7 +577,6 @@ span.fa.fa-long-arrow-left {
 }
 .nightmode .unread .title {
   font-weight: bold;
-  text-decoration: underline !important;
 }
 .nightmode .articlesList .article .contentHeader, .nightmode .articlesList .article .content {
   color: #dad0b5;

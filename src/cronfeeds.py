@@ -20,7 +20,7 @@ class CronFeedsHandler(webapp2.RequestHandler):
             memcache.set(cacheKey, feeds, 3600) ## 1h
             logging.debug('adding allFeedDataSettings to cache. Count: %s', len(feeds))
 
-        ##return feeds if allFeeds else feeds[datetime.now().minute / 2::30] ## every 30th feed
+        ##return feeds if allFeeds else feeds[datetime.now().minute / 1::60] ## every 20th feed
         ##return feeds if allFeeds else feeds[datetime.now().minute / 30::2] ## every 2nd feed
         return feeds
 

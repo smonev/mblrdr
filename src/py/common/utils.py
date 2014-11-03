@@ -52,7 +52,7 @@ def GetCurrentDateTime():
 
 def GetFeedDataSettings(feed):
     fds = FeedDataSettings.get_by_id(feed)
-    
+
     if fds is None:
         logging.debug('Create FeedDataSettings for: %s', feed)
         fds = FeedDataSettings(url=feed, id=feed, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
@@ -108,3 +108,13 @@ def AddSomeData(d, feed, items, feedDataSettings, createNew):
 
     logging.debug('[READCOUNT DEBUG] Increase article count of %s to %s, createNew: %s', feed, feedDataSettings.article_count, createNew)
     feedDataSettings.put()
+
+## add timeout support for feedparser
+# old_fetch = urlfetch.fetch
+# def new_fetch(url, payload=None, method=GET, headers={},
+#           allow_truncated=False, follow_redirects=True,
+#           deadline=10.0, *args, **kwargs):
+#   return old_fetch(url, payload, method, headers, allow_truncated,
+#                    follow_redirects, deadline, *args, **kwargs)
+# urlfetch.fetch = new_fetch
+# http://stackoverflow.com/questions/3338853/how-to-declare-a-timeout-using-urllib2-on-google-app-engine

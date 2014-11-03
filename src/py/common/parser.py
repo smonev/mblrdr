@@ -1,6 +1,7 @@
 import os, sys
 import urllib
 import logging
+from datetime import datetime
 import json
 
 from py.ext import feedparser
@@ -9,6 +10,7 @@ from py.common.utils import *
 
 
 def GetAndParse(feed, debug, feedDataSettings):
+    a1 = datetime.now()
     feed = urllib.unquote_plus(feed) ## because of encodeURIComponent
     if feedDataSettings is None:
         feedDataSettings = GetFeedDataSettings(feed)
@@ -20,8 +22,13 @@ def GetAndParse(feed, debug, feedDataSettings):
     etag = getattr(feedDataSettings, 'new_etag', None)
     modified = getattr(feedDataSettings, 'new_modified', None)
 
+    a = datetime.now()
     d = feedparser.parse(feed, etag=etag, modified=modified)
+    b = datetime.now()
+    c = b - a;
     logging.debug('parse (%s) entries for %s', len(d['entries']), feed)
+    logging.debug('parsing took %s seconds', c.seconds)
+
 
     items = []
     itemSize = sys.getsizeof(feedDataSettings.private_data)
@@ -97,6 +104,10 @@ def GetAndParse(feed, debug, feedDataSettings):
     if len(items) > 0:
         AddSomeData(d, feed, items, feedDataSettings, False)
         someDataWasAdded = True
+
+    b1 = datetime.now()
+    c1 = b1 - a1
+    logging.debug('GetAndParse took %s seconds', c1.seconds)
 
     # if not someDataWasAdded:
     #     self.calcNextUpdateInterval(False)

@@ -1,14 +1,10 @@
 application: fdjsfkdsfhkjdshfkjsdhfkjsdhkj
-##application: blabla32relwihflkdjfhjdskjd
 module: cronfeeds
 version: 7
 runtime: python27
-threadsafe: false
+threadsafe: true
 instance_class: F1
 api_version: 1
-# basic_scaling:
-#   max_instances: 1
-#   idle_timeout: 10m ## i.e never
 
 skip_files: |
  ^(.*/)?(
