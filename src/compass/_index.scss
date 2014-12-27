@@ -231,7 +231,7 @@ body {
     }
 
     .contentHeader, .content {
-      display: none;
+      //display: none;
       padding-top: 7px;
       padding-bottom: 7px;
       font-size: 0.5em;
@@ -262,6 +262,11 @@ body {
       .imgScaled {
         width: 100% !important;
         height: auto  !important;
+      }
+
+      img {
+          max-width: 100%;
+          height: auto;
       }
 
       .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .fa-long-arrow-left, .fa-angle-double-up, .fa-star-o, .fa-share, .fa-facebook, .fa-twitter, .fa-google-plus {
@@ -480,6 +485,19 @@ span.fa.fa-long-arrow-left {
   .fa-long-arrow-down {
     color: #737373;
   }
+}
+
+.moreLink2 {
+  display: block;
+  font-size: 1.5em;
+  border: 2px solid #66AA33;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 44%;
+  text-align: center;
+  margin: 0px auto;
+  margin-top: 20px;
+  cursor: pointer;
 }
 
 .folder a:active, .feedTitle:active, .header .title:active {

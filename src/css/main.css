@@ -255,7 +255,6 @@ body {
   text-align: right;
 }
 .articlesList .article .contentHeader, .articlesList .article .content {
-  display: none;
   padding-top: 7px;
   padding-bottom: 7px;
   font-size: 0.5em;
@@ -283,6 +282,10 @@ body {
 .articlesList .article .contentHeader .imgScaled, .articlesList .article .content .imgScaled {
   width: 100% !important;
   height: auto  !important;
+}
+.articlesList .article .contentHeader img, .articlesList .article .content img {
+  max-width: 100%;
+  height: auto;
 }
 .articlesList .article .contentHeader .fa-undo, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-long-arrow-left, .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .contentHeader .fa-star-o, .articlesList .article .contentHeader .fa-share, .articlesList .article .contentHeader .fa-facebook, .articlesList .article .contentHeader .fa-twitter, .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-undo, .articlesList .article .content .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-long-arrow-left, .articlesList .article .content .fa-angle-double-up, .articlesList .article .content .fa-star-o, .articlesList .article .content .fa-share, .articlesList .article .content .fa-facebook, .articlesList .article .content .fa-twitter, .articlesList .article .content .fa-google-plus {
   position: absolute;
@@ -469,6 +472,19 @@ span.fa.fa-long-arrow-left {
 }
 .moreLink .fa-long-arrow-down {
   color: #737373;
+}
+
+.moreLink2 {
+  display: block;
+  font-size: 1.5em;
+  border: 2px solid #66AA33;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 44%;
+  text-align: center;
+  margin: 0px auto;
+  margin-top: 20px;
+  cursor: pointer;
 }
 
 .folder a:active, .feedTitle:active, .header .title:active {
