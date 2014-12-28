@@ -93,17 +93,16 @@ body {
 .menu .menuList .feed, .menu .menuList .folder {
   border-top: 1px solid #e8e8e8;
   text-align: left;
-  height: 40px;
 }
 .menu .menuList .feed:last-child, .menu .menuList .folder:last-child {
   border-bottom: 1px solid #e8e8e8;
 }
 .menu .menuList > .feed, .menu .menuList > .folder {
   white-space: pre;
-  margin-top: 2px;
-  margin-bottom: 2px;
   line-height: 1.4em;
   font-size: 2em;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 .menu .menuList > .feed:first-child, .menu .menuList > .folder:first-child {
   margin-top: 0px;
@@ -124,10 +123,11 @@ body {
   float: left;
   width: 30px;
   margin-top: 4px;
+  font-size: 1.2em;
 }
 .menu .fa-folder {
-  margin-right: 1%;
-  margin-top: 7px;
+  margin-right: 3%;
+  margin-top: 4px;
 }
 .menu .feedTitle {
   /*margin: 0 39px; unreadCount change*/
@@ -155,25 +155,16 @@ body {
   border-top-width: 1px;
   border-left-width: 20px;
 }
-.menu .unreadCount {
-  float: left;
-  margin-top: -29px;
-  cursor: pointer;
-  width: 2em;
-  line-height: 2em;
-  padding: 0 1px;
-  font-size: 0.36em;
-  color: white;
-}
 .menu .folder .unreadCount {
   float: left;
-  margin-top: -30px;
+  margin-top: -32px;
   cursor: pointer;
   width: 31px;
   line-height: 2em;
-  font-size: 0.33em;
+  font-size: 0.46em;
   text-align: center;
   color: #fcd114;
+  color: #160000;
   font-weight: bold;
 }
 .menu .feed .unreadCount {
@@ -182,9 +173,10 @@ body {
   cursor: pointer;
   width: 23px;
   line-height: 2em;
-  font-size: 0.33em;
+  font-size: 0.46em;
   text-align: center;
   color: #fcd114;
+  color: #160000;
   font-weight: bold;
 }
 .menu .noUnreadCount {
@@ -199,6 +191,8 @@ body {
   border-top: 1px solid #e8e8e8;
   display: inline-block;
   width: 100%;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 .articlesList .article .footer {
   display: none;
@@ -769,17 +763,13 @@ span.unreadHand2le {
   color: #5e5e5e;
   line-height: 1em;
   width: 33%;
+  border-bottom: 3px solid #e6e6e6;
 }
 .feedSettings .addFeedSetting .inputType.selected {
   color: white;
   background: #66AA33;
   text-decoration: underline;
   width: 34%;
-}
-.feedSettings .addFeedSetting .inputType.middle {
-  border: 3px solid #e6e6e6;
-  border-top: 0;
-  border-bottom: 0;
 }
 .feedSettings .addFeedSetting form {
   clear: both;

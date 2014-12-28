@@ -113,7 +113,7 @@ class FeedHandler(webapp2.RequestHandler):
         return feedData, keyName, priorData, feedDataSettings.article_count
 
     def getReadData(self, feedUrl, ud):
-        readDataAttr = 'readData__' + str(feedUrl).translate(None, '.')
+        readDataAttr = 'readData__' + ud.app_username + '__' + str(feedUrl).translate(None, '.')
         readData = ReadData.get_by_id(readDataAttr)
         if readData is not None:
             return readData.readData, readData.readCount
@@ -121,7 +121,7 @@ class FeedHandler(webapp2.RequestHandler):
             return '', 0
 
     def getStarData(self, feed_url, ud):
-        starDataAttr = 'starData__' + str(feed_url.translate(None, '.'))
+        starDataAttr = 'starData__' + ud.app_username + '__' + str(feed_url.translate(None, '.'))
         starData = StarData.get_by_id(starDataAttr)
         return starData.starData if starData is not None else ''
 
@@ -219,7 +219,7 @@ class SaveSettingsHandler(webapp2.RequestHandler):
 class MarkArticlesAsRead(webapp2.RequestHandler):
 
     def getReadData(self, feedUrl):
-        readDataAttr = 'readData__' + str(feedUrl).translate(None, '.')
+        readDataAttr = 'readData__' + self.ud.app_username + '__' + str(feedUrl).translate(None, '.')
         readData = ReadData.get_by_id(readDataAttr)
         if readData is None:
             readData = ReadData(app_username = self.ud.app_username, feedUrl = feedUrl, readData = '', readCount = 0, id = readDataAttr)
@@ -317,7 +317,7 @@ class StarArticle(webapp2.RequestHandler):
         if starArticle == '':
             return
 
-        starDataAttr = 'starData__' + str(feedUrl).translate(None, '.')
+        starDataAttr = 'starData__' + self.ud.app_username + '__' + str(feedUrl).translate(None, '.')
         starData = StarData.get_by_id(starDataAttr)
         if starData is None:
             starData = StarData(app_username = self.ud.app_username, feedUrl = feedUrl, starData = '', id = starDataAttr)

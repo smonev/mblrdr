@@ -38,7 +38,7 @@ body {
     .feed, .folder {
       border-top: 1px solid #e8e8e8;
       text-align: left;
-      height: 40px;
+      //height: 40px;
     }
 
     .feed:last-child, .folder:last-child {
@@ -47,10 +47,12 @@ body {
 
     &>.feed, &>.folder {
       white-space: pre;
-      margin-top: 2px;
-      margin-bottom: 2px;
+      //margin-top: 2px;
+      //margin-bottom: 2px;
       line-height: 1.4em;
       font-size: 2em;
+      padding-top: 8px;
+      padding-bottom: 8px;
     }
 
     &>.feed:first-child, &>.folder:first-child {
@@ -76,11 +78,12 @@ body {
     float: left;
     width: 30px;
     margin-top: 4px;
+    font-size: 1.2em;
   }
 
   .fa-folder {
-    margin-right: 1%;
-    margin-top: 7px;
+    margin-right: 3%;
+    margin-top: 4px;
   }
 
   .feedTitle {
@@ -113,26 +116,17 @@ body {
     }
   }
 
-  .unreadCount {
-    float: left;
-    margin-top: -29px;
-    cursor: pointer;
-    width: 2em;
-    line-height: 2em;
-    padding: 0 1px;
-    font-size: 0.36em;
-    color: white;
-  }
-
   .folder .unreadCount {
     float: left;
-    margin-top: -30px;
+    margin-top: -32px;
     cursor: pointer;
     width: 31px;
     line-height: 2em;
-    font-size: 0.33em;
+    font-size: 0.46em;
     text-align: center;
     color: #fcd114;
+    //color: #0A0A0A;
+    color: #160000;
     font-weight: bold;
   }
 
@@ -142,9 +136,11 @@ body {
     cursor: pointer;
     width: 23px;
     line-height: 2em;
-    font-size: 0.33em;
+    font-size: 0.46em;
     text-align: center;
     color: #fcd114;
+    //color: #0A0A0A;
+    color: #160000;
     font-weight: bold;
     // border-bottom: 1px solid red;
     // height: 19px;
@@ -166,6 +162,8 @@ body {
     border-top: 1px solid #e8e8e8;
     display: inline-block;
     width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
 
     .footer {
       display: none;
