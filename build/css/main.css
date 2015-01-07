@@ -64,7 +64,7 @@ html, button, input, select, textarea {
   font-family: sans-serif;
 }
 
-body {
+boddy {
   min-width: 320px;
   overflow-x: hidden;
   -webkit-touch-callout: none;
@@ -76,11 +76,17 @@ body {
 }
 
 .menu {
+  min-width: 320px;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  -webkit-highlight: none;
+  -webkit-tap-highlight-color: transparent;
+  max-width: 800px;
+  margin: 0px auto;
   margin-top: 4px;
   width: 100%;
   padding-left: 2%;
   padding-right: 2%;
-  height: 40px;
 }
 .menu header {
   width: 100%;
@@ -159,24 +165,30 @@ body {
   float: left;
   margin-top: -32px;
   cursor: pointer;
-  width: 31px;
+  width: 34px;
   line-height: 2em;
   font-size: 0.46em;
   text-align: center;
   color: #fcd114;
+  color: #0A0A0A;
   color: #160000;
+  color: #dad0b5;
+  color: #ffffff;
   font-weight: bold;
 }
 .menu .feed .unreadCount {
   float: left;
   margin-top: -29px;
   cursor: pointer;
-  width: 23px;
+  width: 26px;
   line-height: 2em;
   font-size: 0.46em;
   text-align: center;
   color: #fcd114;
+  color: #0A0A0A;
   color: #160000;
+  color: #dad0b5;
+  color: #ffffff;
   font-weight: bold;
 }
 .menu .noUnreadCount {
@@ -192,7 +204,7 @@ body {
   display: inline-block;
   width: 100%;
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 7px;
 }
 .articlesList .article .footer {
   display: none;
@@ -441,7 +453,7 @@ body {
   color: #737373;
   line-height: 1.2em;
   cursor: default;
-  margin: 0 45px;
+  margin: 9px 45px 0 45px;
   overflow: hidden;
   white-space: nowrap;
   display: block;
@@ -450,12 +462,8 @@ body {
 .up {
   float: left;
   width: 30px;
-  margin-top: -31px;
+  margin-top: -2em;
   cursor: pointer;
-}
-
-span.fa.fa-long-arrow-left {
-  margin-top: -2px;
 }
 
 .moreLink {
@@ -543,6 +551,7 @@ span.unreadHand2le {
 .nightmode .unreadCount {
   /*background: #fcd114;*/
   color: black;
+  color: #dad0b5 !important;
 }
 .nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
   color: #dad0b5;
@@ -631,10 +640,14 @@ span.unreadHand2le {
 }
 
 .feedSettings {
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   background-color: white;
   border: 1px solid #5e5e5e;
-  top: -35px;
+  top: 2em;
   overflow-y: auto;
   opacity: 0.98;
   opacity: 1;
@@ -645,8 +658,6 @@ span.unreadHand2le {
   z-index: 100;
   max-width: 90%;
   max-width: 560px;
-  border-bottom: 10px solid #5e5e5e;
-  border-top: 3px solid #5e5e5e;
   margin: 0px auto;
 }
 .feedSettings a {
@@ -674,7 +685,7 @@ span.unreadHand2le {
   display: inline-block;
   margin-top: 9%;
 }
-.feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption, .feedSettings .setting .feedUnsubscribe {
+.feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption, .feedSettings .setting .feedUnsubscribe, .feedSettings .setting .close {
   text-align: center;
   text-decoration: none;
   color: black;
@@ -690,7 +701,7 @@ span.unreadHand2le {
 .feedSettings .setting .showHideOption:hover, .feedSettings .setting .showHideOption.selected,
 .feedSettings .setting .markReadOption:hover, .feedSettings .setting .markReadOption.selected,
 .feedSettings .setting .nightmodeOption:hover, .feedSettings .setting .nightmodeOption.selected,
-.feedSettings .setting .feedUnsubscribe:hover, .feedSettings .setting .feedUnsubscribe.selected {
+.feedSettings .setting .feedUnsubscribe:hover, .feedSettings .setting .feedUnsubscribe.selected, .feedSettings .setting .close:hover {
   background: #66AA33;
   color: white;
   /*border-radius: 5px;*/
@@ -708,7 +719,7 @@ span.unreadHand2le {
   width: 22%;
 }
 .feedSettings .setting .feedUnsubscribe {
-  width: 44%;
+  width: 100%;
 }
 .feedSettings .feedTitleUndo {
   text-decoration: none;
@@ -928,18 +939,30 @@ span.unreadHand2le {
   margin-bottom: 2%;
 }
 .feedSettings .deleteFolder .feedUnsubscribe {
-  text-align: left;
+  text-align: center;
 }
 .feedSettings .deleteFolder .fa-times {
   margin-left: 3%;
 }
 .feedSettings .closeButton {
+  margin-top: 3%;
+  margin-bottom: 3%;
+  text-align: center;
+}
+.feedSettings .closeButton .close {
+  width: 92%;
+  display: inline-block;
+}
+.feedSettings .closeButton .close .fa {
+  display: none;
+}
+.feedSettings .closeB3utton {
   margin-top: 4%;
   padding-bottom: 4%;
   text-align: center;
   color: #dad0b5;
 }
-.feedSettings .closeButton .close {
+.feedSettings .closeB3utton .close {
   text-decoration: none;
   padding-left: 20%;
   padding-right: 20%;
@@ -948,13 +971,13 @@ span.unreadHand2le {
   border: 3px solid #66AA33;
   /*border-radius: 5px;*/
 }
-.feedSettings .closeButton .close span:first-child {
+.feedSettings .closeB3utton .close span:first-child {
   color: black;
   text-decoration: none;
   font-size: 1.6em;
   margin-left: 1%;
 }
-.feedSettings .closeButton .close .fa-times {
+.feedSettings .closeB3utton .close .fa-times {
   color: #66AA33;
   font-size: 2em;
   margin-left: 2%;

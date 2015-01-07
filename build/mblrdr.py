@@ -531,6 +531,13 @@ class RedirectHandler(webapp2.RequestHandler):
         url = self.request.get('url')
         self.redirect(str(url), True)
 
+class GenerateUploadUrlHandler(webapp2.RequestHandler):
+    def get(self):
+        upload_url = blobstore.create_upload_url('/upload')
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.out.write(upload_url)
+
+
 APP_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 DEBUG = os.environ['SERVER_SOFTWARE'].startswith('Dev')
 
@@ -549,6 +556,8 @@ ROUTES = [
 
     ('/uploadOPML', UploadOPMLHandler),
     ('/redirect', RedirectHandler),
+
+    ('/GenerateUploadUrl', GenerateUploadUrlHandler),
 
     ('/', MainHandler),
 ]

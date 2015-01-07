@@ -1,8 +1,16 @@
 .feedSettings {
-  position: relative;
+
+  //center first
+  position:absolute;
+  left:0;
+  right:0;
+  margin-left:auto;
+  margin-right:auto;
+
+  //position: relative;
   background-color: white;
   border: 1px solid #5e5e5e;
-  top: -35px;
+  top: 2em;
   overflow-y: auto;
   opacity: 0.98;
   opacity: 1;
@@ -14,8 +22,8 @@
   z-index: 100;
   max-width: 90%;
   max-width: 560px;
-  border-bottom: 10px solid #5e5e5e;
-  border-top: 3px solid #5e5e5e;
+  //border-bottom: 10px solid #5e5e5e;
+  //border-top: 3px solid #5e5e5e;
   margin: 0px auto;
 
   a {
@@ -46,7 +54,7 @@
     display: inline-block;
     margin-top: 9%;
 
-    .markReadOption, .showHideOption, .nightmodeOption, .feedUnsubscribe {
+    .markReadOption, .showHideOption, .nightmodeOption, .feedUnsubscribe, .close {
       text-align: center;
       text-decoration: none;
       color: black;
@@ -63,7 +71,7 @@
     .showHideOption:hover, .showHideOption.selected,
     .markReadOption:hover, .markReadOption.selected,
     .nightmodeOption:hover, .nightmodeOption.selected,
-    .feedUnsubscribe:hover, .feedUnsubscribe.selected {
+    .feedUnsubscribe:hover, .feedUnsubscribe.selected, .close:hover {
       background: #66AA33;
       color: white;
       /*border-radius: 5px;*/
@@ -86,7 +94,7 @@
     }
 
     .feedUnsubscribe {
-      width: 44%;
+      width: 100%;
     }
   }
 
@@ -344,7 +352,7 @@
       margin-bottom: 2%;
 
       .feedUnsubscribe {
-        text-align: left;
+        text-align: center;
       }
 
       .fa-times {
@@ -353,6 +361,21 @@
   }
 
   .closeButton {
+      margin-top: 3%;
+      margin-bottom: 3%;
+      text-align: center;
+
+      .close {
+        width: 92%;
+        display: inline-block;
+
+        .fa {
+          display: none;
+        }
+      }
+  }
+
+  .closeB3utton {
     margin-top: 4%;
     padding-bottom: 4%;
     text-align: center;

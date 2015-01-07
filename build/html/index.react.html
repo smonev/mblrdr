@@ -18,7 +18,31 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
     </head>
-    <body>
+    <body data-uploadurl={{ upload_url }}>
+
+    <script type="text/javascript">
+        (function () {
+            if (!window.Intl) {
+                function loadJS( src, cb ){
+                    "use strict";
+                    var ref = document.getElementsByTagName('head')[0];
+                    var script = window.document.createElement( "script" );
+                    script.src = src;
+                    script.async = false;
+                    ref.parentNode.insertBefore( script, ref );
+                    if (cb && typeof(cb) === "function") {
+                        script.onload = cb;
+                    }
+                    return script;
+                }
+
+                loadJS('js/react/Intl.min.js', function() {
+                    loadJS('js/react/en.js', function() {
+                    });
+                });
+            }
+        })();
+    </script>
 
         <script src="js/react/vendors.js"></script>
         <script src="js/react/main.js"></script>

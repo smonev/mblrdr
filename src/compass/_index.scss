@@ -8,7 +8,7 @@ html, button, input, select, textarea {
   font-family: sans-serif;
 }
 
-body {
+boddy {
   min-width: 320px;
   overflow-x: hidden;
   -webkit-touch-callout: none;
@@ -20,11 +20,20 @@ body {
 }
 
 .menu {
+
+  min-width: 320px;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  -webkit-highlight: none;
+  -webkit-tap-highlight-color: transparent;
+  max-width: 800px;
+  margin: 0px auto;
+
   margin-top: 4px;
   width: 100%;
   padding-left: 2%;
   padding-right: 2%;
-  height: 40px;
+  //height: 40px;
 
   header {
     width: 100%;
@@ -120,13 +129,15 @@ body {
     float: left;
     margin-top: -32px;
     cursor: pointer;
-    width: 31px;
+    width: 34px;
     line-height: 2em;
     font-size: 0.46em;
     text-align: center;
     color: #fcd114;
-    //color: #0A0A0A;
+    color: #0A0A0A;
     color: #160000;
+    color: #dad0b5;
+    color: #ffffff;
     font-weight: bold;
   }
 
@@ -134,13 +145,15 @@ body {
     float: left;
     margin-top: -29px;
     cursor: pointer;
-    width: 23px;
+    width: 26px;
     line-height: 2em;
     font-size: 0.46em;
     text-align: center;
     color: #fcd114;
-    //color: #0A0A0A;
+    color: #0A0A0A;
     color: #160000;
+    color: #dad0b5;
+    color: #ffffff;
     font-weight: bold;
     // border-bottom: 1px solid red;
     // height: 19px;
@@ -163,7 +176,7 @@ body {
     display: inline-block;
     width: 100%;
     padding-top: 8px;
-    padding-bottom: 8px;
+    padding-bottom: 7px;
 
     .footer {
       display: none;
@@ -455,7 +468,7 @@ body {
   color: #737373;
   line-height: 1.2em;
   cursor: default;
-  margin: 0 45px;
+  margin: 9px 45px 0 45px;
   overflow: hidden;
   white-space: nowrap;
   display: block;
@@ -465,12 +478,12 @@ body {
 .up {
   float: left;
   width: 30px;
-  margin-top: -31px;
+  margin-top: -2em;
   cursor: pointer;
 }
 
 span.fa.fa-long-arrow-left {
-  margin-top: -2px;
+  //margin-top: -2px;
 }
 
 
