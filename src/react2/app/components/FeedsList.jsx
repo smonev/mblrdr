@@ -8,7 +8,6 @@ var AppStore = require('../AppStore.js')
 
 var FeedsList = React.createClass({
     mixins: [ ReactRouter.State ],
-
     getInitialState: function() {
         return {
             folderUnreadCounts: {}
@@ -23,10 +22,18 @@ var FeedsList = React.createClass({
                 });
             }
         }.bind(this));
+        Velocity(this.getDOMNode(), "callout.pulseSide");
     },
 
     componentWillUnmount: function() {
         PubSub.unsubscribe( this.feedReadCountChanged );
+    },
+
+    resolveShowRead: function() {
+        var folderName = this.getParams().folderName;
+
+        return this.props.userSettings && this.props.userSettings[folderName] && (typeof this.props.userSettings[folderName].showRead !== "undefined") ?
+                this.props.userSettings[folderName].showRead: true;
     },
 
     render: function() {
@@ -35,6 +42,8 @@ var FeedsList = React.createClass({
         if ((!this.props.userData) || (!this.props.userData.bloglist[currentFolder])) {
             return (<div/>);
         }
+
+        var showRead = this.resolveShowRead();
 
         feeds = this.props.userData.bloglist[currentFolder];
         feeds = feeds
@@ -45,25 +54,30 @@ var FeedsList = React.createClass({
 
                 if (AppStore.readData && AppStore.readData[feed.url]) {
                     feedUnreadCount = AppStore.readData[feed.url].totalCount - AppStore.readData[feed.url].readCount;
-
-                    if (feedUnreadCount <= 0) {
-                        feedUnreadCount = 0;
-                    } else if (feedUnreadCount > 99) {
-                        feedUnreadCount = '99+'
-                    }
                 }
 
                 var feedClasses = cx({
                     feed: true,
-                    unread: feedUnreadCount > 0
+                    unread: feedUnreadCount > 0,
+                    'displayNone': false
                 });
+
+                if (feedUnreadCount < 0) {
+                    feedUnreadCount = 0;
+                } else if (feedUnreadCount > 99) {
+                    feedUnreadCount = '99';
+                }
+
+                if ((feedUnreadCount === 0) && (!showRead)) {
+                    return (<div />);
+                }
 
                 return (
                     <li className={feedClasses} key={feed.url} data-url={feed.url}>
                         <Link to={url} data-url={feed.url}>
                             <span className="unreadHandle"></span>
                             <span className="fa fa-file"></span>
-                            <span className="feedTitle">{feed.title}</span>
+                            <span className="feedTitle">{feed.title ? feed.title: '-'}</span>
                             <span className="unreadCount">{feedUnreadCount !== 0 ? feedUnreadCount: ''}</span>
                         </Link>
                     </li>

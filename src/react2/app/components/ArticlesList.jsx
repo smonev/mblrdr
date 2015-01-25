@@ -6,12 +6,6 @@ var AppStore = require('../AppStore.js');
 
 var PubSub = require('pubsub-js');
 
-//var f = v => v*v;
-//alert(f(2));
-//alert('mark feed as read');
-//alert('import opml');
-//alert('fixed position, scroll direction');
-
 var ArticlesList = React.createClass({
     mixins: [ ReactRouter.State, ReactRouter.Navigation ],
 
@@ -48,7 +42,11 @@ var ArticlesList = React.createClass({
                 AppUtils.updateFeedTitleIfNeeded(this.getParams().folderName, this.getParams().feedUrl,this.state.articles[0].feedTitle);
             }
 
-            this.moreLinkAppearSetup();
+
+            if (!this.moreLinkInitialized) {
+                this.moreLinkInitialized = true;
+                this.moreLinkAppearSetup();
+            }
         }
     },
 
@@ -61,17 +59,26 @@ var ArticlesList = React.createClass({
             appear: function appear(){
                 that.moreClick.call();
             },
-            bounds: 200,
+            bounds: 100,
             reappear: true
         });
     },
 
     moreClick: function() {
+
+        function thereAreMoreUnread() {
+            if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
+                return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount
+            } else {
+                return true;
+            }
+        }
+
         var serviceUrl = this.getParams().feedUrl + "?count=" + this.state.nextcount + "&newFeed=0&v=" + Math.random();
         var decodedFeedUrl =  decodeURIComponent(this.getParams().feedUrl)
 
         var showRead = this.resolveShowRead();
-        if ((showRead) || ((!showRead) && (AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount))) {
+        if ((showRead) || ((!showRead) && thereAreMoreUnread()) ) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
         } else {
             this.setState({
@@ -107,6 +114,8 @@ var ArticlesList = React.createClass({
         var feedUrl = this.getParams().feedUrl + "?count=-1&newFeed=0&v=" + Math.random();
         AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
 
+        this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
+
         this.resolveShowRead();
         document.addEventListener("keyup", this.keyUp);
 
@@ -123,6 +132,8 @@ var ArticlesList = React.createClass({
 
 
         this.handleAddNewFeedProcess();
+
+        Velocity(this.getDOMNode(), "callout.pulseSide");
     },
 
     componentWillUnmount: function() {
@@ -142,6 +153,8 @@ var ArticlesList = React.createClass({
         if (this.refs[ref]) {
             this.refs[ref].openArticle.call();
             this.props.showLoader.call();
+        } else {
+            AppUtils.scrollTo(0, 300);
         }
     },
 
@@ -234,11 +247,17 @@ var ArticlesList = React.createClass({
     },
 
     toggleArticleStar: function(id) {
+        var stars = this.state.star;
         if (this.state.star.indexOf(id) === -1) {
             this.state.star.push(id);
             starState = 1;
         } else {
-            this.state.star.pop(id);
+            console.log('star before:' + this.state.star);
+            this.state.star = this.state.star.filter(function(star){
+              return star !== id
+            });
+            console.log('star after:' + this.state.star);
+
             starState = 0;
         };
 
@@ -289,10 +308,8 @@ var ArticlesList = React.createClass({
             var isRead = this.state.allArticlesAreRead || this.state.read.indexOf(article.id) > -1;
             var isStar = this.state.star.indexOf(article.id) > -1;
             var refName = "article" + this.state.componentCounter;
-            //var refName = "article" + (article.id * article.id);
 
             return (
-                //bla
                 <Article key={refName} ref={refName} showRead={showRead}
                     componentCounter={this.state.componentCounter}
                     currentActive={this.state.currentActive}
@@ -315,7 +332,8 @@ var ArticlesList = React.createClass({
                     {articles}
                 </ul>
                 <a className="moreLink2" onClick={this.moreClick} nextcount={this.state.nextcount}>
-                    {this.state.noMoreArticles ? 'no more articles': 'load more'}
+                    {this.state.noMoreArticles ? 'no more articles': 'load more   '}
+                    <div id="colorWheel" className="colorWheel"></div>
                     <i className={moreIconClasses}></i>
                 </a>
             </div>

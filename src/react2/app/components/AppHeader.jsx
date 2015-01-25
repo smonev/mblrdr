@@ -6,11 +6,19 @@ var cx = React.addons.classSet;
 var AppHeader = React.createClass({
     mixins: [Navigation, ReactRouter.State],
 
+    getInitialState: function() {
+        return {
+            title: ''
+        };
+    },
+
     settingsClick: function() {
         this.props.showSettings.call();
     },
 
     onUpClick: function() {
+        Velocity(this.upButton, "callout.pulseSide");
+
         if (this.getParams().feedUrl) {
             if (this.getParams().folderName !== 'root') {
                 this.transitionTo(decodeURIComponent('/' + this.getParams().folderName));
@@ -23,12 +31,18 @@ var AppHeader = React.createClass({
         };
     },
 
+    componentDidMount: function() {
+        this.upButton = document.querySelectorAll('.up')[0];
+    },
+
     render: function() {
         var homeIconClassName = cx({
             'fa': true,
             'fa-home': !this.getParams().folderName,
             'fa-long-arrow-left': this.getParams().folderName
         });
+
+        title = '';
 
         if (this.getParams().feedUrl) {
             title = this.props.title;
@@ -43,9 +57,11 @@ var AppHeader = React.createClass({
                 <a className="feedSettingsAction">
                     <span className="fa fa-bars" onClick={this.settingsClick}></span>
                 </a>
-                <span className="headerCaption">{title}</span>
-                <a className="up" onClick={this.onUpClick}><span className={homeIconClassName}></span></a>
-                <br />
+
+                <a className="up" onClick={this.onUpClick}>
+                    <span className={homeIconClassName}></span>
+                    <span className="headerCaption">{title}</span>
+                </a>
             </header>
         );
     }

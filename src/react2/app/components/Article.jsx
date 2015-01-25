@@ -7,6 +7,11 @@ window.Hammer = hammer;
 
 var ArticleHeader = React.createClass({
     mixins: [ReactIntlMixin],
+
+    componentDidMount: function() {
+        Velocity(this.getDOMNode(), "callout.pulseDown");
+    },
+
     toggleArticleOpen: function(e) {
         e.preventDefault();
         this.props.toggleArticleOpen.call();
@@ -34,17 +39,22 @@ var ArticleHeader = React.createClass({
 
         return(
             <div>
-                <span className="unreadHandle"></span>
-                <a className="star" onClick={this.toggleArticleStar}>
-                    <span className={starClass}></span>
+                <a href={this.props.url} target="_blank" className="headerAuthorAndDate">
+                    {this.props.author}
+                    {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ': ''}
+                    {articleDate}
                 </a>
-                <a onClick={this.toggleArticleOpen} href={this.props.url} className="title">{this.props.title}</a>
-                <a href={this.props.url} target="_blank" className="headerUrl">
-                    <span className="fa fa-external-link"></span>
-                    <span className="authorAndDate">{articleDate}
-                    <br/>{this.props.author}</span>
-                </a>
+
+                <div class="bla">
+                    <span className="unreadHandle"></span>
+                    <a className="star" onClick={this.toggleArticleStar}>
+                        <span className={starClass}></span>
+                    </a>
+
+                    <a onClick={this.toggleArticleOpen} href={this.props.url} className="title">{this.props.title}</a>
+                </div>
             </div>
+
         )
 
     }
@@ -147,7 +157,7 @@ var ArticleContent = React.createClass({
                     <span className="fa fa-google-plus displayNone"></span>
                     <div className="contentSubHeader">
                         <a href={this.props.url} target="_blank">
-                            <span className="date">{articleDate} | {this.props.author}</span>
+                            <span className="date">{this.props.author} &middot; {articleDate}</span>
                             <span className="fa fa-external-link"></span>
                         </a>
                     </div>
@@ -174,10 +184,11 @@ var Article = React.createClass({
 
     openArticle: function() {
         this.setState({
-            isOpen: true
+            isOpen: true,
+            wasOpenedThisSession: true
         });
 
-        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 54, 300);
+        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 70, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
 
@@ -194,10 +205,9 @@ var Article = React.createClass({
     toggleArticleOpen: function() {
         if (!this.state.isOpen) {
             this.openArticle();
-            this.setState({
-                wasOpenedThisSession: true
-            });
-
+            //this.setState({
+            //    wasOpenedThisSession: true
+            //});
         } else {
             this.setState({
                 isOpen: !this.state.isOpen
@@ -217,8 +227,12 @@ var Article = React.createClass({
 
     shouldComponentUpdate: function(nextProps, nextState) {
         //return nextProps.current !== this.state.count
-
-        return ( (nextProps.componentCounter === nextProps.currentActive) || (nextProps.showRead !== this.props.showRead) );
+        return true;
+        return (
+                    (nextProps.componentCounter === nextProps.currentActive) ||
+                    (nextProps.showRead !== this.props.showRead)  ||
+                    (nextProps.isStar !== this.props.isStar)
+                );
     },
 
     render: function() {

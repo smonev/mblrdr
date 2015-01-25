@@ -5,6 +5,10 @@ var jquery = require('jquery');
 window.jQuery = jquery;
 window.$ = jquery;
 
+var Velocity = require("velocity-animate");
+require('velocity-animate/velocity.ui');
+window.Velocity = Velocity;
+
 var App = require('./App.jsx');
 var FoldersList = require('./components/FoldersList.jsx');
 var FeedsList = require('./components/FeedsList.jsx');
@@ -32,4 +36,3 @@ var routes = (
 Router.run(routes, function (Handler) {
   React.render(<Handler/>, document.body);
 });
-

@@ -43,7 +43,8 @@ var appOptions = {
   vendors: [
     'jquery',
     'hammerjs',
-    'pubsub-js'
+    'pubsub-js',
+    'velocity-animate'
     //'react', //todo fix this, so React goes into vendor.js file => faster compile times, etc.
     //'react-router',
     //'flux-react',

@@ -7,7 +7,6 @@ var PageLoader = React.createClass({
     return {
         loaderWidth: innerWidth,
         loaderLeft: - innerWidth - 20,
-        inAnimation: false,
         animationId: 0,
         pos: 0
     };
@@ -17,9 +16,6 @@ var PageLoader = React.createClass({
       var that = this, animationTimer;
       animationTimer = setTimeout(function() {
           var  newLeft;
-          if (!that.state.inAnimation)  {
-            return;
-          }
 
           if (that.state.loaderLeft < 0){
               that.state.animationId = window.requestAnimationFrame(that.animate);
@@ -43,12 +39,7 @@ var PageLoader = React.createClass({
   },
 
   render: function () {
-      if (this.props.show) {
-        if (!this.state.inAnimation) {
-            this.state.inAnimation = true;
-            this.animate();
-        }
-      }
+
       var style = {
           width: this.state.loaderWidth,
           height: '3px',

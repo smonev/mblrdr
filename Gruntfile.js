@@ -26,7 +26,7 @@ module.exports = function(grunt){
                 expand: true, flatten: true, src: ['src/js/*'], dest: 'build/js/', filter: 'isFile'
               },
               {
-                expand: true, flatten: true, src: ['src/react/build/*'], dest: 'build/js/react/', filter: 'isFile'
+                expand: true, flatten: true, src: ['src/react2/build/*'], dest: 'build/js/react/', filter: 'isFile'
               },
               {
                 expand: true, flatten: true, src: ['src/js/ext/*'], dest: 'build/js/ext/', filter: 'isFile'

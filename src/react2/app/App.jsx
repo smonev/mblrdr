@@ -11,6 +11,8 @@ var PageLoader = require('./components/PageLoader.jsx');
 
 var AppStore = require('./AppStore.js');
 var AppUtils = require('./AppUtils.js');
+var AppMess = require('./AppMess.js');
+AppMess.init();
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter;
@@ -40,8 +42,7 @@ var App = React.createClass({
             bloglist: {},
             username: '',
             nightmode: false,
-            title: '',
-            showLoader: false
+            title: ''
         };
     },
 
@@ -115,7 +116,7 @@ var App = React.createClass({
     },
 
     showLoader: function() {
-        this.setState({showLoader: true});
+        this.refs.pageLoader.animate();
     },
 
     render: function() {
@@ -127,7 +128,7 @@ var App = React.createClass({
 
         return (
             <div>
-                <PageLoader show={this.state.showLoader}/>
+                <PageLoader ref="pageLoader"/>
 
                 <div className='menu'>
                     <AppHeader
@@ -163,4 +164,3 @@ React.initializeTouchEvents(true);
 
 module.exports = App;
 
-alert('bla');

@@ -3,27 +3,32 @@ var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var FeedsList = require('../components/FeedsList.jsx');
 var PubSub = require('pubsub-js');
-var AppStore = require('../AppStore.js')
+var AppStore = require('../AppStore.js');
+
 
 var FoldersList = React.createClass({
     getInitialState: function() {
         return {
             foldersUnreadCount: AppStore.foldersUnreadCount ? AppStore.foldersUnreadCount: {}
+
         };
     },
 
     componentDidMount: function() {
-
-
         this.folderUnreadCountChanged = PubSub.subscribe('FOLDERS_UNREAD_COUNT_CHANGED', function( msg, data ) {
             this.setState({
                 foldersUnreadCount: AppStore.foldersUnreadCount
             })
         }.bind(this));
+        Velocity(this.getDOMNode(), "callout.pulseSide");
     },
 
     componentWillUnmount: function() {
         PubSub.unsubscribe( this.folderUnreadCountChanged );
+    },
+
+    onFolderClick: function () {
+        //
     },
 
     render: function() {
@@ -45,11 +50,11 @@ var FoldersList = React.createClass({
                 if (folderUnreadCount <= 0) {
                     folderUnreadCount = '';
                 } else if (folderUnreadCount > 999) {
-                    folderUnreadCount = '999+'
+                    folderUnreadCount = '999'
                 }
             }
             return (
-                <li className="folder" key={folder}>
+                <li className="folder" key={folder} onClick={this.onFolderClick}>
                     <Link to={linkToFolder}>
                         <span className="fa fa-folder"></span>
                         <span className="feedTitle">{folder}</span>
