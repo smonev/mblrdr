@@ -1,6 +1,6 @@
 application: fdjsfkdsfhkjdshfkjsdhfkjsdhkj
 module: cronfeeds
-version: 7
+version: 8
 runtime: python27
 threadsafe: true
 instance_class: F1

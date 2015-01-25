@@ -6,8 +6,16 @@
   background: #212324;
   color: #ddd;
 
+  .headerAuthorAndDate  {
+    //color: ;
+    //color: #E7C264 !important;
+    //color: #C0C0C0 !important;
+    //color: #FFE576 !important;
+    color: #dad0b5 !important;
+  }
+
   .menu .feedTitle {
-    color: #dad0b5;
+    color: #dad0b5 !important;
   }
 
   .date {
@@ -15,7 +23,7 @@
   }
 
   .menu .menuList > .folder a {
-    color: #dad0b5;
+    color: #dad0b5 !important;
   }
 
   .menu .menuList, .articlesList {
@@ -36,12 +44,12 @@
   }
 
   a.title, .articlesList .article .contentHeader .title, .articlesList .article .content .title {
-    color: #dad0b5;
+    color: #dad0b5 !important;
     text-decoration: none;
   }
 
   .date {
-    color: #dad0b5;
+    color: #dad0b5 !important;
     text-decoration: none;
   }
 

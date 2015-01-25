@@ -107,7 +107,11 @@ class FeedHandler(webapp2.RequestHandler):
                 priorData = feedDataSettings.feedDataCount
             else:
                 fd = FeedData.get_by_id(keyName)
-                feedData = fd.private_data
+                if fd is None:
+                    logging.debug('getFeedData => fd is None. Why?!? %s keyName', feedUrl, keyName)
+                    feedData = '';
+                else:
+                    feedData = fd.private_data
                 priorData = int(count) - 1
 
         return feedData, keyName, priorData, feedDataSettings.article_count

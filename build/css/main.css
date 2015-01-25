@@ -90,7 +90,7 @@ boddy {
 }
 .menu header {
   width: 100%;
-  height: 40px;
+  height: 46px;
 }
 .menu .menuList {
   padding: 0;
@@ -116,11 +116,11 @@ boddy {
 .menu .menuList > .feed a, .menu .menuList > .folder a {
   text-decoration: none;
   display: block;
-  color: blue;
+  color: #2172F7;
   cursor: pointer;
 }
 .menu h3 {
-  color: blue;
+  color: #2172F7;
   margin-left: 20px;
 }
 .menu .fa-file, .menu .fa-spinner, .menu .fa-folder {
@@ -128,7 +128,7 @@ boddy {
   min-width: 30px;
   float: left;
   width: 30px;
-  margin-top: 4px;
+  margin-top: 2px;
   font-size: 1.2em;
 }
 .menu .fa-folder {
@@ -141,25 +141,27 @@ boddy {
   overflow: hidden;
   white-space: nowrap;
   display: block;
-  color: blue;
+  color: #2172F7;
 }
 .menu .feedTitle:active {
-  height: 42px;
-  border-color: #66AA33;
-  border-style: solid;
-  border-top-width: 1px;
-  border-left-width: 20px;
+  color: #66AA33;
+  -webkit-transform: translate3d(0px, -5px, 0px);
+  -moz-transform: translate3d(0px, -5px, 0px);
+  -ms-transform: translate3d(0px, -5px, 0px);
+  -o-transform: translate3d(0px, -5px, 0px);
+  transform: translate3d(0px, -5px, 0px);
 }
 .menu .folderName {
   width: 85%;
   display: inline-block;
 }
 .menu .folderName:active {
-  height: 42px;
-  border-color: #66AA33;
-  border-style: solid;
-  border-top-width: 1px;
-  border-left-width: 20px;
+  color: #66AA33;
+  -webkit-transform: translate3d(0px, -5px, 0px);
+  -moz-transform: translate3d(0px, -5px, 0px);
+  -ms-transform: translate3d(0px, -5px, 0px);
+  -o-transform: translate3d(0px, -5px, 0px);
+  transform: translate3d(0px, -5px, 0px);
 }
 .menu .folder .unreadCount {
   float: left;
@@ -203,8 +205,11 @@ boddy {
   border-top: 1px solid #e8e8e8;
   display: inline-block;
   width: 100%;
-  padding-top: 8px;
-  padding-bottom: 7px;
+  padding-top: 12px;
+  padding-bottom: 8px;
+}
+.articlesList .article a {
+  color: #2172F7;
 }
 .articlesList .article .footer {
   display: none;
@@ -224,19 +229,22 @@ boddy {
   color: #66AA33;
   text-decoration: none;
 }
-.articlesList .article .header .title {
-  margin: 0px 14% 0px 0px;
+.articlesList .article .header a.title {
   overflow: hidden;
   white-space: nowrap;
   display: block;
   text-decoration: none;
+  outline: none;
+  color: #4285f4;
 }
-.articlesList .article .header .title:active {
-  height: 42px;
-  border-color: #66AA33;
-  border-style: solid;
-  border-top-width: 1px;
-  border-left-width: 20px;
+.articlesList .article .header a.title:visited {
+  color: #4285f4;
+}
+.articlesList .article .header a.title:focus {
+  outline: none;
+}
+.articlesList .article .header a.title:active {
+  color: #66AA33;
 }
 .articlesList .article .header .headerUrl {
   float: right;
@@ -247,18 +255,28 @@ boddy {
   display: block;
   text-decoration: none;
 }
+.articlesList .article .header .headerAuthorAndDate {
+  font-size: 0.45em;
+  font-weight: normal;
+  line-height: 1.05em;
+  color: #737373;
+  margin-left: 38px;
+  text-decoration: none;
+  width: 95%;
+  display: block;
+  position: relative;
+  top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .articlesList .article .authorAndDate {
-  white-space: pre;
   display: inline-block;
   overflow: hidden;
-  float: right;
   font-size: 0.3em;
   font-weight: normal;
   line-height: 1.5em;
-  margin-top: 10px;
   color: black;
-  width: 75%;
-  text-align: right;
+  margin-left: 4em;
 }
 .articlesList .article .contentHeader, .articlesList .article .content {
   padding-top: 7px;
@@ -277,7 +295,7 @@ boddy {
   float: left;
   width: 90%;
 }
-.articlesList .article .contentHeader .authorAndDate, .articlesList .article .content .authorAndDate {
+.articlesList .article .contentHeader .authorAndDateToDel, .articlesList .article .content .authorAndDateToDel {
   white-space: pre;
   display: inline-block;
   overflow: hidden;
@@ -337,7 +355,7 @@ boddy {
   padding-bottom: 10px;
 }
 .articlesList .star {
-  margin-right: 1%;
+  margin-right: 7px;
   float: left;
   width: 30px;
 }
@@ -446,24 +464,50 @@ boddy {
   float: right;
   width: 30px;
   cursor: pointer;
+  padding-top: 5px;
 }
 
 .headerCaption {
   font-size: 1.7em;
   color: #737373;
-  line-height: 1.2em;
-  cursor: default;
-  margin: 9px 45px 0 45px;
+  cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
   display: block;
+  float: left;
+  line-height: 1.1em;
+  padding: 7px 0 0px 43px;
+  margin: -37px auto;
+  width: 100%;
+}
+.headerCaption:active {
+  color: #66AA33;
 }
 
-.up {
+.up2 {
   float: left;
   width: 30px;
   margin-top: -2em;
   cursor: pointer;
+}
+
+.up {
+  width: 90%;
+  display: block;
+  float: left;
+  white-space: nowrap;
+}
+.up .fa {
+  float: left;
+  padding: 5px 0 0px 0;
+  cursor: pointer;
+}
+.up:a2ctive {
+  -webkit-transform: translate3d(0px, -5px, 0px) !important;
+  -moz-transform: translate3d(0px, -5px, 0px) !important;
+  -ms-transform: translate3d(0px, -5px, 0px) !important;
+  -o-transform: translate3d(0px, -5px, 0px) !important;
+  transform: translate3d(0px, -5px, 0px) !important;
 }
 
 .moreLink {
@@ -482,18 +526,19 @@ boddy {
   border: 2px solid #66AA33;
   padding-top: 10px;
   padding-bottom: 10px;
-  width: 44%;
+  width: 70%;
   text-align: center;
   margin: 0px auto;
   margin-top: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
 }
 
 .folder a:active, .feedTitle:active, .header .title:active {
-  color: blue;
+  color: #2172F7;
 }
 
-.fa:active {
+.f1a:active {
   -webkit-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
   -moz-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
   -ms-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
@@ -525,6 +570,32 @@ span.unreadHand2le {
   background: red;
 }
 
+.colorWheel {
+  margin: 0px auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(36deg, #272b66 42.34%, transparent 42.34%) 0 0, linear-gradient(72deg, #2d559f 75.48%, transparent 75.48%) 0 0, linear-gradient(-36deg, #9ac147 42.34%, transparent 42.34%) 100% 0, linear-gradient(-72deg, #639b47 75.48%, transparent 75.48%) 100% 0, linear-gradient(36deg, transparent 57.66%, #e1e23b 57.66%) 100% 100%, linear-gradient(72deg, transparent 24.52%, #f7941e 24.52%) 100% 100%, linear-gradient(-36deg, transparent 57.66%, #662a6c 57.66%) 0 100%, linear-gradient(-72deg, transparent 24.52%, #9a1d34 24.52%) 0 100%, #43a1cd linear-gradient(#ba3e2e, #ba3e2e) 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+  transition: 1s;
+  display: inline-block;
+  float: left;
+  margin-left: 17px;
+  display: none;
+}
+
+.colorWheel:after {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  content: '';
+}
+
 .nightmode {
   /*background: black;*/
   /*color: #dad0b5;*/
@@ -533,14 +604,17 @@ span.unreadHand2le {
   background: #212324;
   color: #ddd;
 }
+.nightmode .headerAuthorAndDate {
+  color: #dad0b5 !important;
+}
 .nightmode .menu .feedTitle {
-  color: #dad0b5;
+  color: #dad0b5 !important;
 }
 .nightmode .date {
   color: #dad0b5 !important;
 }
 .nightmode .menu .menuList > .folder a {
-  color: #dad0b5;
+  color: #dad0b5 !important;
 }
 .nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
   border-top: 1px solid #202020;
@@ -554,11 +628,11 @@ span.unreadHand2le {
   color: #dad0b5 !important;
 }
 .nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
-  color: #dad0b5;
+  color: #dad0b5 !important;
   text-decoration: none;
 }
 .nightmode .date {
-  color: #dad0b5;
+  color: #dad0b5 !important;
   text-decoration: none;
 }
 .nightmode .headerCaption {
@@ -1009,7 +1083,7 @@ span.unreadHand2le {
   }
 
   .title {
-    margin: 0px 7% 0px 0px !important;
+    margin: 0px 1% 0px 0px !important;
   }
 }
 @media all and (max-width: 370px) and (min-width: 1px) {
@@ -1038,5 +1112,20 @@ span.unreadHand2le {
 
   .showHideOption.second:after {
     content: "unread" !important;
+  }
+}
+@media all and (max-width: 580px) {
+  .article {
+    width: 99% !important;
+  }
+}
+@media all and (max-width: 530px) {
+  .article {
+    width: 98% !important;
+  }
+}
+@media all and (max-width: 480px) {
+  .article {
+    width: 97% !important;
   }
 }
