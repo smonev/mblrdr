@@ -20,15 +20,12 @@ var FoldersList = React.createClass({
                 foldersUnreadCount: AppStore.foldersUnreadCount
             })
         }.bind(this));
+
         Velocity(this.getDOMNode(), "callout.pulseSide");
     },
 
     componentWillUnmount: function() {
         PubSub.unsubscribe( this.folderUnreadCountChanged );
-    },
-
-    onFolderClick: function () {
-        //
     },
 
     render: function() {
@@ -54,7 +51,7 @@ var FoldersList = React.createClass({
                 }
             }
             return (
-                <li className="folder" key={folder} onClick={this.onFolderClick}>
+                <li className="folder" key={folder} >
                     <Link to={linkToFolder}>
                         <span className="fa fa-folder"></span>
                         <span className="feedTitle">{folder}</span>

@@ -172,7 +172,7 @@ var AppMess = {
                 defaultDuration: 300,
                 calls: [
                     [ { scaleX: 0.1 }, 0.20 ],
-                    [ { scaleX: 1.1 }, 0.20 ],
+                    [ { scaleX: 1.05 }, 0.20 ],
                     [ { scaleX: 1 }, 0.20 ]
                 ]
             });
@@ -181,8 +181,35 @@ var AppMess = {
                 defaultDuration: 300,
                 calls: [
                     [ { scaleY: 0.1 }, 0.20 ],
-                    [ { scaleY: 1.1 }, 0.20 ],
+                    [ { scaleY: 1.05 }, 0.20 ],
                     [ { scaleY: 1 }, 0.20 ]
+                ]
+            });
+
+            Velocity.RegisterEffect("callout.settings", {
+                defaultDuration: 300,
+                calls: [
+                    [ { scaleY: 0.1 }, 0.20 ],
+                    [ { scaleY: 1.05 }, 0.20 ],
+                    [ { scaleY: 1 }, 0.20 ]
+                ]
+            });
+
+
+            Velocity.RegisterEffect("callout.top", {
+                defaultDuration: 100,
+                calls: [
+                    [ { top: '10px', colorRed: "50%" }, 0.20 ],
+                    [ { colorRed: "50%" }, 0.20 ],
+                ]
+            });
+
+            Velocity.RegisterEffect("callout.settings8", {
+                defaultDuration: 100,
+                calls: [
+                    [ { width: '99%' }, 0.20 ],
+                    [ { scaleX: 1.05 }, 0.20 ],
+                    [ { scaleX: 1 }, 0.20 ]
                 ]
             });
 

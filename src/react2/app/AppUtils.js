@@ -28,6 +28,7 @@ var AppUtils = {
                 AppStore.readData[decodedUrl].readCount = AppStore.readData[decodedUrl].readCount - 1;
             }
         });
+
         if (AppStore.readData[decodedUrl]) {
             AppStore.readData[decodedUrl].readCount = AppStore.readData[decodedUrl].readCount + 1;
         } else {
@@ -35,6 +36,12 @@ var AppUtils = {
                 readCount: 1
             }
         }
+
+        if (!AppStore.readData[decodedUrl].localReadData) {
+            AppStore.readData[decodedUrl].localReadData = [];
+        }
+
+        AppStore.readData[decodedUrl].localReadData.push(data.id);
 
         this.calcFolderUnreadCount(decodeURIComponent(data.folder));
         PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
@@ -61,6 +68,7 @@ var AppUtils = {
         if (AppStore.readData[decodedUrl]) {
             AppStore.readData[decodedUrl].readCount = AppStore.readData[decodedUrl].totalCount;
         }
+        AppStore.nextRequestFromServer[decodedUrl] = true;
 
         this.calcFolderUnreadCount(folder);
         PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
@@ -134,7 +142,6 @@ var AppUtils = {
         for (i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
                 return AppStore.userData.bloglist[decodedFolder][i].title
-                debugger;
             }
         }
     },
@@ -176,10 +183,30 @@ var AppUtils = {
         }
 
         startAnimation();
+
+
+        feedUrl = this.updateForCache(feedUrl);
         $.get("/feed/" + feedUrl, function(result) {
             endAnimation();
             successCallback.apply(this, [result]);
         });
+    },
+
+    updateForCache: function(feedUrl) {
+        var decodedUrl = decodeURIComponent(feedUrl);
+
+        if (AppStore.nextRequestFromServer[decodedUrl]) {
+            AppStore.nextRequestFromServer[decodedUrl] = false;
+            feedUrl = feedUrl + '&v=' + Math.random()
+        } else {
+            var d1 = new Date(); d1.setHours(0); d1.setMinutes(0); d1.setSeconds(0); d1.setMilliseconds(0);
+            var d2 = new Date();
+            var period =  ((d2 - d1) / 1000 / 60 ) % 60; //waaat :) // ok, get the minutes between two dates (not more than an hour). waat :)
+            period =  Math.floor(period/10);
+
+            feedUrl = feedUrl + '&v=' +  d1.getTime() + '___' + period;
+        }
+        return feedUrl;
     },
 
     addNewFeed: function(folder, feed) {

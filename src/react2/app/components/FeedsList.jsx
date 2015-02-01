@@ -36,6 +36,11 @@ var FeedsList = React.createClass({
                 this.props.userSettings[folderName].showRead: true;
     },
 
+    feedTitleClick: function(e) {
+        //Velocity(e.target, "callout.top", function() {
+        //});
+    },
+
     render: function() {
         var feeds, currentFolder = this.getParams().folderName ? this.getParams().folderName : 'root';
 
@@ -74,7 +79,7 @@ var FeedsList = React.createClass({
 
                 return (
                     <li className={feedClasses} key={feed.url} data-url={feed.url}>
-                        <Link to={url} data-url={feed.url}>
+                        <Link to={url} data-url={feed.url} onClick={this.feedTitleClick}>
                             <span className="unreadHandle"></span>
                             <span className="fa fa-file"></span>
                             <span className="feedTitle">{feed.title ? feed.title: '-'}</span>
@@ -82,7 +87,7 @@ var FeedsList = React.createClass({
                         </Link>
                     </li>
                 );
-            });
+            }.bind(this));
 
         return (
             <ul className="menuList">

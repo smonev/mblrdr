@@ -40,7 +40,8 @@ def CreateFirstTimeUser(user):
     logging.debug('create first time user: %s', username)
 
     for feed in blogs:
-        readDataAttr = 'readData__' + str(feed['url']).translate(None, '.')
+        readDataAttr = 'readData__' + username + '__' + str(feed['url']).translate(None, '.')
+
         rd = ReadData(app_username = username, feedUrl = feed['url'], readData = '', readCount = 0, id = readDataAttr)
         rd.put_async()
 

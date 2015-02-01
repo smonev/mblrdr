@@ -157,7 +157,11 @@ var ArticleContent = React.createClass({
                     <span className="fa fa-google-plus displayNone"></span>
                     <div className="contentSubHeader">
                         <a href={this.props.url} target="_blank">
-                            <span className="date">{this.props.author} &middot; {articleDate}</span>
+                            <span className="date">
+                                {this.props.author}
+                                {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ': ''}
+                                {articleDate}
+                            </span>
                             <span className="fa fa-external-link"></span>
                         </a>
                     </div>

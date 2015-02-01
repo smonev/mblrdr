@@ -405,6 +405,10 @@ var AppSettings = React.createClass({
         PubSub.unsubscribe( this.newFeedAdded );
     },
 
+    componentDidUpdate: function(prevProps, prevState) {
+        Velocity(this.getDOMNode(), "callout.settings8");
+    },
+
     getView: function() {
         var view;
 

@@ -1,7 +1,10 @@
 var AppStore = {
     userData : {},
     readData : {},
-    starData : {}
+    starData : {},
+    nextRequestFromServer: {
+        'bla': true
+    }
 };
 
 module.exports = AppStore;

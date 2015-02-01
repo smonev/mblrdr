@@ -24,6 +24,7 @@ var ArticlesList = React.createClass({
     getFeedDataSuccess: function (result) {
         if (this.isMounted()) {
             this.state.articles.push.apply(this.state.articles, JSON.parse(result.feed ? result.feed : "[]"));
+
             this.state.read.push.apply(this.state.read, result.read.split(","));
             this.state.star.push.apply(this.state.star, result.star.split(","));
 
@@ -74,7 +75,7 @@ var ArticlesList = React.createClass({
             }
         }
 
-        var serviceUrl = this.getParams().feedUrl + "?count=" + this.state.nextcount + "&newFeed=0&v=" + Math.random();
+        var serviceUrl = this.getParams().feedUrl + "?count=" + this.state.nextcount + "&newFeed=0";
         var decodedFeedUrl =  decodeURIComponent(this.getParams().feedUrl)
 
         var showRead = this.resolveShowRead();
@@ -111,7 +112,7 @@ var ArticlesList = React.createClass({
     },
 
     componentDidMount: function() {
-        var feedUrl = this.getParams().feedUrl + "?count=-1&newFeed=0&v=" + Math.random();
+        var feedUrl = this.getParams().feedUrl + "?count=-1&newFeed=0";
         AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
 
         this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
@@ -133,7 +134,7 @@ var ArticlesList = React.createClass({
 
         this.handleAddNewFeedProcess();
 
-        Velocity(this.getDOMNode(), "callout.pulseSide");
+        Velocity(this.getDOMNode(), "callout.pulseDown");
     },
 
     componentWillUnmount: function() {
@@ -252,11 +253,9 @@ var ArticlesList = React.createClass({
             this.state.star.push(id);
             starState = 1;
         } else {
-            console.log('star before:' + this.state.star);
             this.state.star = this.state.star.filter(function(star){
               return star !== id
             });
-            console.log('star after:' + this.state.star);
 
             starState = 0;
         };
@@ -270,15 +269,6 @@ var ArticlesList = React.createClass({
         this.setState({
             star: this.state.star
         });
-        //todo persist
-    },
-
-    shouldComponentUpdate: function(nextProps, nextState) {
-        //console.log(nextProps);
-        //console.log(nextState.nextcount);
-        //console.log(this.state.nextcount);
-
-        return true; //nextProps.componentCounter === nextProps.currentActive;
     },
 
     render: function() {
@@ -301,11 +291,13 @@ var ArticlesList = React.createClass({
         }
 
         var showRead = this.resolveShowRead();
+        var feedUrl = decodeURIComponent(this.getParams().feedUrl);
 
         this.state.componentCounter = 0;
         var articles = this.state.articles.map(function (article) {
             this.state.componentCounter = this.state.componentCounter + 1;
-            var isRead = this.state.allArticlesAreRead || this.state.read.indexOf(article.id) > -1;
+            var isRead = this.state.allArticlesAreRead || (this.state.read.indexOf(article.id) > -1) ||
+                (AppStore.readData && AppStore.readData[feedUrl] && AppStore.readData[feedUrl].localReadData && AppStore.readData[feedUrl].localReadData.indexOf(article.id) > -1) ;
             var isStar = this.state.star.indexOf(article.id) > -1;
             var refName = "article" + this.state.componentCounter;
 

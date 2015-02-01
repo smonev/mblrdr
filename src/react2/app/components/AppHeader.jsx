@@ -17,7 +17,7 @@ var AppHeader = React.createClass({
     },
 
     onUpClick: function() {
-        Velocity(this.upButton, "callout.pulseSide");
+        //Velocity(this.upButton, "callout.pulseSide");
 
         if (this.getParams().feedUrl) {
             if (this.getParams().folderName !== 'root') {

@@ -142,6 +142,7 @@ boddy {
   white-space: nowrap;
   display: block;
   color: #2172F7;
+  position: relative;
 }
 .menu .feedTitle:active {
   color: #66AA33;
@@ -165,7 +166,7 @@ boddy {
 }
 .menu .folder .unreadCount {
   float: left;
-  margin-top: -32px;
+  margin-top: -30px;
   cursor: pointer;
   width: 34px;
   line-height: 2em;
@@ -262,7 +263,7 @@ boddy {
   color: #737373;
   margin-left: 38px;
   text-decoration: none;
-  width: 95%;
+  width: 93%;
   display: block;
   position: relative;
   top: 5px;
@@ -726,7 +727,7 @@ span.unreadHand2le {
   opacity: 0.98;
   opacity: 1;
   width: 99%;
-  min-width: 220px;
+  width: 1%;
   padding-left: 0px;
   z-index: 100;
   max-width: 90%;
