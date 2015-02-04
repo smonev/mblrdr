@@ -449,26 +449,27 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         fds.put()
 
-    def addFeed(self, folder, feed, title):
+    def addFeedToBlogList(self, folder, feed, title):
         title = title.replace('"', '\\"')
-        if self.current_folder <> folder:
-            if self.current_folder <> '':
-                if self.importedBlogList <> '':
-                    self.importedBlogList = self.importedBlogList + ', "' + self.current_folder + '":[' + self.folder_feeds + ']'
-                else:
-                    self.importedBlogList = '"' + self.current_folder + '":[' + self.folder_feeds + ']'
 
-                self.folder_feeds = ''
+        try:
+            folderUrls = [f['url'] for f in self.bloglist[folder]]
+        except KeyError:
+            self.bloglist[folder] = [];
+            folderUrls = [];
 
-            self.current_folder = folder
+        feedShouldBeAdded = False
+        try:
+            i = folderUrls.index(feed)
+        except ValueError:
+            feedShouldBeAdded = True
 
-        if self.folder_feeds == '':
-            self.folder_feeds = self.folder_feeds + '{"url":"' + feed + '","title":"' + title + '"}'
-        else:
-            self.folder_feeds = self.folder_feeds + ', ' + '{"url":"' + feed + '","title":"' + title + '"}'
+        if feedShouldBeAdded:
+            self.bloglist[folder].append({'url': feed, 'title': title})
+
 
     def processOutline(self, outline, currentFolder):
-        addedFeeds = 0 ##add first 50 feeds for processing, the rest -will be processed when requested
+        logging.debug('processing folder: %s ', currentFolder)
         for item in outline:
             if (not hasattr(item, 'xmlUrl') and (hasattr(item, 'text') or hasattr(item, 'title'))):
                 folder = item
@@ -481,10 +482,8 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
                 else:
                     title = urlnorm.normalize(item.xmlUrl)
 
-                addedFeeds = addedFeeds + 1
-                self.addFeed(currentFolder, urlnorm.normalize(item.xmlUrl), title)
-                if addedFeeds <= 50:
-                    self.addFeedToDataStore(urlnorm.normalize(item.xmlUrl))
+                self.addFeedToBlogList(currentFolder, urlnorm.normalize(item.xmlUrl), title)
+                self.addFeedToDataStore(urlnorm.normalize(item.xmlUrl))
 
     def post(self):
         user = users.get_current_user()
@@ -500,19 +499,21 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
         blob_reader = blobstore.BlobReader(blob_info.key())
         opmlFile = blob_reader.read()
 
+        ## get user
+        ud = GetAppUserByEmail(user.email())
+        private_data = json.loads(ud.private_data)
+        self.bloglist = private_data['bloglist']
+
         ## parse file
-        self.current_folder = ''
-        self.folder_feeds = ''
-        self.importedBlogList = ''
         outline = opml.from_string(opmlFile)
         self.processOutline(outline, 'root')
 
-        ## get username
-        ud = GetAppUserByEmail(user.email())
-
         ## save new data
-        ud.private_data = '{"username":"' + ud.app_username + '", "bloglist":{ ' + self.importedBlogList + ' }}'
+        private_data['bloglist'] = self.bloglist
+        ud.private_data = json.dumps(private_data)
         ud.put()
+
+        logging.debug('imported blog list: %s', json.dumps(self.bloglist))
 
         self.redirect('/')
 

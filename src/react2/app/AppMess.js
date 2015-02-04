@@ -205,11 +205,11 @@ var AppMess = {
             });
 
             Velocity.RegisterEffect("callout.settings8", {
-                defaultDuration: 100,
+                defaultDuration: 200,
                 calls: [
-                    [ { width: '99%' }, 0.20 ],
-                    [ { scaleX: 1.05 }, 0.20 ],
-                    [ { scaleX: 1 }, 0.20 ]
+                    //[ { width: '99%' }, 0.20 ],
+                    [ { scaleX: 1.15, scaleY: 1.15 }, 0.20 ],
+                    [ { scaleX: 1, scaleY: 1 }, 0.20 ]
                 ]
             });
 
