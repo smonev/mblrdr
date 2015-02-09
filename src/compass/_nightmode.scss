@@ -1,9 +1,10 @@
+// todo remove all the important stuff, as it is not actualy that important
 .nightmode {
   /*background: black;*/
   /*color: #dad0b5;*/
   /*background-color: rgb(39, 40, 34);*/
   /*color: rgb(248, 248, 242);*/
-  background: #212324;
+  background: #212324 !important;
   color: #ddd;
 
   .headerAuthorAndDate  {
@@ -12,6 +13,10 @@
     //color: #C0C0C0 !important;
     //color: #FFE576 !important;
     color: #dad0b5 !important;
+  }
+
+  .menu {
+      background: #212324 !important;
   }
 
   .menu .feedTitle {
@@ -39,8 +44,8 @@
 
   .unreadCount {
     /*background: #fcd114;*/
-    color: black;
-    color: #dad0b5 !important;
+    /* color: #dad0b5 !important; */
+    color: #000 !important;
   }
 
   a.title, .articlesList .article .contentHeader .title, .articlesList .article .content .title {
@@ -91,7 +96,7 @@
   }
 
   a {
-    color: #fcd114;
+    color: #fcd114 !important;
   }
 
   .articlesList .article .contentSubHeader .fa-external-link {
@@ -114,3 +119,4 @@
   }
 
 }
+

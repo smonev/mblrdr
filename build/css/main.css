@@ -64,15 +64,8 @@ html, button, input, select, textarea {
   font-family: sans-serif;
 }
 
-boddy {
-  min-width: 320px;
-  overflow-x: hidden;
-  -webkit-touch-callout: none;
-  -webkit-text-size-adjust: none;
-  -webkit-highlight: none;
-  -webkit-tap-highlight-color: transparent;
-  max-width: 800px;
-  margin: 0px auto;
+body {
+  background: #ededed;
 }
 
 .menu {
@@ -82,9 +75,10 @@ boddy {
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent;
   max-width: 800px;
+  width: 100%;
+  background: #ffffff;
   margin: 0px auto;
   margin-top: 4px;
-  width: 100%;
   padding-left: 2%;
   padding-right: 2%;
 }
@@ -124,10 +118,9 @@ boddy {
   margin-left: 20px;
 }
 .menu .fa-file, .menu .fa-spinner, .menu .fa-folder {
-  /*margin-right: 2%;*/
-  min-width: 30px;
   float: left;
   width: 30px;
+  min-width: 30px;
   margin-top: 2px;
   font-size: 1.2em;
 }
@@ -135,22 +128,25 @@ boddy {
   margin-right: 3%;
   margin-top: 4px;
 }
+.menu .feed > a:active, .menu .folder > a:active, .menu .up:active {
+  color: red;
+  -webkit-transform: translate3d(0px, -5px, 0px);
+  -moz-transform: translate3d(0px, -5px, 0px);
+  -ms-transform: translate3d(0px, -5px, 0px);
+  -o-transform: translate3d(0px, -5px, 0px);
+  transform: translate3d(0px, -5px, 0px);
+}
 .menu .feedTitle {
-  /*margin: 0 39px; unreadCount change*/
   margin: 0 0 0 39px;
   overflow: hidden;
   white-space: nowrap;
   display: block;
   color: #2172F7;
   position: relative;
+  top: 2px;
 }
 .menu .feedTitle:active {
   color: #66AA33;
-  -webkit-transform: translate3d(0px, -5px, 0px);
-  -moz-transform: translate3d(0px, -5px, 0px);
-  -ms-transform: translate3d(0px, -5px, 0px);
-  -o-transform: translate3d(0px, -5px, 0px);
-  transform: translate3d(0px, -5px, 0px);
 }
 .menu .folderName {
   width: 85%;
@@ -158,41 +154,21 @@ boddy {
 }
 .menu .folderName:active {
   color: #66AA33;
-  -webkit-transform: translate3d(0px, -5px, 0px);
-  -moz-transform: translate3d(0px, -5px, 0px);
-  -ms-transform: translate3d(0px, -5px, 0px);
-  -o-transform: translate3d(0px, -5px, 0px);
-  transform: translate3d(0px, -5px, 0px);
+}
+.menu .unreadCount {
+  width: 51px;
+  font-size: 0.41em;
+  text-align: center;
+  color: #ffffff;
+  display: block;
 }
 .menu .folder .unreadCount {
-  float: left;
-  margin-top: -30px;
-  cursor: pointer;
-  width: 34px;
-  line-height: 2em;
-  font-size: 0.46em;
-  text-align: center;
-  color: #fcd114;
-  color: #0A0A0A;
-  color: #160000;
-  color: #dad0b5;
-  color: #ffffff;
-  font-weight: bold;
+  margin-top: -21px;
+  margin-left: -8px;
 }
 .menu .feed .unreadCount {
-  float: left;
-  margin-top: -29px;
-  cursor: pointer;
-  width: 26px;
-  line-height: 2em;
-  font-size: 0.46em;
-  text-align: center;
-  color: #fcd114;
-  color: #0A0A0A;
-  color: #160000;
-  color: #dad0b5;
-  color: #ffffff;
-  font-weight: bold;
+  margin-top: -18px;
+  margin-left: -12px;
 }
 .menu .noUnreadCount {
   margin-right: 0px;
@@ -296,14 +272,6 @@ boddy {
   float: left;
   width: 90%;
 }
-.articlesList .article .contentHeader .authorAndDateToDel, .articlesList .article .content .authorAndDateToDel {
-  white-space: pre;
-  display: inline-block;
-  overflow: hidden;
-  float: right;
-  max-width: 16%;
-  font-size: 0.3em;
-}
 .articlesList .article .contentHeader .imgScaled, .articlesList .article .content .imgScaled {
   width: 100% !important;
   height: auto  !important;
@@ -359,6 +327,7 @@ boddy {
   margin-right: 7px;
   float: left;
   width: 30px;
+  margin-top: -2px;
 }
 .articlesList .content {
   margin-left: 2%;
@@ -470,26 +439,19 @@ boddy {
 
 .headerCaption {
   font-size: 1.7em;
+  line-height: 1.1em;
   color: #737373;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
   display: block;
   float: left;
-  line-height: 1.1em;
-  padding: 7px 0 0px 43px;
-  margin: -37px auto;
+  padding-left: 43px;
+  margin: -29px auto;
   width: 100%;
 }
 .headerCaption:active {
   color: #66AA33;
-}
-
-.up2 {
-  float: left;
-  width: 30px;
-  margin-top: -2em;
-  cursor: pointer;
 }
 
 .up {
@@ -502,13 +464,6 @@ boddy {
   float: left;
   padding: 5px 0 0px 0;
   cursor: pointer;
-}
-.up:a2ctive {
-  -webkit-transform: translate3d(0px, -5px, 0px) !important;
-  -moz-transform: translate3d(0px, -5px, 0px) !important;
-  -ms-transform: translate3d(0px, -5px, 0px) !important;
-  -o-transform: translate3d(0px, -5px, 0px) !important;
-  transform: translate3d(0px, -5px, 0px) !important;
 }
 
 .moreLink {
@@ -539,14 +494,6 @@ boddy {
   color: #2172F7;
 }
 
-.f1a:active {
-  -webkit-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
-  -moz-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
-  -ms-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
-  -o-transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
-  transform: scale3d(1.4, 1.4, 1) translate3d(0px, 0px, 0px);
-}
-
 .fontSizeContainer {
   width: 96%;
   text-align: center;
@@ -556,19 +503,6 @@ boddy {
   padding: 0 3%;
   cursor: pointer;
   font-size: 1.2em;
-}
-
-span.unreadHand2le {
-  float: left;
-  width: 1px;
-  height: 1em;
-  margin-top: 7px;
-  margin-right: 10px;
-  margin-left: -1%;
-}
-
-.unread span.unr2eadHandle {
-  background: red;
 }
 
 .colorWheel {
@@ -602,11 +536,14 @@ span.unreadHand2le {
   /*color: #dad0b5;*/
   /*background-color: rgb(39, 40, 34);*/
   /*color: rgb(248, 248, 242);*/
-  background: #212324;
+  background: #212324 !important;
   color: #ddd;
 }
 .nightmode .headerAuthorAndDate {
   color: #dad0b5 !important;
+}
+.nightmode .menu {
+  background: #212324 !important;
 }
 .nightmode .menu .feedTitle {
   color: #dad0b5 !important;
@@ -625,8 +562,8 @@ span.unreadHand2le {
 }
 .nightmode .unreadCount {
   /*background: #fcd114;*/
-  color: black;
-  color: #dad0b5 !important;
+  /* color: #dad0b5 !important; */
+  color: #000 !important;
 }
 .nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
   color: #dad0b5 !important;
@@ -664,7 +601,7 @@ span.unreadHand2le {
   color: #dad0b5;
 }
 .nightmode a {
-  color: #fcd114;
+  color: #fcd114 !important;
 }
 .nightmode .articlesList .article .contentSubHeader .fa-external-link {
   color: #dad0b5;
@@ -722,7 +659,7 @@ span.unreadHand2le {
   margin-right: auto;
   background-color: white;
   border: 1px solid #5e5e5e;
-  top: 2em;
+  top: 4px;
   overflow-y: auto;
   opacity: 0.98;
   opacity: 1;

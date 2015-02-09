@@ -286,9 +286,9 @@ var ArticlesList = React.createClass({
             )
         }
 
-        if (this.state.articles.length === 0) {
-            return (<div></div>);
-        }
+        //if (this.state.articles.length === 0) {
+        //    return (<div></div>);
+        //}
 
         var showRead = this.resolveShowRead();
         var feedUrl = decodeURIComponent(this.getParams().feedUrl);
@@ -315,7 +315,7 @@ var ArticlesList = React.createClass({
         var moreIconClasses = React.addons.classSet({
             'fa': true,
             'fa-long-arrow-down': true,
-            'displayNone': this.state.noMoreArticles
+            //'displayNone': this.state.noMoreArticles
         });
 
         return (

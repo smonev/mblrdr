@@ -10,7 +10,6 @@ var FoldersList = React.createClass({
     getInitialState: function() {
         return {
             foldersUnreadCount: AppStore.foldersUnreadCount ? AppStore.foldersUnreadCount: {}
-
         };
     },
 
@@ -20,8 +19,15 @@ var FoldersList = React.createClass({
                 foldersUnreadCount: AppStore.foldersUnreadCount
             })
         }.bind(this));
+        var folders = this.getDOMNode().querySelectorAll('.folder');
 
-        Velocity(this.getDOMNode(), "callout.pulseSide");
+        if (folders.length > 0) {
+            var i = 0;
+            //$.each(folders, function(i, el) {
+            //    $(el).delay(50 + (i * 10)).velocity("callout.pulseSide");
+            //})
+            Velocity(this.getDOMNode(), "callout.pulseSide");
+        }
     },
 
     componentWillUnmount: function() {
@@ -53,9 +59,10 @@ var FoldersList = React.createClass({
             return (
                 <li className="folder" key={folder} >
                     <Link to={linkToFolder}>
-                        <span className="fa fa-folder"></span>
+                        <span className="fa fa-folder">
+                            <span className="unreadCount">{folderUnreadCount}</span>
+                        </span>
                         <span className="feedTitle">{folder}</span>
-                        <span className="unreadCount">{folderUnreadCount}</span>
                     </Link>
                 </li>
             );

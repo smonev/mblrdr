@@ -80,10 +80,10 @@ var FeedsList = React.createClass({
                 return (
                     <li className={feedClasses} key={feed.url} data-url={feed.url}>
                         <Link to={url} data-url={feed.url} onClick={this.feedTitleClick}>
-                            <span className="unreadHandle"></span>
-                            <span className="fa fa-file"></span>
+                            <span className="fa fa-file">
+                                <span className="unreadCount">{feedUnreadCount !== 0 ? feedUnreadCount: ''}</span>
+                            </span>
                             <span className="feedTitle">{feed.title ? feed.title: '-'}</span>
-                            <span className="unreadCount">{feedUnreadCount !== 0 ? feedUnreadCount: ''}</span>
                         </Link>
                     </li>
                 );

@@ -46,7 +46,6 @@ var ArticleHeader = React.createClass({
                 </a>
 
                 <div class="bla">
-                    <span className="unreadHandle"></span>
                     <a className="star" onClick={this.toggleArticleStar}>
                         <span className={starClass}></span>
                     </a>
