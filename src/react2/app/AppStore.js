@@ -1,3 +1,5 @@
+'use strict';
+
 var AppStore = {
     userData : {},
     readData : {},

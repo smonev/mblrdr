@@ -1,67 +1,22 @@
-// colorWheel
 // raf polyfill
 // apear
 // velocity animations
 
+'use strict';
+
 var AppMess = {
+
 
     init: function() {
 
-
-        (function() {
-
-            var colorWheel = document.getElementById("colorWheel");
-            var deg = 0;
-            var inAnimation = false;
-            var animationTimeoutID;
-            var rafAnimationID;
-
-            function animateLoader() {
-              colorWheel = colorWheel || document.getElementById("colorWheel");
-              animationTimeoutID = setTimeout(function() {
-                    rafAnimationID = requestAnimationFrame(animateLoader);
-                    deg = deg + 30;
-                    if (colorWheel) {
-                        colorWheel.style.webkitTransform = "rotate(" +  deg + "deg)";
-                        colorWheel.style.MozTransform = "rotate(" +  deg + "deg)";
-                        colorWheel.style.msTransform = "rotate(" +  deg + "deg)";
-                        colorWheel.style.Transform = "rotate(" +  deg + "deg)";
-                    }
-              }, 1000 / 30);
-            }
-
-            $( document ).ajaxStart(function(a, b, c) {
-                return;
-                $('#colorWheel').show();
-                if (!inAnimation) {
-                    inAnimation = true;
-                    animateLoader();
-                }
-            });
-
-            $( document ).ajaxStop(function() {
-                return;
-                inAnimation = false;
-                console.log('in ajax end');
-
-                clearTimeout(animationTimeoutID);
-                window.cancelAnimationFrame(rafAnimationID);
-
-                $('#colorWheel').hide();
-            });
-
-        })();
-
-
-
         (function() {
             //raf polyfill
-            "use strict";if(!Date.now)Date.now=function(){return(new Date).getTime()};(function(){var n=["webkit","moz"];for(var e=0;e<n.length&&!window.requestAnimationFrame;++e){var i=n[e];window.requestAnimationFrame=window[i+"RequestAnimationFrame"];window.cancelAnimationFrame=window[i+"CancelAnimationFrame"]||window[i+"CancelRequestAnimationFrame"]}if(/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent)||!window.requestAnimationFrame||!window.cancelAnimationFrame){var a=0;window.requestAnimationFrame=function(n){var e=Date.now();var i=Math.max(a+16,e);return setTimeout(function(){n(a=i)},i-e)};window.cancelAnimationFrame=clearTimeout}})();
+            'use strict';if(!Date.now)Date.now=function(){return(new Date).getTime()};(function(){var n=['webkit','moz'];for(var e=0;e<n.length&&!window.requestAnimationFrame;++e){var i=n[e];window.requestAnimationFrame=window[i+'RequestAnimationFrame'];window.cancelAnimationFrame=window[i+'CancelAnimationFrame']||window[i+'CancelRequestAnimationFrame']}if(/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent)||!window.requestAnimationFrame||!window.cancelAnimationFrame){var a=0;window.requestAnimationFrame=function(n){var e=Date.now();var i=Math.max(a+16,e);return setTimeout(function(){n(a=i)},i-e)};window.cancelAnimationFrame=clearTimeout}})();
         })();
 
         /* appear.min.js 0.0.14 */
         appear = function() {
-            "use strict";
+            'use strict';
             function e() {
                 var e = window.scrollY || window.pageYOffset;null != n && (o.velocity = e - n, o.delta = o.velocity >= 0 ? o.velocity : -1 * o.velocity), n = e, i && clearTimeout(i), i = setTimeout(function() {
                     n = null
@@ -73,7 +28,7 @@ var AppMess = {
             var n = null,
                 i = 0,
                 o = {};
-            return addEventListener("scroll", e), function(e) {
+            return addEventListener('scroll', e), function(e) {
                     return function() {
                         function e(e, t) {
                             return function() {
@@ -92,13 +47,13 @@ var AppMess = {
                             }, w.debounce)()
                         }
                         function i() {
-                            u(), addEventListener("scroll", n), addEventListener("resize", n)
+                            u(), addEventListener('scroll', n), addEventListener('resize', n)
                         }
                         function r() {
                             m = [], c && clearTimeout(c), a()
                         }
                         function a() {
-                            removeEventListener("scroll", n), removeEventListener("resize", n)
+                            removeEventListener('scroll', n), removeEventListener('resize', n)
                         }
                         function u() {
                             s || (m.forEach(function(e, n) {
@@ -109,7 +64,7 @@ var AppMess = {
                             if (!f) {
                                 f = !0, w.init && w.init();
                                 var e;
-                                if (e = "function" == typeof w.elements ? w.elements() : w.elements) {
+                                if (e = 'function' == typeof w.elements ? w.elements() : w.elements) {
                                     p = e.length;
                                     for (var t = 0; p > t; t += 1) {
                                         m.push(e[t]), v.push(!0);
@@ -139,7 +94,7 @@ var AppMess = {
                                         speed: e.deltaSpeed || 50,
                                         timeout: e.deltaTimeout || 500
                                     }
-                                }, addEventListener("DOMContentLoaded", d), "complete" === document.readyState && d(), {
+                                }, addEventListener('DOMContentLoaded', d), 'complete' === document.readyState && d(), {
                                     trigger: function() {
                                         u()
                                     },
@@ -160,7 +115,7 @@ var AppMess = {
 
         (function() {
 
-            Velocity.RegisterEffect("callout.pulse6", {
+            Velocity.RegisterEffect('callout.pulse6', {
                 defaultDuration: 300,
                 calls: [
                     [ { scaleX: 1.3 }, 0.20 ],
@@ -168,7 +123,7 @@ var AppMess = {
                 ]
             });
 
-            Velocity.RegisterEffect("callout.pulseSide", {
+            Velocity.RegisterEffect('callout.pulseSide', {
                 defaultDuration: 300,
                 calls: [
                     [ { scaleX: 0.1 }, 0.20 ],
@@ -177,7 +132,7 @@ var AppMess = {
                 ]
             });
 
-            Velocity.RegisterEffect("callout.pulseDown", {
+            Velocity.RegisterEffect('callout.pulseDown', {
                 defaultDuration: 300,
                 calls: [
                     [ { scaleY: 0.1 }, 0.20 ],
@@ -186,7 +141,7 @@ var AppMess = {
                 ]
             });
 
-            Velocity.RegisterEffect("callout.settings", {
+            Velocity.RegisterEffect('callout.settings', {
                 defaultDuration: 300,
                 calls: [
                     [ { scaleY: 0.1 }, 0.20 ],
@@ -196,15 +151,15 @@ var AppMess = {
             });
 
 
-            Velocity.RegisterEffect("callout.top", {
+            Velocity.RegisterEffect('callout.top', {
                 defaultDuration: 100,
                 calls: [
-                    [ { top: '10px', colorRed: "50%" }, 0.20 ],
-                    [ { colorRed: "50%" }, 0.20 ],
+                    [ { top: '10px', colorRed: '50%' }, 0.20 ],
+                    [ { colorRed: '50%' }, 0.20 ]
                 ]
             });
 
-            Velocity.RegisterEffect("callout.settings8", {
+            Velocity.RegisterEffect('callout.settings8', {
                 defaultDuration: 200,
                 calls: [
                     //[ { width: '99%' }, 0.20 ],

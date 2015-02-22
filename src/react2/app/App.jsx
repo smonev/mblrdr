@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react');
 var jQuery = require('jquery');
 var FastClick = require('fastclick');
@@ -16,17 +18,9 @@ AppMess.init();
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter;
-var Route = ReactRouter.Route;
-var Routes = ReactRouter.Routes;
 var RouteHandler = Router.RouteHandler;
 
-var Link = ReactRouter.Link;
-
 var PubSub = require('pubsub-js');
-
-
-window.jQuery = jQuery;
-window.$ = jQuery;
 
 var App = React.createClass({
 
@@ -58,7 +52,7 @@ var App = React.createClass({
                 });
 
                 if (result.userSettings.nightmode === 2) {
-                    $('body').addClass('nightmode');
+                    document.body.classList.add('nightmode');
                 }
             }
         }.bind(this));
@@ -66,10 +60,10 @@ var App = React.createClass({
         this.dayOrNigthModeEvent = PubSub.subscribe('NIGHT_MODE_CHANGE', function( msg, daymode ) {
             if (daymode) {
                 this.state.userSettings.nightmode = 1;
-                $('body').removeClass('nightmode');
+                document.body.classList.remove('nightmode');
             } else {
                 this.state.userSettings.nightmode = 2;
-                $('body').addClass('nightmode');
+                document.body.classList.add('nightmode');
             }
 
             this.saveSettings(this.state.userSettings);
@@ -163,4 +157,3 @@ FastClick(document.body);
 React.initializeTouchEvents(true);
 
 module.exports = App;
-

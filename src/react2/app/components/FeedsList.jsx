@@ -1,9 +1,11 @@
+'use strict';
+
 var React = require('react');
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var PubSub = require('pubsub-js');
 var cx = React.addons.classSet;
-var AppStore = require('../AppStore.js')
+var AppStore = require('../AppStore.js');
 
 
 var FeedsList = React.createClass({
@@ -18,11 +20,11 @@ var FeedsList = React.createClass({
         this.feedReadCountChanged = PubSub.subscribe('FEED_READ_COUNT_CHANGED', function( msg, data ) {
             if (data.folder === this.getParams().folderName) {
                 this.setState({
-                    bla: Math.random(312312)
+                    bla: Math.random()
                 });
             }
         }.bind(this));
-        Velocity(this.getDOMNode(), "callout.pulseSide");
+        Velocity(this.getDOMNode(), 'callout.pulseSide');
     },
 
     componentWillUnmount: function() {
@@ -32,12 +34,12 @@ var FeedsList = React.createClass({
     resolveShowRead: function() {
         var folderName = this.getParams().folderName;
 
-        return this.props.userSettings && this.props.userSettings[folderName] && (typeof this.props.userSettings[folderName].showRead !== "undefined") ?
-                this.props.userSettings[folderName].showRead: true;
+        return this.props.userSettings && this.props.userSettings[folderName] && (typeof this.props.userSettings[folderName].showRead !== 'undefined') ?
+                this.props.userSettings[folderName].showRead : true;
     },
 
     feedTitleClick: function(e) {
-        //Velocity(e.target, "callout.top", function() {
+        //Velocity(e.target, 'callout.top', function() {
         //});
     },
 
@@ -53,7 +55,7 @@ var FeedsList = React.createClass({
         feeds = this.props.userData.bloglist[currentFolder];
         feeds = feeds
             .map(function (feed) {
-                var url = "/" + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feed.url);
+                var url = '/' + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feed.url);
 
                 var feedUnreadCount = 0;
 
@@ -80,17 +82,17 @@ var FeedsList = React.createClass({
                 return (
                     <li className={feedClasses} key={feed.url} data-url={feed.url}>
                         <Link to={url} data-url={feed.url} onClick={this.feedTitleClick}>
-                            <span className="fa fa-file">
-                                <span className="unreadCount">{feedUnreadCount !== 0 ? feedUnreadCount: ''}</span>
+                            <span className='fa fa-file'>
+                                <span className='unreadCount'>{feedUnreadCount !== 0 ? feedUnreadCount : ''}</span>
                             </span>
-                            <span className="feedTitle">{feed.title ? feed.title: '-'}</span>
+                            <span className='feedTitle'>{feed.title ? feed.title : '-'}</span>
                         </Link>
                     </li>
                 );
             }.bind(this));
 
         return (
-            <ul className="menuList">
+            <ul className='menuList'>
                 {feeds}
             </ul>
         );

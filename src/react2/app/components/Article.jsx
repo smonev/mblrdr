@@ -1,15 +1,17 @@
+'use strict';
+
 var React = require('react');
 var AppUtils = require('../AppUtils');
 var cx = React.addons.classSet;
 var ReactIntlMixin = require('react-intl');
-var hammer = require('hammerjs')
+var hammer = require('hammerjs');
 window.Hammer = hammer;
 
 var ArticleHeader = React.createClass({
     mixins: [ReactIntlMixin],
 
     componentDidMount: function() {
-        Velocity(this.getDOMNode(), "callout.pulseDown");
+        Velocity(this.getDOMNode(), 'callout.pulseDown');
     },
 
     toggleArticleOpen: function(e) {
@@ -24,38 +26,36 @@ var ArticleHeader = React.createClass({
 
     render: function() {
         var starClass = cx({
-            "fa": true,
-            "fa-star": this.props.isStar,
-            "fa-star-o": !this.props.isStar,
+            'fa': true,
+            'fa-star': this.props.isStar,
+            'fa-star-o': !this.props.isStar
         });
 
 
         var articleDate;
         try {
-            articleDate = this.props.date ? this.formatRelative(this.props.date): '';
+            articleDate = this.props.date ? this.formatRelative(this.props.date) : '';
         } catch (err) {
             articleDate = this.props.date;
         }
 
-        return(
+        return (
             <div>
-                <a href={this.props.url} target="_blank" className="headerAuthorAndDate">
+                <a href={this.props.url} target='_blank' className='headerAuthorAndDate'>
                     {this.props.author}
-                    {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ': ''}
+                    {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ' : ''}
                     {articleDate}
                 </a>
 
-                <div class="bla">
-                    <a className="star" onClick={this.toggleArticleStar}>
+                <div class='bla'>
+                    <a className='star' onClick={this.toggleArticleStar}>
                         <span className={starClass}></span>
                     </a>
 
-                    <a onClick={this.toggleArticleOpen} href={this.props.url} className="title">{this.props.title}</a>
+                    <a onClick={this.toggleArticleOpen} href={this.props.url} className='title'>{this.props.title}</a>
                 </div>
             </div>
-
-        )
-
+        );
     }
 });
 
@@ -64,7 +64,7 @@ var ArticleContent = React.createClass({
     getInitialState: function() {
         return {
             initialZoom: {}
-        }
+        };
     },
 
     panend: function(e) {
@@ -115,64 +115,63 @@ var ArticleContent = React.createClass({
         return {
             fontSize: fontSize,
             lineHeight: lineHeight
-        }
+        };
     },
 
     render: function() {
         var mainSectionClasses = cx({
-            "contentHeader": true,
-            "displayNone": !this.props.isOpen,
+            'contentHeader': true,
+            'displayNone': !this.props.isOpen
         });
 
         var contentSectionClasses = cx({
-            "content": true,
-            "displayNone": !this.props.isOpen
+            'content': true,
+            'displayNone': !this.props.isOpen
         });
 
         var zoomStyle = {
-            fontSize: this.state.initialZoom.fontSize + (this.props.zoomLevel * 3) + "px",
-            lineHeight: this.state.initialZoom.lineHeight  + (this.props.zoomLevel * 3) + "px"
+            fontSize: this.state.initialZoom.fontSize + (this.props.zoomLevel * 3) + 'px',
+            lineHeight: this.state.initialZoom.lineHeight  + (this.props.zoomLevel * 3) + 'px'
         };
 
         var articleDate;
         try {
             //formatRelative might be undefined
-            articleDate = this.props.date ? this.formatRelative(this.props.date): '';
+            articleDate = this.props.date ? this.formatRelative(this.props.date) : '';
         } catch (err) {
             articleDate = this.props.date;
         }
 
-
-        return(
+        return (
             <div>
                 <section className={mainSectionClasses}>
-                    <span className="title">{this.props.title}</span>
-                    <span className="fa fa-angle-double-right" onClick={this.goToNextArticle}></span>
-                    <span className="fa fa-angle-double-left" onClick={this.goToPrevArticle}></span>
-                    <span className="fa fa-angle-double-up displayNone"></span>
-                    <span className="fa fa-share displayNone"></span>
-                    <span className="fa fa-twitter displayNone"></span>
-                    <span className="fa fa-facebook displayNone"></span>
-                    <span className="fa fa-google-plus displayNone"></span>
-                    <div className="contentSubHeader">
-                        <a href={this.props.url} target="_blank">
-                            <span className="date">
+                    <span className='title'>{this.props.title}</span>
+                    <span className='fa fa-angle-double-right' onClick={this.goToNextArticle}></span>
+                    <span className='fa fa-angle-double-left' onClick={this.goToPrevArticle}></span>
+                    <span className='fa fa-angle-double-up displayNone'></span>
+                    <span className='fa fa-share displayNone'></span>
+                    <span className='fa fa-twitter displayNone'></span>
+                    <span className='fa fa-facebook displayNone'></span>
+                    <span className='fa fa-google-plus displayNone'></span>
+                    <div className='contentSubHeader'>
+                        <a href={this.props.url} target='_blank'>
+                            <span className='date'>
                                 {this.props.author}
-                                {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ': ''}
+                                {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ' : ''}
                                 {articleDate}
                             </span>
-                            <span className="fa fa-external-link"></span>
+                            <span className='fa fa-external-link'></span>
                         </a>
                     </div>
-                    <div className="fontSizeContainer">
-                        <span className="fa fa-minus" onClick={this.zoomContent.bind(this, -1)}></span>
-                        <span className="fa fa-font" onClick={this.zoomContent.bind(this, 0)}></span>
-                        <span className="fa fa-plus" onClick={this.zoomContent.bind(this, 1)}></span>
+                    <div className='fontSizeContainer'>
+                        <span className='fa fa-minus' onClick={this.zoomContent.bind(this, -1)}></span>
+                        <span className='fa fa-font' onClick={this.zoomContent.bind(this, 0)}></span>
+                        <span className='fa fa-plus' onClick={this.zoomContent.bind(this, 1)}></span>
                     </div>
                 </section>
                 <section className={contentSectionClasses} style={zoomStyle} dangerouslySetInnerHTML={{__html: this.props.content}} />
             </div>
-        )
+        );
     }
 });
 
@@ -182,7 +181,7 @@ var Article = React.createClass({
             isOpen: false,
             wasOpenedThisSession: false,
             zoomLevel: 0
-        }
+        };
     },
 
     openArticle: function() {
@@ -198,7 +197,7 @@ var Article = React.createClass({
     },
 
     zoomContent: function(out) {
-        var zoomLevel = out === 0 ? 0: this.state.zoomLevel + out;
+        var zoomLevel = out === 0 ? 0 : this.state.zoomLevel + out;
 
         this.setState( {
             zoomLevel: zoomLevel
@@ -208,9 +207,6 @@ var Article = React.createClass({
     toggleArticleOpen: function() {
         if (!this.state.isOpen) {
             this.openArticle();
-            //this.setState({
-            //    wasOpenedThisSession: true
-            //});
         } else {
             this.setState({
                 isOpen: !this.state.isOpen
@@ -231,28 +227,28 @@ var Article = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState) {
         //return nextProps.current !== this.state.count
         return true;
-        return (
-                    (nextProps.componentCounter === nextProps.currentActive) ||
-                    (nextProps.showRead !== this.props.showRead)  ||
-                    (nextProps.isStar !== this.props.isStar)
-                );
+        // return (
+        //             (nextProps.componentCounter === nextProps.currentActive) ||
+        //             (nextProps.showRead !== this.props.showRead)  ||
+        //             (nextProps.isStar !== this.props.isStar)
+        //         );
     },
 
     render: function() {
         //console.log('in Articles');
 
         var articleClasses = cx({
-            "article": true,
+            'article': true,
             'unread': !this.props.isRead
         });
 
         if ((!this.state.wasOpenedThisSession) && ((!this.state.isOpen) && (this.props.isRead) && (!this.props.showRead))) {
-            return (<div />)
+            return (<div />);
         }
 
-        return(
+        return (
             <li className={articleClasses}>
-                <section className="header">
+                <section className='header'>
                     <ArticleHeader
                         isRead={this.props.isRead} isStar={this.props.isStar}
                         toggleArticleStar={this.toggleArticleStar} toggleArticleOpen={this.toggleArticleOpen}
@@ -276,7 +272,7 @@ var Article = React.createClass({
                         />
                 </section>
             </li>
-        )
+        );
     }
 });
 

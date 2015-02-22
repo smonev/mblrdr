@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react');
 
 var PageLoader = React.createClass({
@@ -6,7 +8,7 @@ var PageLoader = React.createClass({
 
     return {
         loaderWidth: innerWidth,
-        loaderLeft: - innerWidth - 20,
+        loaderLeft: -innerWidth - 20,
         animationId: 0,
         pos: 0
     };

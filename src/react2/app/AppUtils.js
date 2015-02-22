@@ -1,3 +1,5 @@
+'use strict';
+
 var AppStore = require('./AppStore.js');
 var PubSub = require('pubsub-js');
 
@@ -5,11 +7,11 @@ var AppUtils = {
 
     scrollTo: function(scrollPos, interval) {
 
-        //Velocity("scroll", { duration: 1500, easing: "spring" })
+        //Velocity('scroll', { duration: 1500, easing: 'spring' })
 
-        //Velocity("scroll", { offset: scrollPos, mobileHA: false, duration: 1500, easing: "spring" });
-        //Velocity(document.body, "scroll", { duration: 250, offset: scrollPos, easing: "spring" });
-        Velocity(document.body, "scroll", { duration: 250, offset: scrollPos, easing: 'easeOutQuad' });
+        //Velocity('scroll', { offset: scrollPos, mobileHA: false, duration: 1500, easing: 'spring' });
+        //Velocity(document.body, 'scroll', { duration: 250, offset: scrollPos, easing: 'spring' });
+        Velocity(document.body, 'scroll', { duration: 250, offset: scrollPos, easing: 'easeOutQuad' });
 
 
         //$('html, body').animate({
@@ -21,10 +23,10 @@ var AppUtils = {
         var markReadData = {}, decodedUrl = decodeURIComponent(data.url);
         markReadData[decodedUrl] = [data.id];
 
-        $.post("/MarkArticlesAsRead?read=1&allRead=-1", {
+        $.post('/MarkArticlesAsRead?read=1&allRead=-1', {
             'data': JSON.stringify(markReadData)
-        }, function(data, status, xhr) {
-            if (status !== "success") {
+        }, function(newdata, status, xhr) {
+            if (status !== 'success') {
                 AppStore.readData[decodedUrl].readCount = AppStore.readData[decodedUrl].readCount - 1;
             }
         });
@@ -34,7 +36,7 @@ var AppUtils = {
         } else {
             AppStore.readData[decodedUrl] = {
                 readCount: 1
-            }
+            };
         }
 
         if (!AppStore.readData[decodedUrl].localReadData) {
@@ -48,18 +50,18 @@ var AppUtils = {
     },
 
     starArticle: function(data) {
-        $.post("/StarArticle", {
+        $.post('/StarArticle', {
             'data': JSON.stringify(data)
-        }, function(data, status, xhr) {
+        }, function(newdata, status, xhr) {
             //PubSub.publish('STAR_ARTICLE', JSON.parse(data));
         });
     },
 
     markFeedAsRead: function(folder, url) {
-        var markReadData = {}, decodedUrl = decodeURIComponent(url);
+        var markReadData = {}, decodedUrl = decodeURIComponent(url), decodedFolder = decodeURIComponent(folder);
         markReadData[decodedUrl] = [];
 
-        $.post("/MarkArticlesAsRead?read=1&allRead=1", {
+        $.post('/MarkArticlesAsRead?read=1&allRead=1', {
             'data': JSON.stringify(markReadData)
         }, function(data, status, xhr) {
             PubSub.publish('MARK_READ_FEED', JSON.parse(data).feedUrl);
@@ -70,12 +72,12 @@ var AppUtils = {
         }
         AppStore.nextRequestFromServer[decodedUrl] = true;
 
-        this.calcFolderUnreadCount(folder);
+        this.calcFolderUnreadCount(decodedFolder);
         PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
     },
 
     markFolderAsRead: function(folder) {
-        var feeds = AppStore.userData.bloglist[folder];;
+        var feeds = AppStore.userData.bloglist[folder];
         feeds.map(function (feed) {
             this.markFeedAsRead(folder, feed.url);
         }.bind(this));
@@ -85,7 +87,7 @@ var AppUtils = {
 
     markAllFoldersAsRead: function() {
         Object.keys(AppStore.userData.bloglist).forEach(function(folder) {
-          this.markFolderAsRead(folder);
+            this.markFolderAsRead(folder);
         }.bind(this));
     },
 
@@ -98,15 +100,17 @@ var AppUtils = {
     },
 
     unsubscribeFeed: function(folder, feed) {
+        function successUnsubscribe() {
+            alert('You are now unsubscibed from ' + decodedFeed);
+        }
+
         var decodedFeed = decodeURIComponent(feed);
         var decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
 
-        for (i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
+        for (var i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
                 AppStore.userData.bloglist[decodedFolder].splice(i, 1);
-                this.saveSettingsWithDelete(decodedFeed, function() {
-                    alert('You are now unsubscibed from ' + decodedFeed);
-                });
+                this.saveSettingsWithDelete(decodedFeed, successUnsubscribe);
                 break;
             }
         }
@@ -116,11 +120,11 @@ var AppUtils = {
         var decodedFeed = decodeURIComponent(feed);
         var decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
 
-        if (typeof AppStore.userData.bloglist === "undefined") {
+        if (typeof AppStore.userData.bloglist === 'undefined') {
             return;
         }
 
-        for (i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
+        for (var i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
                 if (AppStore.userData.bloglist[decodedFolder][i].title !== title) {
                     AppStore.userData.bloglist[decodedFolder][i].title = title;
@@ -135,36 +139,32 @@ var AppUtils = {
         var decodedFeed = decodeURIComponent(feed);
         var decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
 
-        if (typeof AppStore.userData.bloglist === "undefined") {
-            return;
-        }
-
-        for (i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
+        for (var i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
-                return AppStore.userData.bloglist[decodedFolder][i].title
+                return AppStore.userData.bloglist[decodedFolder][i].title;
             }
         }
     },
 
     getFeedData: function (feedUrl, successCallback) {
-        var colorWheel = document.getElementById("colorWheel");
+        var colorWheel = document.getElementById('colorWheel');
         var deg = 0;
         var inAnimation = false;
         var animationTimeoutID;
         var rafAnimationID;
 
         function animateLoader() {
-          colorWheel = colorWheel || document.getElementById("colorWheel");
-          animationTimeoutID = setTimeout(function() {
+            colorWheel = colorWheel || document.getElementById('colorWheel');
+            animationTimeoutID = setTimeout(function() {
                 rafAnimationID = requestAnimationFrame(animateLoader);
                 deg = deg + 30;
                 if (colorWheel) {
-                    colorWheel.style.webkitTransform = "rotate(" +  deg + "deg)";
-                    colorWheel.style.MozTransform = "rotate(" +  deg + "deg)";
-                    colorWheel.style.msTransform = "rotate(" +  deg + "deg)";
-                    colorWheel.style.Transform = "rotate(" +  deg + "deg)";
+                    colorWheel.style.webkitTransform = 'rotate(' +  deg + 'deg)';
+                    colorWheel.style.MozTransform = 'rotate(' +  deg + 'deg)';
+                    colorWheel.style.msTransform = 'rotate(' +  deg + 'deg)';
+                    colorWheel.style.Transform = 'rotate(' +  deg + 'deg)';
                 }
-          }, 1000 / 30);
+            }, 1000 / 30);
         }
 
         function startAnimation() {
@@ -186,7 +186,7 @@ var AppUtils = {
 
 
         feedUrl = this.updateForCache(feedUrl);
-        $.get("/feed/" + feedUrl, function(result) {
+        $.get('/feed/' + feedUrl, function(result) {
             endAnimation();
             successCallback.apply(this, [result]);
         });
@@ -197,12 +197,12 @@ var AppUtils = {
 
         if (AppStore.nextRequestFromServer[decodedUrl]) {
             AppStore.nextRequestFromServer[decodedUrl] = false;
-            feedUrl = feedUrl + '&v=' + Math.random()
+            feedUrl = feedUrl + '&v=' + Math.random();
         } else {
             var d1 = new Date(); d1.setHours(0); d1.setMinutes(0); d1.setSeconds(0); d1.setMilliseconds(0);
             var d2 = new Date();
             var period =  ((d2 - d1) / 1000 / 60 ) % 60; //waaat :) // ok, get the minutes between two dates (not more than an hour). waat :)
-            period =  Math.floor(period/10);
+            period =  Math.floor(period / 10);
 
             feedUrl = feedUrl + '&v=' +  d1.getTime() + '___' + period;
         }
@@ -225,7 +225,7 @@ var AppUtils = {
     },
 
     addNewFolder: function(folder) {
-        if (typeof AppStore.userData.bloglist[folder] === "undefined") {
+        if (typeof AppStore.userData.bloglist[folder] === 'undefined') {
             AppStore.userData.bloglist[folder] = [];
             this.saveSettings(function() {
                 PubSub.publish('NEW_FOLDER_ADDED', folder);
@@ -235,15 +235,15 @@ var AppUtils = {
 
     saveSettings: function (successCallback) {
         var data = {
-            "bloglist": AppStore.userData.bloglist,
-            "username": AppStore.userData.username,
-            "userSettings": AppStore.userData.userSettings
+            'bloglist': AppStore.userData.bloglist,
+            'username': AppStore.userData.username,
+            'userSettings': AppStore.userData.userSettings
         };
 
-        $.post("/SaveSettings", {
+        $.post('/SaveSettings', {
             'data': JSON.stringify(data)
         }, function () {
-            if (typeof successCallback === "function") {
+            if (typeof successCallback === 'function') {
                 successCallback.call();
             }
         });
@@ -251,15 +251,15 @@ var AppUtils = {
 
     saveSettingsWithDelete: function(deleteFeed, successCallback) {
         var data = {
-            "bloglist": AppStore.userData.bloglist,
-            "username": AppStore.userData.username,
-            "userSettings": AppStore.userData.userSettings
+            'bloglist': AppStore.userData.bloglist,
+            'username': AppStore.userData.username,
+            'userSettings': AppStore.userData.userSettings
         };
 
-        $.post("/SaveSettings?deleteFeed=" + deleteFeed, {
+        $.post('/SaveSettings?deleteFeed=' + deleteFeed, {
             'data': JSON.stringify(data)
-        }, function(data) {
-            if (typeof successCallback === "function") {
+        }, function() {
+            if (typeof successCallback === 'function') {
                 successCallback.call();
             }
         });
@@ -273,6 +273,7 @@ var AppUtils = {
     },
 
     calcFoldersUnreadCount: function() {
+        var folder;
         AppStore.foldersUnreadCount = {};
 
         for (folder in AppStore.userData.bloglist) {
@@ -281,18 +282,18 @@ var AppUtils = {
     },
 
     calcFolderUnreadCount: function(folder) {
-        var folderUnreadCount = 0;
+        var folderUnreadCount = 0, feedUrl;
 
-        if (typeof AppStore.userData.bloglist === "undefined") {
+        if (typeof AppStore.userData.bloglist === 'undefined') {
             return;
         }
 
         //get all folder feeds
-        for (var i=0; i < AppStore.userData.bloglist[folder].length; i++) {
+        for (var i = 0; i < AppStore.userData.bloglist[folder].length; i++) {
             feedUrl = AppStore.userData.bloglist[folder][i].url;
-            if (typeof AppStore.readData[feedUrl] !== "undefined") {
+            if (typeof AppStore.readData[feedUrl] !== 'undefined') {
                 if (AppStore.readData[feedUrl].totalCount - AppStore.readData[feedUrl].readCount > 0) {
-                    folderUnreadCount = folderUnreadCount + AppStore.readData[feedUrl].totalCount - AppStore.readData[feedUrl].readCount
+                    folderUnreadCount = folderUnreadCount + AppStore.readData[feedUrl].totalCount - AppStore.readData[feedUrl].readCount;
                 }
             }
         }
@@ -338,7 +339,7 @@ var AppUtils = {
     },
 
     generateUploadUrlHandler: function(successCallback) {
-        $.get("/GenerateUploadUrl", function(data) {
+        $.get('/GenerateUploadUrl', function(data) {
             successCallback.apply(this, [data]);
         });
     }
