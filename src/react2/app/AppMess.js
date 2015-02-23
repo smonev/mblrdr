@@ -15,7 +15,7 @@ var AppMess = {
         })();
 
         /* appear.min.js 0.0.14 */
-        appear = function() {
+        var appear = function() {
             'use strict';
             function e() {
                 var e = window.scrollY || window.pageYOffset;null != n && (o.velocity = e - n, o.delta = o.velocity >= 0 ? o.velocity : -1 * o.velocity), n = e, i && clearTimeout(i), i = setTimeout(function() {
@@ -112,6 +112,7 @@ var AppMess = {
                     }()(e)
             }
         }();
+        window.appear = appear;
 
         (function() {
 

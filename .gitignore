@@ -62,3 +62,6 @@ node_modules/
 .sublime-grunt.cache
 mblrdr.sublime-project
 mblrdr.sublime-workspace
+
+##gulp
+.sublime-gulp.cache
