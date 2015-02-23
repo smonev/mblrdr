@@ -54,16 +54,17 @@ var AppHeader = React.createClass({
         }
 
         return (
+
             <header>
                 <a className='feedSettingsAction'>
                     <span className='fa fa-bars' onClick={this.settingsClick}></span>
                 </a>
 
-                <a className='up' onClick={this.onUpClick}>
-                    <span className={homeIconClassName}></span>
-                    <span className='headerCaption'>{title}</span>
-                </a>
+                <span className='headerCaption' onClick={this.onUpClick}>{title}</span>
+
+                <a className={homeIconClassName} onClick={this.onUpClick}></a>
             </header>
+
         );
     }
 });

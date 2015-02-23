@@ -7,6 +7,19 @@
   background: #212324 !important;
   color: #ddd;
 
+  .menu .menuList > .feed, .menu .menuList > .folder, header, .articlesList .article {
+    background: #212324 !important;
+  }
+
+  header {
+      background: #37474F !important;
+  }
+
+  .feed:first-child, .folder:first-child {
+      margin-top: 0px;
+  }
+
+
   .headerAuthorAndDate  {
     //color: ;
     //color: #E7C264 !important;
@@ -33,11 +46,11 @@
 
   .menu .menuList, .articlesList {
     .folder, .feed, .article {
-      border-top: 1px solid #202020;
+      border-top: 1px solid #353535;
     }
 
     .folder:last-child, .feed:last-child, .article:last-child {
-      border-bottom: 1px solid #202020;
+      border-bottom: 1px solid #353535;
     }
 
   }

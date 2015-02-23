@@ -19,19 +19,22 @@ body {
   -webkit-text-size-adjust: none;
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent;
-  max-width: 800px;
-  width: 100%;
-  background: #ffffff;
-
-  margin: 0px auto;
-  margin-top: 4px;
-  padding-left: 2%;
-  padding-right: 2%;
-  padding-bottom: 4px;
 
   header {
     width: 100%;
-    height: 46px;
+    margin: 0px auto;
+    margin-top: 0px;
+    padding-left: 2%;
+    padding-right: 2%;
+    background: #B0BEC5;
+
+    .fa-home, .fa-long-arrow-left {
+        float: left;
+        width: 30px;
+        margin-top: -54px;
+        cursor: pointer;
+    }
+
   }
 
   .menuList {
@@ -53,10 +56,19 @@ body {
       font-size: 2em;
       padding-top: 8px;
       padding-bottom: 8px;
+
+      max-width: 800px;
+      width: 100%;
+      background: #ffffff;
+      margin: 0px auto;
+      margin-top: 4px;
+      padding-left: 2%;
+      padding-right: 2%;
+      padding-bottom: 4px;
     }
 
     &>.feed:first-child, &>.folder:first-child {
-      margin-top: 0px;
+      //margin-top: 0px;
     }
 
     &>.feed a, &>.folder a {
@@ -93,11 +105,6 @@ body {
       -ms-transform: translate3d(0px, -5px, 0px);
       -o-transform: translate3d(0px, -5px, 0px);
       transform: translate3d(0px, -5px, 0px);
-      //border-color: #66AA33;
-      //border-style: solid;
-      //border-top-width: 1px;
-      //border-left-width: 20px;
-
   }
 
   .feedTitle {
@@ -152,10 +159,12 @@ body {
 
   .article {
     border-top: 1px solid #e8e8e8;
-    display: inline-block;
+    max-width: 800px;
     width: 100%;
-    padding-top: 12px;
-    padding-bottom: 8px;
+    background: #ffffff;
+    margin: 0px auto;
+    padding: 13px 2% 10px 2%;
+    overflow: hidden;
 
     a {
       color: #2172F7;
@@ -450,23 +459,20 @@ body {
   float: right;
   width: 30px;
   cursor: pointer;
-  padding-top: 5px;
+  padding-top: 24px;
+  margin-left: 16px;
+
 }
 
-.headerCaption {
-  font-size: 1.7em;
-  line-height: 1.1em;
-
+ .headerCaption {
+  font-size: 2.2em;
   color: #737373;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
   display: block;
-  float: left;
-  padding-left: 43px;
-  margin: -29px auto;
-  width: 100%;
-
+  margin: 0px auto;
+  padding: 20px 50px;
 
   &:active {
     color: #66AA33;
@@ -482,19 +488,12 @@ body {
 
   .fa {
     float: left;
-    padding: 5px 0 0px 0;
+    padding: 16px 2% 0px 0;
     cursor: pointer;
   }
-}
 
-.moreLink {
-  margin: 26px;
-  display: block;
-  text-align: center;
-  margin-bottom: 26px;
-
-  .fa-long-arrow-down {
-    color: #737373;
+  .fa-home {
+    display: none;
   }
 }
 
@@ -510,6 +509,7 @@ body {
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+  max-width: 720px;
 }
 
 .folder a:active, .feedTitle:active, .header .title:active {

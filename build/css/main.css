@@ -74,18 +74,20 @@ body {
   -webkit-text-size-adjust: none;
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent;
-  max-width: 800px;
-  width: 100%;
-  background: #ffffff;
-  margin: 0px auto;
-  margin-top: 4px;
-  padding-left: 2%;
-  padding-right: 2%;
-  padding-bottom: 4px;
 }
 .menu header {
   width: 100%;
-  height: 46px;
+  margin: 0px auto;
+  margin-top: 0px;
+  padding-left: 2%;
+  padding-right: 2%;
+  background: #B0BEC5;
+}
+.menu header .fa-home, .menu header .fa-long-arrow-left {
+  float: left;
+  width: 30px;
+  margin-top: -54px;
+  cursor: pointer;
 }
 .menu .menuList {
   padding: 0;
@@ -104,9 +106,14 @@ body {
   font-size: 2em;
   padding-top: 8px;
   padding-bottom: 8px;
-}
-.menu .menuList > .feed:first-child, .menu .menuList > .folder:first-child {
-  margin-top: 0px;
+  max-width: 800px;
+  width: 100%;
+  background: #ffffff;
+  margin: 0px auto;
+  margin-top: 4px;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 4px;
 }
 .menu .menuList > .feed a, .menu .menuList > .folder a {
   text-decoration: none;
@@ -181,10 +188,12 @@ body {
 }
 .articlesList .article {
   border-top: 1px solid #e8e8e8;
-  display: inline-block;
+  max-width: 800px;
   width: 100%;
-  padding-top: 12px;
-  padding-bottom: 8px;
+  background: #ffffff;
+  margin: 0px auto;
+  padding: 13px 2% 10px 2%;
+  overflow: hidden;
 }
 .articlesList .article a {
   color: #2172F7;
@@ -435,21 +444,19 @@ body {
   float: right;
   width: 30px;
   cursor: pointer;
-  padding-top: 5px;
+  padding-top: 24px;
+  margin-left: 16px;
 }
 
 .headerCaption {
-  font-size: 1.7em;
-  line-height: 1.1em;
+  font-size: 2.2em;
   color: #737373;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
   display: block;
-  float: left;
-  padding-left: 43px;
-  margin: -29px auto;
-  width: 100%;
+  margin: 0px auto;
+  padding: 20px 50px;
 }
 .headerCaption:active {
   color: #66AA33;
@@ -463,18 +470,11 @@ body {
 }
 .up .fa {
   float: left;
-  padding: 5px 0 0px 0;
+  padding: 16px 2% 0px 0;
   cursor: pointer;
 }
-
-.moreLink {
-  margin: 26px;
-  display: block;
-  text-align: center;
-  margin-bottom: 26px;
-}
-.moreLink .fa-long-arrow-down {
-  color: #737373;
+.up .fa-home {
+  display: none;
 }
 
 .moreLink2 {
@@ -489,6 +489,7 @@ body {
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+  max-width: 720px;
 }
 
 .folder a:active, .feedTitle:active, .header .title:active {
@@ -540,6 +541,15 @@ body {
   background: #212324 !important;
   color: #ddd;
 }
+.nightmode .menu .menuList > .feed, .nightmode .menu .menuList > .folder, .nightmode header, .nightmode .articlesList .article {
+  background: #212324 !important;
+}
+.nightmode header {
+  background: #37474F !important;
+}
+.nightmode .feed:first-child, .nightmode .folder:first-child {
+  margin-top: 0px;
+}
 .nightmode .headerAuthorAndDate {
   color: #dad0b5 !important;
 }
@@ -556,10 +566,10 @@ body {
   color: #dad0b5 !important;
 }
 .nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
-  border-top: 1px solid #202020;
+  border-top: 1px solid #353535;
 }
 .nightmode .menu .menuList .folder:last-child, .nightmode .menu .menuList .feed:last-child, .nightmode .menu .menuList .article:last-child, .nightmode .articlesList .folder:last-child, .nightmode .articlesList .feed:last-child, .nightmode .articlesList .article:last-child {
-  border-bottom: 1px solid #202020;
+  border-bottom: 1px solid #353535;
 }
 .nightmode .unreadCount {
   /*background: #fcd114;*/
@@ -998,10 +1008,6 @@ body {
 }
 
 @media all and (max-width: 640px) {
-  .articles, .articlesHeader, .menu {
-    margin-right: 1%;
-  }
-
   .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
     right: 1%;
   }

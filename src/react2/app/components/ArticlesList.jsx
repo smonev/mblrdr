@@ -117,7 +117,9 @@ var ArticlesList = React.createClass({
         var feedUrl = this.getParams().feedUrl + '?count=-1&newFeed=0';
         AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
 
-        this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
+        if (AppStore.userData.bloglist) {
+            this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
+        }
 
         this.resolveShowRead();
         document.addEventListener('keyup', this.keyUp);
