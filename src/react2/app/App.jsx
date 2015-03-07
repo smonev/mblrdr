@@ -1,26 +1,25 @@
 'use strict';
 
 var React = require('react');
-var jQuery = require('jquery');
-var FastClick = require('fastclick');
-
-var AppHeader = require('./components/AppHeader.jsx');
-var AppSettings = require('./components/AppSettings.jsx');
-
-var FeedsList = require('./components/FeedsList.jsx');
-var FoldersList = require('./components/FoldersList.jsx');
-var PageLoader = require('./components/PageLoader.jsx');
-
-var AppStore = require('./AppStore.js');
-var AppUtils = require('./AppUtils.js');
-var AppMess = require('./AppMess.js');
-AppMess.init();
-
 var ReactRouter = require('react-router');
 var Router = ReactRouter;
 var RouteHandler = Router.RouteHandler;
 
+var jQuery = require('jquery');
+var FastClick = require('fastclick');
 var PubSub = require('pubsub-js');
+
+var AppHeader = require('./components/AppHeader.jsx');
+var AppSettings = require('./components/AppSettings.jsx');
+var FeedsList = require('./components/FeedsList.jsx');
+var FoldersList = require('./components/FoldersList.jsx');
+var PageLoader = require('./components/PageLoader.jsx');
+var AppStore = require('./AppStore.js');
+var AppUtils = require('./AppUtils.js');
+var AppMess = require('./AppMess.js');
+var AppMessages = require('./Const.js');
+
+AppMess.init();
 
 var App = React.createClass({
 
@@ -57,7 +56,7 @@ var App = React.createClass({
             }
         }.bind(this));
 
-        this.dayOrNigthModeEvent = PubSub.subscribe('NIGHT_MODE_CHANGE', function( msg, daymode ) {
+        this.dayOrNigthModeEvent = PubSub.subscribe(AppMessages.NIGHT_MODE_CHANGE, function( msg, daymode ) {
             if (daymode) {
                 this.state.userSettings.nightmode = 1;
                 document.body.classList.remove('nightmode');

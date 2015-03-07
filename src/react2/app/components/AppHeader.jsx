@@ -1,12 +1,18 @@
 'use strict';
 
 var React = require('react');
-var Navigation = require('react-router').Navigation;
 var ReactRouter = require('react-router');
+var Navigation = ReactRouter.Navigation;
+
 var cx = React.addons.classSet;
 
 var AppHeader = React.createClass({
+    propTypes: {
+        showSettings: React.PropTypes.func.isRequired
+    },
+
     mixins: [Navigation, ReactRouter.State],
+
 
     getInitialState: function() {
         return {

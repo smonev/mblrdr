@@ -3,13 +3,15 @@
 var React = require('react');
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
-var PubSub = require('pubsub-js');
 var cx = React.addons.classSet;
-var AppStore = require('../AppStore.js');
 
+var PubSub = require('pubsub-js');
+
+var AppStore = require('../AppStore.js');
 
 var FeedsList = React.createClass({
     mixins: [ ReactRouter.State ],
+
     getInitialState: function() {
         return {
             folderUnreadCounts: {}

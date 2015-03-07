@@ -23,6 +23,39 @@ var ArticlesList = React.createClass({
         };
     },
 
+    componentDidMount: function() {
+        var feedUrl = this.getParams().feedUrl + '?count=-1&newFeed=0';
+        AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
+
+        if (AppStore.userData.bloglist) {
+            this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
+        }
+
+        this.resolveShowRead();
+        document.addEventListener('keyup', this.keyUp);
+
+        this.markReadFeedEvent = PubSub.subscribe('MARK_READ_FEED', function( msg, data ) {
+            this.markFeedAsRead(data);
+        }.bind(this));
+
+        this.showReadChangeEvent = PubSub.subscribe('SHOWREAD_CHANGE', function( msg, data ) {
+            this.render();
+        }.bind(this));
+
+        this.handleAddNewFeedProcess();
+
+        Velocity(this.getDOMNode(), 'callout.pulseDown');
+    },
+
+    componentWillUnmount: function() {
+        PubSub.unsubscribe( this.markReadFolderEvent );
+        PubSub.unsubscribe( this.markReadFeedEvent );
+        PubSub.unsubscribe( this.showReadChangeEvent );
+
+        document.removeEventListener('keyup', this.keyUp);
+        this.props.setTitle('');
+    },
+
     getFeedDataSuccess: function (result) {
         if (this.isMounted()) {
             this.state.articles.push.apply(this.state.articles, JSON.parse(result.feed ? result.feed : '[]'));
@@ -113,39 +146,6 @@ var ArticlesList = React.createClass({
         }
     },
 
-    componentDidMount: function() {
-        var feedUrl = this.getParams().feedUrl + '?count=-1&newFeed=0';
-        AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
-
-        if (AppStore.userData.bloglist) {
-            this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
-        }
-
-        this.resolveShowRead();
-        document.addEventListener('keyup', this.keyUp);
-
-        this.markReadFeedEvent = PubSub.subscribe('MARK_READ_FEED', function( msg, data ) {
-            this.markFeedAsRead(data);
-        }.bind(this));
-
-        this.showReadChangeEvent = PubSub.subscribe('SHOWREAD_CHANGE', function( msg, data ) {
-            this.render();
-        }.bind(this));
-
-        this.handleAddNewFeedProcess();
-
-        Velocity(this.getDOMNode(), 'callout.pulseDown');
-    },
-
-    componentWillUnmount: function() {
-        PubSub.unsubscribe( this.markReadFolderEvent );
-        PubSub.unsubscribe( this.markReadFeedEvent );
-        PubSub.unsubscribe( this.showReadChangeEvent );
-
-        document.removeEventListener('keyup', this.keyUp);
-        this.props.setTitle('');
-    },
-
     goToNextArticleMain: function(direction, currentActive) {
         this.setState({
             currentActive: currentActive
@@ -219,11 +219,11 @@ var ArticlesList = React.createClass({
             ref = 'article' + (this.state.currentActive);
             this.refs[ref].toggleArticleStar();
         } else if (e.keyCode === 86) { //v
-            //openCurrentArticleInNewWindow();
+            //todo openCurrentArticleInNewWindow();
         } else if (e.keyCode === 77) { //m
-            //toggleCurrentArticleRead();
+            //todo toggleCurrentArticleRead();
         } else if (e.keyCode === 191) { //?
-            //
+            //todo show help (controls)
         }
     },
 
@@ -299,7 +299,8 @@ var ArticlesList = React.createClass({
             var refName = 'article' + this.state.componentCounter;
 
             return (
-                <Article key={refName} ref={refName} showRead={showRead}
+                <Article key={refName} ref={refName}
+                    showRead={showRead}
                     componentCounter={this.state.componentCounter}
                     currentActive={this.state.currentActive}
                     article={article} isRead={isRead} isStar={isStar}

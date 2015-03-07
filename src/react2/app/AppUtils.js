@@ -1,6 +1,8 @@
 'use strict';
 
 var AppStore = require('./AppStore.js');
+var AppMessages = require('./Const.js');
+
 var PubSub = require('pubsub-js');
 
 var AppUtils = {
@@ -46,7 +48,7 @@ var AppUtils = {
         AppStore.readData[decodedUrl].localReadData.push(data.id);
 
         this.calcFolderUnreadCount(decodeURIComponent(data.folder));
-        PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
+        PubSub.publish(AppMessages.FOLDERS_UNREAD_COUNT_CHANGED, {});
     },
 
     starArticle: function(data) {
@@ -64,7 +66,7 @@ var AppUtils = {
         $.post('/MarkArticlesAsRead?read=1&allRead=1', {
             'data': JSON.stringify(markReadData)
         }, function(data, status, xhr) {
-            PubSub.publish('MARK_READ_FEED', JSON.parse(data).feedUrl);
+            PubSub.publish(AppMessages.MARK_READ_FEED, JSON.parse(data).feedUrl);
         });
 
         if (AppStore.readData[decodedUrl]) {
@@ -73,7 +75,7 @@ var AppUtils = {
         AppStore.nextRequestFromServer[decodedUrl] = true;
 
         this.calcFolderUnreadCount(decodedFolder);
-        PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
+        PubSub.publish(AppMessages.FOLDERS_UNREAD_COUNT_CHANGED, {});
     },
 
     markFolderAsRead: function(folder) {
@@ -82,7 +84,7 @@ var AppUtils = {
             this.markFeedAsRead(folder, feed.url);
         }.bind(this));
         this.calcFolderUnreadCount(folder);
-        PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
+        PubSub.publish(AppMessages.FOLDERS_UNREAD_COUNT_CHANGED, {});
     },
 
     markAllFoldersAsRead: function() {
@@ -94,7 +96,7 @@ var AppUtils = {
     deleteFolder: function(folder) {
         delete AppStore.userData.bloglist[folder];
         this.saveSettings(function() {
-            PubSub.publish('DELETE_FOLDER', folder);
+            PubSub.publish(AppMessages.DELETE_FOLDER, folder);
             alert('Folder ' + folder + ' is deleted.');
         });
     },
@@ -217,7 +219,7 @@ var AppUtils = {
         });
 
         this.saveSettings(function() {
-            PubSub.publish('NEW_FEED_ADDED', {
+            PubSub.publish(AppMessages.NEW_FEED_ADDED, {
                 'folder': folder,
                 'feed': feed
             });
@@ -228,7 +230,7 @@ var AppUtils = {
         if (typeof AppStore.userData.bloglist[folder] === 'undefined') {
             AppStore.userData.bloglist[folder] = [];
             this.saveSettings(function() {
-                PubSub.publish('NEW_FOLDER_ADDED', folder);
+                PubSub.publish(AppMessages.NEW_FOLDER_ADDED, folder);
             });
         }
     },
@@ -317,7 +319,7 @@ var AppUtils = {
         });
 
         this.saveSettings(function() {
-            PubSub.publish('FEED_FOLDER_CHANGED', {
+            PubSub.publish(AppMessages.FEED_FOLDER_CHANGED, {
                 'toFolder': toFolder,
                 'feed': url
             });
@@ -331,8 +333,8 @@ var AppUtils = {
         $.get(url, function(data) {
             AppStore.readData = data;
             this.calcFoldersUnreadCount();
-            PubSub.publish('FOLDERS_UNREAD_COUNT_CHANGED', {});
-            PubSub.publish('FEED_READ_COUNT_CHANGED', {
+            PubSub.publish(AppMessages.FOLDERS_UNREAD_COUNT_CHANGED, {});
+            PubSub.publish(AppMessages.FEED_READ_COUNT_CHANGED, {
                 folder: initialFolder
             });
         }.bind(this));

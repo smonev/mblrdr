@@ -1,13 +1,24 @@
 'use strict';
 
 var React = require('react');
-var AppUtils = require('../AppUtils');
 var cx = React.addons.classSet;
+
 var ReactIntlMixin = require('react-intl');
 var hammer = require('hammerjs');
 window.Hammer = hammer;
 
+var AppUtils = require('../AppUtils');
+
 var ArticleHeader = React.createClass({
+    props: {
+        isRead: React.PropTypes.bool.isRequired,
+        toggleArticleStar: React.PropTypes.func.isRequired,
+        title: React.PropTypes.string.isRequired,
+        url: React.PropTypes.string.isRequired,
+        date: React.PropTypes.string.isRequired,
+        author: React.PropTypes.string.isRequired
+    },
+
     mixins: [ReactIntlMixin],
 
     componentDidMount: function() {
@@ -30,9 +41,8 @@ var ArticleHeader = React.createClass({
             'fa-star': this.props.isStar,
             'fa-star-o': !this.props.isStar
         });
-
-
         var articleDate;
+
         try {
             articleDate = this.props.date ? this.formatRelative(this.props.date) : '';
         } catch (err) {
@@ -60,21 +70,27 @@ var ArticleHeader = React.createClass({
 });
 
 var ArticleContent = React.createClass({
+
+    props: {
+        isOpen: React.PropTypes.bool.isRequired,
+        isRead: React.PropTypes.bool.isRequired,
+        isStar: React.PropTypes.bool.isRequired,
+        title: React.PropTypes.string.isRequired,
+        url: React.PropTypes.string.isRequired,
+        date: React.PropTypes.string.isRequired,
+        author: React.PropTypes.string.isRequired,
+        content: React.PropTypes.string.isRequired,
+        goToNextArticle: React.PropTypes.func.isRequired,
+        zoomContent: React.PropTypes.func.isRequired,
+        zoomLevel: React.PropTypes.number.isRequired
+    },
+
     mixins: [ReactIntlMixin],
+
     getInitialState: function() {
         return {
             initialZoom: {}
         };
-    },
-
-    panend: function(e) {
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-            if (e.deltaX > 100) {
-                this.props.goToNextArticle.apply(this, [1]);
-            } else if (e.deltaX < -100) {
-                this.props.goToNextArticle.apply(this, [-1]);
-            }
-        }
     },
 
     componentDidMount: function() {
@@ -90,6 +106,16 @@ var ArticleContent = React.createClass({
     componentWillUnmount: function() {
         if (this.hammertime) {
             this.hammertime.destroy();
+        }
+    },
+
+    panend: function(e) {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            if (e.deltaX > 100) {
+                this.props.goToNextArticle.apply(this, [1]);
+            } else if (e.deltaX < -100) {
+                this.props.goToNextArticle.apply(this, [-1]);
+            }
         }
     },
 
@@ -176,6 +202,19 @@ var ArticleContent = React.createClass({
 });
 
 var Article = React.createClass({
+
+    props: {
+        showRead: React.PropTypes.bool.isRequired,
+        componentCounter: React.PropTypes.number.isRequired,
+        currentActive: React.PropTypes.number.isRequired,
+        article: React.PropTypes.object.isRequired,
+        isRead: React.PropTypes.bool.isRequired,
+        isStar: React.PropTypes.bool.isRequired,
+        toggleArticleStar: React.PropTypes.func.isRequired,
+        toggleArticleOpen: React.PropTypes.func.isRequired,
+        goToNextArticleMain: React.PropTypes.func.isRequired
+    },
+
     getInitialState: function() {
         return {
             isOpen: false,
@@ -224,19 +263,7 @@ var Article = React.createClass({
         this.props.goToNextArticleMain.apply(this, [value, this.props.componentCounter]);
     },
 
-    shouldComponentUpdate: function(nextProps, nextState) {
-        //return nextProps.current !== this.state.count
-        return true;
-        // return (
-        //             (nextProps.componentCounter === nextProps.currentActive) ||
-        //             (nextProps.showRead !== this.props.showRead)  ||
-        //             (nextProps.isStar !== this.props.isStar)
-        //         );
-    },
-
     render: function() {
-        //console.log('in Articles');
-
         var articleClasses = cx({
             'article': true,
             'unread': !this.props.isRead

@@ -2,10 +2,12 @@
 
 var React = require('react/addons');
 var ReactRouter = require('react-router');
-var EventEmitter = require('events').EventEmitter;
 var cx = React.addons.classSet;
+
 var PubSub = require('pubsub-js');
+
 var AppUtils = require('./../AppUtils.js');
+var AppMessages = require('./../Const.js');
 
 var MarkReadSetting = React.createClass({
 
@@ -75,7 +77,7 @@ var ShowHideSetting = React.createClass({
         }
 
         this.props.saveSettings(this.props.userSettings);
-        PubSub.publish('SHOWREAD_CHANGE', {
+        PubSub.publish(AppMessages.SHOWREAD_CHANGE, {
             'showRead': showRead,
             'view': this.props.view
         });
@@ -136,7 +138,7 @@ var ShowHideSetting = React.createClass({
 var NightModeSetting = React.createClass({
 
     nightModeClick: function(e) {
-        PubSub.publish('NIGHT_MODE_CHANGE', e.target.classList.contains('dayMode'));
+        PubSub.publish(AppMessages.NIGHT_MODE_CHANGE, e.target.classList.contains('dayMode'));
         this.props.hideSettings.call();
     },
 
@@ -181,7 +183,7 @@ var ChangeFolderSetting = React.createClass({
     },
 
     componentDidMount: function() {
-        this.feedFolderChanged = PubSub.subscribe('FEED_FOLDER_CHANGED', function( msg, data ) {
+        this.feedFolderChanged = PubSub.subscribe(AppMessages.FEED_FOLDER_CHANGED, function( msg, data ) {
             var url = '/' + encodeURIComponent(data.toFolder) + '/' + encodeURIComponent(data.feed);
             this.transitionTo(url);
             this.props.hideSettings.call();
@@ -386,12 +388,12 @@ var AppSettings = React.createClass({
     },
 
     componentWillMount: function() {
-        this.newFolderAdded = PubSub.subscribe('NEW_FOLDER_ADDED', function( msg, data ) {
+        this.newFolderAdded = PubSub.subscribe(AppMessages.NEW_FOLDER_ADDED, function( msg, data ) {
             this.transitionTo('/' + data);
             this.hideSettings();
         }.bind(this));
 
-        this.newFeedAdded = PubSub.subscribe('NEW_FEED_ADDED', function( msg, data ) {
+        this.newFeedAdded = PubSub.subscribe(AppMessages.NEW_FEED_ADDED, function( msg, data ) {
             var url = '/' + encodeURIComponent(data.folder) + '/' + encodeURIComponent(data.feed) + '?new=1';
             this.transitionTo(url);
             this.hideSettings();

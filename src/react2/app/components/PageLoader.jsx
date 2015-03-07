@@ -4,14 +4,14 @@ var React = require('react');
 
 var PageLoader = React.createClass({
   getInitialState: function() {
-    var innerWidth = window.innerWidth;
+      var innerWidth = window.innerWidth;
 
-    return {
-        loaderWidth: innerWidth,
-        loaderLeft: -innerWidth - 20,
-        animationId: 0,
-        pos: 0
-    };
+      return {
+          loaderWidth: innerWidth,
+          loaderLeft: -innerWidth - 20,
+          animationId: 0,
+          pos: 0
+      };
   },
 
   animate: function() {
@@ -56,7 +56,9 @@ var PageLoader = React.createClass({
       };
 
       return (
-          <span style={style}>{''}</span>
+          <span style={style}>
+            {''}
+          </span>
       );
   }
 });
