@@ -186,6 +186,11 @@ body {
     padding: 13px 2% 10px 2%;
     overflow: hidden;
 
+    &.articleOpen {
+      max-width: 880px;
+      margin-top: 10px;
+    }
+
     a {
       color: #2172F7;
     }

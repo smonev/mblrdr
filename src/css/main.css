@@ -164,6 +164,9 @@ body {
     margin: 0px auto;
     padding: 13px 2% 10px 2%;
     overflow: hidden; }
+    .articlesList .article.articleOpen {
+      max-width: 880px;
+      margin-top: 10px; }
     .articlesList .article a {
       color: #2172F7; }
     .articlesList .article .footer {
