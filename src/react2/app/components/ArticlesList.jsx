@@ -125,12 +125,9 @@ var ArticlesList = React.createClass({
 
     resolveShowRead: function() {
         var view = this.getView(), showRead = true;
-        if (
-            (this.props.userSettings[view[0].name]) &&
-            (this.props.userSettings[view[0].name][view[1].name]) &&
-            (typeof this.props.userSettings[view[0].name][view[1].name].showRead !== 'undefined')
-        ) {
-            showRead =  this.props.userSettings[view[0].name][view[1].name].showRead;
+        try {
+            showRead = this.props.userSettings[view[0].name][view[1].name].showRead;
+        } catch (e) {
         }
 
         return showRead;
