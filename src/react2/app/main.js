@@ -26,11 +26,10 @@ var routes = (
     <Route name='home' path='/' handler={App}>
         <Route name='folderFeeds' path='/:folderName' handler={FeedsList}></Route>
         <Route name='feedItems' path='/:folderName/:feedUrl' handler={ArticlesList}></Route>
-        <DefaultRoute name='root' path='/' handler={FoldersList} />
+        <DefaultRoute name='root' handler={FoldersList} />
         <NotFoundRoute handler={NotFound}/>
     </Route>
 );
-
 
 Router.run(routes, function (Handler) {
     React.render(<Handler/>, document.body);
