@@ -8,6 +8,7 @@ var cx = React.addons.classSet;
 var PubSub = require('pubsub-js');
 
 var AppStore = require('../AppStore.js');
+var AppMessages = require('./../Const.js');
 
 var FeedsList = React.createClass({
     mixins: [ ReactRouter.State ],
@@ -19,14 +20,14 @@ var FeedsList = React.createClass({
     },
 
     componentDidMount: function() {
-        this.feedReadCountChanged = PubSub.subscribe('FEED_READ_COUNT_CHANGED', function( msg, data ) {
+        this.feedReadCountChanged = PubSub.subscribe(AppMessages.FEED_READ_COUNT_CHANGED, function( msg, data ) {
             if (data.folder === this.getParams().folderName) {
                 this.setState({
                     bla: Math.random()
                 });
             }
         }.bind(this));
-        Velocity(this.getDOMNode(), 'callout.pulseSide');
+        //Velocity(this.getDOMNode(), 'callout.pulseSide');
     },
 
     componentWillUnmount: function() {

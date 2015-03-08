@@ -2,14 +2,15 @@
 
 /** @jsx React.DOM */
 
-
 var React = require('react');
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
-var FeedsList = require('../components/FeedsList.jsx');
-var PubSub = require('pubsub-js');
-var AppStore = require('../AppStore.js');
 
+var PubSub = require('pubsub-js');
+
+var FeedsList = require('../components/FeedsList.jsx');
+var AppStore = require('../AppStore.js');
+var AppMessages = require('./../Const.js');
 
 var FoldersList = React.createClass({
     getInitialState: function() {
@@ -19,7 +20,7 @@ var FoldersList = React.createClass({
     },
 
     componentDidMount: function() {
-        this.folderUnreadCountChanged = PubSub.subscribe('FOLDERS_UNREAD_COUNT_CHANGED', function( msg, data ) {
+        this.folderUnreadCountChanged = PubSub.subscribe(AppMessages.FOLDERS_UNREAD_COUNT_CHANGED, function( msg, data ) {
             this.setState({
                 foldersUnreadCount: AppStore.foldersUnreadCount
             });
@@ -31,7 +32,7 @@ var FoldersList = React.createClass({
             //$.each(folders, function(i, el) {
             //    $(el).delay(50 + (i * 10)).velocity('callout.pulseSide');
             //})
-            Velocity(this.getDOMNode(), 'callout.pulseSide');
+            //Velocity(this.getDOMNode(), 'callout.pulseSide');
         }
     },
 

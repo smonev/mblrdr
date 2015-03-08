@@ -8,6 +8,8 @@ var AppStore = require('../AppStore.js');
 
 var PubSub = require('pubsub-js');
 
+var AppMessages = require('./../Const.js');
+
 var ArticlesList = React.createClass({
     mixins: [ ReactRouter.State, ReactRouter.Navigation ],
 
@@ -34,11 +36,11 @@ var ArticlesList = React.createClass({
         this.resolveShowRead();
         document.addEventListener('keyup', this.keyUp);
 
-        this.markReadFeedEvent = PubSub.subscribe('MARK_READ_FEED', function( msg, data ) {
+        this.markReadFeedEvent = PubSub.subscribe(AppMessages.MARK_READ_FEED, function( msg, data ) {
             this.markFeedAsRead(data);
         }.bind(this));
 
-        this.showReadChangeEvent = PubSub.subscribe('SHOWREAD_CHANGE', function( msg, data ) {
+        this.showReadChangeEvent = PubSub.subscribe(AppMessages.SHOWREAD_CHANGE, function( msg, data ) {
             this.render();
         }.bind(this));
 
@@ -93,6 +95,7 @@ var ArticlesList = React.createClass({
                 return document.getElementsByClassName('moreLink2');
             },
             appear: function appear(){
+                console.log('more click appear');
                 that.moreClick.call();
             },
             bounds: 100,
