@@ -51,14 +51,28 @@ body {
   -webkit-text-size-adjust: none;
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent; }
-  .menu header {
+  .menu .headroom-wrapper {
     width: 100%;
     margin: 0px auto;
     margin-top: 0px;
     padding-left: 2%;
     padding-right: 2%;
     background: #B0BEC5; }
-    .menu header .fa-home, .menu header .fa-long-arrow-left {
+    .menu .headroom-wrapper .headerCaption {
+      font-size: 2.03em;
+      color: #737373;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+      margin: 0px auto;
+      padding: 20px 50px;
+      text-transform: uppercase; }
+      .menu .headroom-wrapper .headerCaption:active {
+        color: #66AA33; }
+    .menu .headroom-wrapper .headroom--pinned {
+      background: #B0BEC5; }
+    .menu .headroom-wrapper .fa-home, .menu .headroom-wrapper .fa-long-arrow-left {
       float: left;
       width: 30px;
       margin-top: -52px;
@@ -150,6 +164,9 @@ body {
     margin: 0px auto;
     padding: 13px 2% 10px 2%;
     overflow: hidden; }
+    .articlesList .article.articleOpen {
+      max-width: 880px;
+      margin-top: 10px; }
     .articlesList .article a {
       color: #2172F7; }
     .articlesList .article .footer {
@@ -359,19 +376,6 @@ body {
   padding-top: 24px;
   margin-left: 16px; }
 
-.headerCaption {
-  font-size: 2.03em;
-  color: #737373;
-  cursor: pointer;
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
-  margin: 0px auto;
-  padding: 20px 50px;
-  text-transform: uppercase; }
-  .headerCaption:active {
-    color: #66AA33; }
-
 .up {
   width: 90%;
   display: block;
@@ -531,7 +535,7 @@ body {
   color: green; }
 
 .feedSettings {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   margin-left: auto;
