@@ -9,8 +9,8 @@ var streamify = require('gulp-streamify');
 var notify = require('gulp-notify');
 var gutil = require('gulp-util');
 var shell = require('gulp-shell');
-//var eslint = require('gulp-eslint');
 
+var sass = require('gulp-sass');
 
 var appOptions = {
 
@@ -107,7 +107,12 @@ var browserifyTask = function (bundleOptions) {
   if (bundleOptions.watch) {
     appBundler = watchify(appBundler);
     appBundler.on('update', rebundle);
+
+    gulp.watch("./src/compass/*.scss", ['sass']);
+
   }
+
+  
 
   // Run the vendor bundle when the default Gulp task starts
   vendorBundler.bundle()
@@ -160,7 +165,7 @@ var backendTask = function (bundleOptions) {
 
 
 
-gulp.task('default', function () {
+gulp.task('_watch', function () {
 
   browserifyTask({
     watch: true,
@@ -196,12 +201,8 @@ gulp.task('gae deploy', shell.task([
   'echo finished gae deploy',
 ]));
 
-
-gulp.task('lint', function () {
-    // Note: To have the process exit with an error code (1) on
-    //  lint error, return the stream and pipe to failOnError last.
-    return gulp.src(['./src/react2/app/**/*.js'])
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failOnError());
-}); 
+gulp.task('sass', function () {
+    gulp.src('./src/compass/*.scss')
+        .pipe(sass({errLogToConsole: true}))
+        .pipe(gulp.dest('./src/css/'));
+});
