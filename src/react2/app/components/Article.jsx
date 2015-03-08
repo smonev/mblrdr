@@ -57,7 +57,7 @@ var ArticleHeader = React.createClass({
                     {articleDate}
                 </a>
 
-                <div class='bla'>
+                <div className='bla'>
                     <a className='star' onClick={this.toggleArticleStar}>
                         <span className={starClass}></span>
                     </a>
