@@ -86,7 +86,7 @@ body {
 .menu header .fa-home, .menu header .fa-long-arrow-left {
   float: left;
   width: 30px;
-  margin-top: -54px;
+  margin-top: -52px;
   cursor: pointer;
 }
 .menu .menuList {
@@ -449,7 +449,7 @@ body {
 }
 
 .headerCaption {
-  font-size: 2.2em;
+  font-size: 2.03em;
   color: #737373;
   cursor: pointer;
   overflow: hidden;
@@ -457,6 +457,7 @@ body {
   display: block;
   margin: 0px auto;
   padding: 20px 50px;
+  text-transform: uppercase;
 }
 .headerCaption:active {
   color: #66AA33;
@@ -579,6 +580,9 @@ body {
 .nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
   color: #dad0b5 !important;
   text-decoration: none;
+}
+.nightmode .unread a.title {
+  color: #A08301 !important;
 }
 .nightmode .date {
   color: #dad0b5 !important;
