@@ -7,18 +7,35 @@ var PubSub = require('pubsub-js');
 
 var AppUtils = {
 
+    getHeadroom: function() {
+        return document.querySelectorAll('.headroom')[0];
+    },
+
     scrollTo: function(scrollPos, interval) {
+        var scrollUp = (scrollPos - document.body.scrollTop) < 0;
+        if (scrollUp) {
+            scrollPos = scrollPos - 200;
 
-        //Velocity('scroll', { duration: 1500, easing: 'spring' })
+            if (!this.headroom) {
+                this.headroom = this.getHeadroom();
+                //this.headroom.classList.removeClass('displayNone');
+            }
+        }
 
-        //Velocity('scroll', { offset: scrollPos, mobileHA: false, duration: 1500, easing: 'spring' });
-        //Velocity(document.body, 'scroll', { duration: 250, offset: scrollPos, easing: 'spring' });
-        Velocity(document.body, 'scroll', { duration: 250, offset: scrollPos, easing: 'easeOutQuad' });
-
-
-        //$('html, body').animate({
-        //    scrollTop: scrollPos
-        //}, interval);
+        Velocity(document.body, 'scroll', {
+            duration: 250,
+            offset: scrollPos,
+            easing: 'easeOutQuad',
+            complete: function(elements) {
+                if (scrollUp) {
+                    Velocity(document.body, 'scroll', {
+                        duration: 1,
+                        offset: scrollPos + 200
+                    });
+                    //this.headroom.classList.remove('displayNone');
+                }
+            }.bind(this)
+        });
     },
 
     markArticleAsRead: function(data) {

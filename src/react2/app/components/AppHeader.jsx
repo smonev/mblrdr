@@ -25,8 +25,6 @@ var AppHeader = React.createClass({
     },
 
     onUpClick: function() {
-        //Velocity(this.upButton, 'callout.pulseSide');
-
         if (this.getParams().feedUrl) {
             if (this.getParams().folderName !== 'root') {
                 this.transitionTo(decodeURIComponent('/' + this.getParams().folderName));
@@ -36,10 +34,6 @@ var AppHeader = React.createClass({
         } else if (this.getParams().folderName) {
             this.transitionTo('/');
         }
-    },
-
-    componentDidMount: function() {
-        this.upButton = document.querySelectorAll('.up')[0];
     },
 
     render: function() {

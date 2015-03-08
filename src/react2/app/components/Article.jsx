@@ -229,10 +229,9 @@ var Article = React.createClass({
             wasOpenedThisSession: true
         });
 
-        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 70, 300);
+        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 80, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
-
     },
 
     zoomContent: function(out) {
@@ -266,7 +265,10 @@ var Article = React.createClass({
     render: function() {
         var articleClasses = cx({
             'article': true,
-            'unread': !this.props.isRead
+            'unread': !this.props.isRead,
+            'articleOpen': this.state.isOpen,
+            'articleActive': this.state.isOpen
+
         });
 
         if ((!this.state.wasOpenedThisSession) && ((!this.state.isOpen) && (this.props.isRead) && (!this.props.showRead))) {
