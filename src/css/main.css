@@ -1,452 +1,363 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
   font: inherit;
   font-size: 100%;
-  vertical-align: baseline;
-}
+  vertical-align: baseline; }
 
 html {
-  line-height: 1;
-}
+  line-height: 1; }
 
 ol, ul {
-  list-style: none;
-}
+  list-style: none; }
 
 table {
   border-collapse: collapse;
-  border-spacing: 0;
-}
+  border-spacing: 0; }
 
 caption, th, td {
   text-align: left;
   font-weight: normal;
-  vertical-align: middle;
-}
+  vertical-align: middle; }
 
 q, blockquote {
-  quotes: none;
-}
+  quotes: none; }
+
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
-  content: none;
-}
+  content: none; }
 
 a img {
-  border: none;
-}
+  border: none; }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
-  display: block;
-}
+  display: block; }
 
 *, *:before, *:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+  box-sizing: border-box; }
 
 html, button, input, select, textarea {
-  font-family: sans-serif;
-}
+  font-family: sans-serif; }
 
 body {
-  background: #ededed;
-}
+  background: #ededed; }
 
 .menu {
   min-width: 320px;
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: none;
   -webkit-highlight: none;
-  -webkit-tap-highlight-color: transparent;
-}
-.menu header {
-  width: 100%;
-  margin: 0px auto;
-  margin-top: 0px;
-  padding-left: 2%;
-  padding-right: 2%;
-  background: #B0BEC5;
-}
-.menu header .fa-home, .menu header .fa-long-arrow-left {
-  float: left;
-  width: 30px;
-  margin-top: -52px;
-  cursor: pointer;
-}
-.menu .menuList {
-  padding: 0;
-  margin-top: 0px;
-}
-.menu .menuList .feed, .menu .menuList .folder {
-  border-top: 1px solid #e8e8e8;
-  text-align: left;
-}
-.menu .menuList .feed:last-child, .menu .menuList .folder:last-child {
-  border-bottom: 1px solid #e8e8e8;
-}
-.menu .menuList > .feed, .menu .menuList > .folder {
-  white-space: pre;
-  line-height: 1.4em;
-  font-size: 2em;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  max-width: 800px;
-  width: 100%;
-  background: #ffffff;
-  margin: 0px auto;
-  margin-top: 4px;
-  padding-left: 2%;
-  padding-right: 2%;
-  padding-bottom: 4px;
-}
-.menu .menuList > .feed a, .menu .menuList > .folder a {
-  text-decoration: none;
-  display: block;
-  color: #2172F7;
-  cursor: pointer;
-}
-.menu h3 {
-  color: #2172F7;
-  margin-left: 20px;
-}
-.menu .fa-file, .menu .fa-spinner, .menu .fa-folder {
-  float: left;
-  width: 30px;
-  min-width: 30px;
-  margin-top: 2px;
-  font-size: 1.2em;
-}
-.menu .fa-folder {
-  margin-right: 3%;
-  margin-top: 4px;
-}
-.menu .feed > a:active, .menu .folder > a:active, .menu .up:active {
-  color: red;
-  -webkit-transform: translate3d(0px, -5px, 0px);
-  -moz-transform: translate3d(0px, -5px, 0px);
-  -ms-transform: translate3d(0px, -5px, 0px);
-  -o-transform: translate3d(0px, -5px, 0px);
-  transform: translate3d(0px, -5px, 0px);
-}
-.menu .feedTitle {
-  margin: 0 0 0 39px;
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
-  color: #2172F7;
-  position: relative;
-  top: 2px;
-}
-.menu .feedTitle:active {
-  color: #66AA33;
-}
-.menu .folderName {
-  width: 85%;
-  display: inline-block;
-}
-.menu .folderName:active {
-  color: #66AA33;
-}
-.menu .unreadCount {
-  width: 51px;
-  font-size: 0.41em;
-  text-align: center;
-  color: #ffffff;
-  display: block;
-}
-.menu .folder .unreadCount {
-  margin-top: -21px;
-  margin-left: -8px;
-}
-.menu .feed .unreadCount {
-  margin-top: -18px;
-  margin-left: -12px;
-}
-.menu .noUnreadCount {
-  margin-right: 0px;
-}
+  -webkit-tap-highlight-color: transparent; }
+  .menu header {
+    width: 100%;
+    margin: 0px auto;
+    margin-top: 0px;
+    padding-left: 2%;
+    padding-right: 2%;
+    background: #B0BEC5; }
+    .menu header .fa-home, .menu header .fa-long-arrow-left {
+      float: left;
+      width: 30px;
+      margin-top: -52px;
+      cursor: pointer; }
+  .menu .menuList {
+    padding: 0;
+    margin-top: 0px; }
+    .menu .menuList .feed, .menu .menuList .folder {
+      border-top: 1px solid #e8e8e8;
+      text-align: left; }
+    .menu .menuList .feed:last-child, .menu .menuList .folder:last-child {
+      border-bottom: 1px solid #e8e8e8; }
+    .menu .menuList > .feed, .menu .menuList > .folder {
+      white-space: pre;
+      line-height: 1.4em;
+      font-size: 2em;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      max-width: 800px;
+      width: 100%;
+      background: #ffffff;
+      margin: 0px auto;
+      margin-top: 4px;
+      padding-left: 2%;
+      padding-right: 2%;
+      padding-bottom: 4px; }
+    .menu .menuList > .feed a, .menu .menuList > .folder a {
+      text-decoration: none;
+      display: block;
+      color: #2172F7;
+      cursor: pointer; }
+  .menu h3 {
+    color: #2172F7;
+    margin-left: 20px; }
+  .menu .fa-file, .menu .fa-spinner, .menu .fa-folder {
+    float: left;
+    width: 30px;
+    min-width: 30px;
+    margin-top: 2px;
+    font-size: 1.2em; }
+  .menu .fa-folder {
+    margin-right: 3%;
+    margin-top: 4px; }
+  .menu .feed > a:active, .menu .folder > a:active, .menu .up:active {
+    color: red;
+    -webkit-transform: translate3d(0px, -5px, 0px);
+    -moz-transform: translate3d(0px, -5px, 0px);
+    -ms-transform: translate3d(0px, -5px, 0px);
+    -o-transform: translate3d(0px, -5px, 0px);
+    transform: translate3d(0px, -5px, 0px); }
+  .menu .feedTitle {
+    margin: 0 0 0 39px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    color: #2172F7;
+    position: relative;
+    top: 2px; }
+    .menu .feedTitle:active {
+      color: #66AA33; }
+  .menu .folderName {
+    width: 85%;
+    display: inline-block; }
+    .menu .folderName:active {
+      color: #66AA33; }
+  .menu .unreadCount {
+    width: 51px;
+    font-size: 0.41em;
+    text-align: center;
+    color: #ffffff;
+    display: block; }
+  .menu .folder .unreadCount {
+    margin-top: -21px;
+    margin-left: -8px; }
+  .menu .feed .unreadCount {
+    margin-top: -18px;
+    margin-left: -12px; }
+  .menu .noUnreadCount {
+    margin-right: 0px; }
 
 .articlesList {
   padding: 0;
-  margin-top: 0px;
-}
-.articlesList .article {
-  border-top: 1px solid #e8e8e8;
-  max-width: 800px;
-  width: 100%;
-  background: #ffffff;
-  margin: 0px auto;
-  padding: 13px 2% 10px 2%;
-  overflow: hidden;
-}
-.articlesList .article a {
-  color: #2172F7;
-}
-.articlesList .article .footer {
-  display: none;
-}
-.articlesList .article .header {
-  display: inline-block;
-  width: 100%;
-  font-size: 2em;
-  line-height: 1.4em;
-}
-.articlesList .article .header .headerUrl .fa-external-link {
-  float: right;
-  display: inline-block;
-  font-size: 0.3em;
-  margin-top: 19px;
-  margin-left: 1%;
-  color: #66AA33;
-  text-decoration: none;
-}
-.articlesList .article .header a.title {
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
-  text-decoration: none;
-  outline: none;
-  color: #4285f4;
-}
-.articlesList .article .header a.title:visited {
-  color: #4285f4;
-}
-.articlesList .article .header a.title:focus {
-  outline: none;
-}
-.articlesList .article .header a.title:active {
-  color: #66AA33;
-}
-.articlesList .article .header .headerUrl {
-  float: right;
-  margin-top: -43px;
-  cursor: pointer;
-  width: 12%;
-  max-width: 12%;
-  display: block;
-  text-decoration: none;
-}
-.articlesList .article .header .headerAuthorAndDate {
-  font-size: 0.45em;
-  font-weight: normal;
-  line-height: 1.05em;
-  color: #737373;
-  margin-left: 38px;
-  text-decoration: none;
-  width: 93%;
-  display: block;
-  position: relative;
-  top: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.articlesList .article .authorAndDate {
-  display: inline-block;
-  overflow: hidden;
-  font-size: 0.3em;
-  font-weight: normal;
-  line-height: 1.5em;
-  color: black;
-  margin-left: 4em;
-}
-.articlesList .article .contentHeader, .articlesList .article .content {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  font-size: 0.5em;
-  position: relative;
-  color: #444444;
-  font-size: 16px;
-  line-height: 24px;
-}
-.articlesList .article .contentHeader .title, .articlesList .article .content .title {
-  font-size: 2em;
-  color: black;
-  white-space: inherit;
-  line-height: 1.2em;
-  float: left;
-  width: 90%;
-}
-.articlesList .article .contentHeader .imgScaled, .articlesList .article .content .imgScaled {
-  width: 100% !important;
-  height: auto  !important;
-}
-.articlesList .article .contentHeader img, .articlesList .article .content img {
-  max-width: 100%;
-  height: auto;
-}
-.articlesList .article .contentHeader .fa-undo, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-long-arrow-left, .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .contentHeader .fa-star-o, .articlesList .article .contentHeader .fa-share, .articlesList .article .contentHeader .fa-facebook, .articlesList .article .contentHeader .fa-twitter, .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-undo, .articlesList .article .content .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-long-arrow-left, .articlesList .article .content .fa-angle-double-up, .articlesList .article .content .fa-star-o, .articlesList .article .content .fa-share, .articlesList .article .content .fa-facebook, .articlesList .article .content .fa-twitter, .articlesList .article .content .fa-google-plus {
-  position: absolute;
-  right: 0%;
-  color: #fcd114;
-  cursor: pointer;
-  font-size: 3em;
-}
-.articlesList .article .contentHeader .fa-undo, .articlesList .article .content .fa-undo {
-  top: 110px;
-  font-size: 1.4em;
-}
-.articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .content .fa-angle-double-right {
-  top: 0px;
-}
-.articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .content .fa-angle-double-left {
-  top: 70px;
-}
-.articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .content .fa-angle-double-up {
-  top: 110px;
-}
-.articlesList .article .contentHeader .fa-share, .articlesList .article .content .fa-share {
-  top: 160px;
-  font-size: 1.3em;
-}
-.articlesList .article .contentHeader .fa-facebook, .articlesList .article .content .fa-facebook {
-  top: 210px;
-  margin-right: 1%;
-}
-.articlesList .article .contentHeader .fa-twitter, .articlesList .article .content .fa-twitter {
-  top: 260px;
-  margin-right: -1%;
-}
-.articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-google-plus {
-  top: 310px;
-  margin-right: -1%;
-}
-.articlesList .article:last-child {
-  border-bottom: 1px solid #e8e8e8;
-}
-.articlesList h2 {
-  margin: 0;
-  padding-bottom: 10px;
-}
-.articlesList .star {
-  margin-right: 7px;
-  float: left;
-  width: 30px;
-  margin-top: -2px;
-}
-.articlesList .content {
-  margin-left: 2%;
-  margin-right: 10%;
-  margin-bottom: 20px;
-  line-height: 1.4em;
-  float: left;
-  min-height: 100px;
-  max-width: 800px;
-}
-.articlesList .contentSubHeader {
-  width: 96%;
-  display: block;
-  float: left;
-  margin-top: 4px;
-}
-.articlesList .contentSubHeader .fa-external-link {
-  color: #000;
-  font-size: 14px;
-  margin-top: 1px;
-  margin-left: 5px;
-  float: left;
-}
-.articlesList .contentSubHeader a {
-  text-decoration: none;
-}
-.articlesList .contentSubHeader .date {
-  float: left;
-  max-width: 75%;
-  overflow: hidden;
-  white-space: nowrap;
-  line-height: 1.1em;
-  margin-left: 0%;
-  font-size: 0.9em;
-  margin-bottom: 20px;
-  cursor: pointer;
-  color: #000;
-}
-.articlesList .contentSubHeader .fa-undo, .articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
-  color: #66AA33;
-  float: left;
-  margin-left: 5px;
-  cursor: pointer;
-}
-.articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
-  display: none;
-}
+  margin-top: 0px; }
+  .articlesList .article {
+    border-top: 1px solid #e8e8e8;
+    max-width: 800px;
+    width: 100%;
+    background: #ffffff;
+    margin: 0px auto;
+    padding: 13px 2% 10px 2%;
+    overflow: hidden; }
+    .articlesList .article a {
+      color: #2172F7; }
+    .articlesList .article .footer {
+      display: none; }
+    .articlesList .article .header {
+      display: inline-block;
+      width: 100%;
+      font-size: 2em;
+      line-height: 1.4em; }
+      .articlesList .article .header .headerUrl .fa-external-link {
+        float: right;
+        display: inline-block;
+        font-size: 0.3em;
+        margin-top: 19px;
+        margin-left: 1%;
+        color: #66AA33;
+        text-decoration: none; }
+      .articlesList .article .header a.title {
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        text-decoration: none;
+        outline: none;
+        color: #4285f4; }
+        .articlesList .article .header a.title:visited {
+          color: #4285f4; }
+        .articlesList .article .header a.title:focus {
+          outline: none; }
+        .articlesList .article .header a.title:active {
+          color: #66AA33; }
+      .articlesList .article .header .headerUrl {
+        float: right;
+        margin-top: -43px;
+        cursor: pointer;
+        width: 12%;
+        max-width: 12%;
+        display: block;
+        text-decoration: none; }
+      .articlesList .article .header .headerAuthorAndDate {
+        font-size: 0.45em;
+        font-weight: normal;
+        line-height: 1.05em;
+        color: #737373;
+        margin-left: 38px;
+        text-decoration: none;
+        width: 93%;
+        display: block;
+        position: relative;
+        top: 5px;
+        white-space: nowrap;
+        overflow: hidden; }
+    .articlesList .article .authorAndDate {
+      display: inline-block;
+      overflow: hidden;
+      font-size: 0.3em;
+      font-weight: normal;
+      line-height: 1.5em;
+      color: black;
+      margin-left: 4em; }
+    .articlesList .article .contentHeader, .articlesList .article .content {
+      padding-top: 7px;
+      padding-bottom: 7px;
+      font-size: 0.5em;
+      position: relative;
+      color: #444444;
+      font-size: 16px;
+      line-height: 24px; }
+      .articlesList .article .contentHeader .title, .articlesList .article .content .title {
+        font-size: 2em;
+        color: black;
+        white-space: inherit;
+        line-height: 1.2em;
+        float: left;
+        width: 90%; }
+      .articlesList .article .contentHeader .imgScaled, .articlesList .article .content .imgScaled {
+        width: 100% !important;
+        height: auto  !important; }
+      .articlesList .article .contentHeader img, .articlesList .article .content img {
+        max-width: 100%;
+        height: auto; }
+      .articlesList .article .contentHeader .fa-undo, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-long-arrow-left, .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .contentHeader .fa-star-o, .articlesList .article .contentHeader .fa-share, .articlesList .article .contentHeader .fa-facebook, .articlesList .article .contentHeader .fa-twitter, .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-undo, .articlesList .article .content .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-long-arrow-left, .articlesList .article .content .fa-angle-double-up, .articlesList .article .content .fa-star-o, .articlesList .article .content .fa-share, .articlesList .article .content .fa-facebook, .articlesList .article .content .fa-twitter, .articlesList .article .content .fa-google-plus {
+        position: absolute;
+        right: 0%;
+        color: #fcd114;
+        cursor: pointer;
+        font-size: 3em; }
+      .articlesList .article .contentHeader .fa-undo, .articlesList .article .content .fa-undo {
+        top: 110px;
+        font-size: 1.4em; }
+      .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .content .fa-angle-double-right {
+        top: 0px; }
+      .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .content .fa-angle-double-left {
+        top: 70px; }
+      .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .content .fa-angle-double-up {
+        top: 110px; }
+      .articlesList .article .contentHeader .fa-share, .articlesList .article .content .fa-share {
+        top: 160px;
+        font-size: 1.3em; }
+      .articlesList .article .contentHeader .fa-facebook, .articlesList .article .content .fa-facebook {
+        top: 210px;
+        margin-right: 1%; }
+      .articlesList .article .contentHeader .fa-twitter, .articlesList .article .content .fa-twitter {
+        top: 260px;
+        margin-right: -1%; }
+      .articlesList .article .contentHeader .fa-google-plus, .articlesList .article .content .fa-google-plus {
+        top: 310px;
+        margin-right: -1%; }
+  .articlesList .article:last-child {
+    border-bottom: 1px solid #e8e8e8; }
+  .articlesList h2 {
+    margin: 0;
+    padding-bottom: 10px; }
+  .articlesList .star {
+    margin-right: 7px;
+    float: left;
+    width: 30px;
+    margin-top: -2px; }
+  .articlesList .content {
+    margin-left: 2%;
+    margin-right: 10%;
+    margin-bottom: 20px;
+    line-height: 1.4em;
+    float: left;
+    min-height: 100px;
+    max-width: 800px; }
+  .articlesList .contentSubHeader {
+    width: 96%;
+    display: block;
+    float: left;
+    margin-top: 4px; }
+    .articlesList .contentSubHeader .fa-external-link {
+      color: #000;
+      font-size: 14px;
+      margin-top: 1px;
+      margin-left: 5px;
+      float: left; }
+    .articlesList .contentSubHeader a {
+      text-decoration: none; }
+    .articlesList .contentSubHeader .date {
+      float: left;
+      max-width: 75%;
+      overflow: hidden;
+      white-space: nowrap;
+      line-height: 1.1em;
+      margin-left: 0%;
+      font-size: 0.9em;
+      margin-bottom: 20px;
+      cursor: pointer;
+      color: #000; }
+    .articlesList .contentSubHeader .fa-undo, .articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
+      color: #66AA33;
+      float: left;
+      margin-left: 5px;
+      cursor: pointer; }
+    .articlesList .contentSubHeader .fa-star, .articlesList .contentSubHeader .fa-star-empty {
+      display: none; }
 
 .content p {
-  margin: 1.1em 0;
-}
+  margin: 1.1em 0; }
 
 .articlesHeader {
   margin-top: 4px;
   padding-left: 2%;
   padding-right: 2%;
   width: 100%;
-  height: 40px;
-}
-.articlesHeader > header {
-  height: 40px;
-}
-.articlesHeader .feedTitle {
-  margin-left: 7px;
-  max-width: 60%;
-  overflow: hidden;
-  display: inline-block;
-  text-overflow: ellipsis;
-  margin-top: 5px;
-  display: inline-block;
-  white-space: nowrap;
-  float: left;
-  display: none;
-}
-.articlesHeader .feedFolder {
-  margin-left: 20px;
-  float: right;
-  margin-top: 5px;
-}
-.articlesHeader .feedFoldersContainer {
-  float: right;
-  margin-left: 5px;
-  margin-top: 5px;
-  overflow: hidden;
-  max-width: 10%;
-}
-.articlesHeader .selectedFolder {
-  max-width: 200px;
-  text-overflow: ellipsis;
-  display: inline-block;
-  overflow: hidden;
-  text-decoration: underline;
-}
+  height: 40px; }
+  .articlesHeader > header {
+    height: 40px; }
+  .articlesHeader .feedTitle {
+    margin-left: 7px;
+    max-width: 60%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+    display: inline-block;
+    white-space: nowrap;
+    float: left;
+    display: none; }
+  .articlesHeader .feedFolder {
+    margin-left: 20px;
+    float: right;
+    margin-top: 5px; }
+  .articlesHeader .feedFoldersContainer {
+    float: right;
+    margin-left: 5px;
+    margin-top: 5px;
+    overflow: hidden;
+    max-width: 10%; }
+  .articlesHeader .selectedFolder {
+    max-width: 200px;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    text-decoration: underline; }
 
 .displayNone {
-  display: none !important;
-}
+  display: none !important; }
 
 .unread {
-  font-weight: bold;
-}
+  font-weight: bold; }
 
 .feedSettingsAction {
   float: right;
   width: 30px;
   cursor: pointer;
   padding-top: 24px;
-  margin-left: 16px;
-}
+  margin-left: 16px; }
 
 .headerCaption {
   font-size: 2.03em;
@@ -457,26 +368,21 @@ body {
   display: block;
   margin: 0px auto;
   padding: 20px 50px;
-  text-transform: uppercase;
-}
-.headerCaption:active {
-  color: #66AA33;
-}
+  text-transform: uppercase; }
+  .headerCaption:active {
+    color: #66AA33; }
 
 .up {
   width: 90%;
   display: block;
   float: left;
-  white-space: nowrap;
-}
-.up .fa {
-  float: left;
-  padding: 16px 2% 0px 0;
-  cursor: pointer;
-}
-.up .fa-home {
-  display: none;
-}
+  white-space: nowrap; }
+  .up .fa {
+    float: left;
+    padding: 16px 2% 0px 0;
+    cursor: pointer; }
+  .up .fa-home {
+    display: none; }
 
 .moreLink2 {
   display: block;
@@ -490,23 +396,19 @@ body {
   margin-top: 20px;
   margin-bottom: 20px;
   cursor: pointer;
-  max-width: 720px;
-}
+  max-width: 720px; }
 
 .folder a:active, .feedTitle:active, .header .title:active {
-  color: #2172F7;
-}
+  color: #2172F7; }
 
 .fontSizeContainer {
   width: 96%;
-  text-align: center;
-}
-.fontSizeContainer span {
-  color: #fcd114;
-  padding: 0 3%;
-  cursor: pointer;
-  font-size: 1.2em;
-}
+  text-align: center; }
+  .fontSizeContainer span {
+    color: #fcd114;
+    padding: 0 3%;
+    cursor: pointer;
+    font-size: 1.2em; }
 
 .colorWheel {
   margin: 0px auto;
@@ -520,8 +422,7 @@ body {
   display: inline-block;
   float: left;
   margin-left: 17px;
-  display: none;
-}
+  display: none; }
 
 .colorWheel:after {
   position: absolute;
@@ -531,8 +432,7 @@ body {
   height: 10px;
   border-radius: 50%;
   background: white;
-  content: '';
-}
+  content: ''; }
 
 .nightmode {
   /*background: black;*/
@@ -540,131 +440,95 @@ body {
   /*background-color: rgb(39, 40, 34);*/
   /*color: rgb(248, 248, 242);*/
   background: #212324 !important;
-  color: #ddd;
-}
-.nightmode .menu .menuList > .feed, .nightmode .menu .menuList > .folder, .nightmode header, .nightmode .articlesList .article {
-  background: #212324 !important;
-}
-.nightmode header {
-  background: #37474F !important;
-}
-.nightmode .feed:first-child, .nightmode .folder:first-child {
-  margin-top: 0px;
-}
-.nightmode .headerAuthorAndDate {
-  color: #dad0b5 !important;
-}
-.nightmode .menu {
-  background: #212324 !important;
-}
-.nightmode .menu .feedTitle {
-  color: #dad0b5 !important;
-}
-.nightmode .date {
-  color: #dad0b5 !important;
-}
-.nightmode .menu .menuList > .folder a {
-  color: #dad0b5 !important;
-}
-.nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
-  border-top: 1px solid #353535;
-}
-.nightmode .menu .menuList .folder:last-child, .nightmode .menu .menuList .feed:last-child, .nightmode .menu .menuList .article:last-child, .nightmode .articlesList .folder:last-child, .nightmode .articlesList .feed:last-child, .nightmode .articlesList .article:last-child {
-  border-bottom: 1px solid #353535;
-}
-.nightmode .unreadCount {
-  /*background: #fcd114;*/
-  /* color: #dad0b5 !important; */
-  color: #000 !important;
-}
-.nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
-  color: #dad0b5 !important;
-  text-decoration: none;
-}
-.nightmode .unread a.title {
-  color: #A08301 !important;
-}
-.nightmode .date {
-  color: #dad0b5 !important;
-  text-decoration: none;
-}
-.nightmode .headerCaption {
-  color: #fcd114;
-}
-.nightmode .articlesList .article .authorAndDate {
-  color: #dad0b5;
-}
-.nightmode .feedSettings {
-  /*background: black;*/
-  background: #212324;
-  color: #ddd;
-}
-.nightmode .feedSettings .setting .markReadOption, .nightmode .feedSettings .setting .showHideOption, .nightmode .feedSettings .setting .nightmodeOption, .nightmode .feedSettings .setting .feedUnsubscribe {
-  color: #dad0b5;
-}
-.nightmode .feedSettings .settingType {
-  background: none;
-  color: white;
-}
-.nightmode .feedSettings .feedUnsubscribe {
-  color: #dad0b5;
-}
-.nightmode .feedSettings .close {
-  border: 1px solid #dad0b5;
-}
-.nightmode .feedSettings .closeButton .close span:first-child {
-  color: #dad0b5;
-}
-.nightmode a {
-  color: #fcd114 !important;
-}
-.nightmode .articlesList .article .contentSubHeader .fa-external-link {
-  color: #dad0b5;
-}
-.nightmode .unread .title {
-  font-weight: bold;
-}
-.nightmode .articlesList .article .contentHeader, .nightmode .articlesList .article .content {
-  color: #dad0b5;
-}
-.nightmode .folder a:active, .nightmode .feedTitle:active, .nightmode .header .title:active {
-  color: #dad0b5;
-}
+  color: #ddd; }
+  .nightmode .menu .menuList > .feed, .nightmode .menu .menuList > .folder, .nightmode header, .nightmode .articlesList .article {
+    background: #212324 !important; }
+  .nightmode header {
+    background: #37474F !important; }
+  .nightmode .feed:first-child, .nightmode .folder:first-child {
+    margin-top: 0px; }
+  .nightmode .headerAuthorAndDate {
+    color: #dad0b5 !important; }
+  .nightmode .menu {
+    background: #212324 !important; }
+  .nightmode .menu .feedTitle {
+    color: #dad0b5 !important; }
+  .nightmode .date {
+    color: #dad0b5 !important; }
+  .nightmode .menu .menuList > .folder a {
+    color: #dad0b5 !important; }
+  .nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
+    border-top: 1px solid #353535; }
+  .nightmode .menu .menuList .folder:last-child, .nightmode .menu .menuList .feed:last-child, .nightmode .menu .menuList .article:last-child, .nightmode .articlesList .folder:last-child, .nightmode .articlesList .feed:last-child, .nightmode .articlesList .article:last-child {
+    border-bottom: 1px solid #353535; }
+  .nightmode .unreadCount {
+    /*background: #fcd114;*/
+    /* color: #dad0b5 !important; */
+    color: #000 !important; }
+  .nightmode a.title, .nightmode .articlesList .article .contentHeader .title, .nightmode .articlesList .article .content .title {
+    color: #dad0b5 !important;
+    text-decoration: none; }
+  .nightmode .unread a.title {
+    color: #A08301 !important; }
+  .nightmode .date {
+    color: #dad0b5 !important;
+    text-decoration: none; }
+  .nightmode .headerCaption {
+    color: #fcd114; }
+  .nightmode .articlesList .article .authorAndDate {
+    color: #dad0b5; }
+  .nightmode .feedSettings {
+    /*background: black;*/
+    background: #212324;
+    color: #ddd; }
+  .nightmode .feedSettings .setting .markReadOption, .nightmode .feedSettings .setting .showHideOption, .nightmode .feedSettings .setting .nightmodeOption, .nightmode .feedSettings .setting .feedUnsubscribe {
+    color: #dad0b5; }
+  .nightmode .feedSettings .settingType {
+    background: none;
+    color: white; }
+  .nightmode .feedSettings .feedUnsubscribe {
+    color: #dad0b5; }
+  .nightmode .feedSettings .close {
+    border: 1px solid #dad0b5; }
+  .nightmode .feedSettings .closeButton .close span:first-child {
+    color: #dad0b5; }
+  .nightmode a {
+    color: #fcd114 !important; }
+  .nightmode .articlesList .article .contentSubHeader .fa-external-link {
+    color: #dad0b5; }
+  .nightmode .unread .title {
+    font-weight: bold; }
+  .nightmode .articlesList .article .contentHeader, .nightmode .articlesList .article .content {
+    color: #dad0b5; }
+  .nightmode .folder a:active, .nightmode .feedTitle:active, .nightmode .header .title:active {
+    color: #dad0b5; }
 
 .fa-desktop, .fa-remove, .fa-folder-o-alt, .fa-mobile-phone, .fa-plus, .fa-folder-o, .fa-share, .fa-signout, .fa-arrow-left, .fa-star, .fa-star-o, .fa-file, .fa-home, .fa-external-link, .fa-bars, .fa-long-arrow-left, .fa-remove-sign, .fa-undo, .fa-check, .fa-spinner {
-  text-decoration: none !important;
-}
+  text-decoration: none !important; }
 
 .fa-long-arrow-left, .fa-home, .fa-bars {
-  font-size: 2em;
-}
+  font-size: 2em; }
 
 .fa-remove {
   float: right;
-  margin: 10px;
-}
+  margin: 10px; }
 
 .fa-folder-o, .fa-file, .fa-star, .fa-star-o, .fa-long-arrow-left, .fa-home, .fa-bars, .fa-folder, .fa-spinner {
-  color: #66AA33;
-}
+  color: #66AA33; }
 
 .fa-spinner {
-  float: left;
-}
+  float: left; }
 
 .fa-folder, .fa-mobile-phone, .fa-signout, .addFeed .fa-plus {
-  margin-right: 3px;
-}
+  margin-right: 3px; }
 
 .fa-undo {
   font-size: 1.4em;
-  color: red;
-}
+  color: red; }
 
 .fa-check {
   font-size: 2em;
-  color: green;
-}
+  color: green; }
 
 .feedSettings {
   position: absolute;
@@ -683,398 +547,318 @@ body {
   z-index: 100;
   max-width: 90%;
   max-width: 560px;
-  margin: 0px auto;
-}
-.feedSettings a {
-  cursor: pointer;
-}
-.feedSettings .fa-long-arrow-left {
-  color: #66AA33;
-  font-size: 2em;
-  float: right;
-}
-.feedSettings .settingsTitle {
-  color: #000;
-  font-size: 1.2em;
-  text-overflow: clip;
-  white-space: nowrap;
-  overflow: hidden;
-  border: 1px solid #e1e1e1;
-  padding: 2px 3%;
-  width: 100%;
-  float: left;
-  background: #d1d1d1;
-}
-.feedSettings .setting {
-  width: 100%;
-  display: inline-block;
-  margin-top: 5%;
-  margin-bottom: 4%;
-}
-.feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption, .feedSettings .setting .feedUnsubscribe, .feedSettings .setting .close {
-  text-align: center;
-  text-decoration: none;
-  color: black;
-  font-size: 1.5em;
-  border: 2px solid #66AA33;
-  /*border-radius: 5px;*/
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-left: 4%;
-  margin-top: 1px;
-  float: left;
-}
-.feedSettings .setting .showHideOption:hover, .feedSettings .setting .showHideOption.selected,
-.feedSettings .setting .markReadOption:hover, .feedSettings .setting .markReadOption.selected,
-.feedSettings .setting .nightmodeOption:hover, .feedSettings .setting .nightmodeOption.selected,
-.feedSettings .setting .feedUnsubscribe:hover, .feedSettings .setting .feedUnsubscribe.selected, .feedSettings .setting .close:hover {
-  background: #66AA33;
-  color: white;
-  /*border-radius: 5px;*/
-}
-.feedSettings .setting.markReadSetting {
-  margin-top: 5%;
-}
-.feedSettings .setting .markReadOption {
-  width: 28%;
-}
-.feedSettings .setting .showHideOption {
-  width: 44%;
-}
-.feedSettings .setting .nightmodeOption {
-  width: 22%;
-}
-.feedSettings .setting .feedUnsubscribe {
-  width: 100%;
-}
-.feedSettings .feedTitleUndo {
-  text-decoration: none;
-  margin-right: 2%;
-  margin-top: 6px;
-  float: left;
-  margin-left: 1%;
-}
-.feedSettings .fa-times {
-  color: red;
-}
-.feedSettings .feedTitleOK {
-  text-decoration: none;
-  position: relative;
-  font-size: 0.8em;
-  background: white;
-  border-left: 1px solid #f1f1f1;
-  top: -31px;
-  left: 92%;
-}
-.feedSettings .feedTitleOK .fa-check {
-  position: relative;
-  top: 3px;
-  left: 2px;
-}
-.feedSettings .folder {
-  margin-top: 10px;
-}
-.feedSettings .folder .fa-folder {
-  margin-right: 1%;
-  color: #66AA33;
-}
-.feedSettings .folder a {
-  color: black;
-  padding: 2px;
-  font-size: 2em;
-  line-height: 1.2em;
-  margin-left: 30px;
-}
-.feedSettings .addFeedSetting {
-  position: relative;
-}
-.feedSettings .addFeedSetting .inputType {
-  padding: 9px 2%;
-  margin-right: 0px;
-  cursor: pointer;
-  text-align: center;
-  float: left;
-  display: block;
-  font-weight: bold;
-  background: white;
-  color: #5e5e5e;
-  line-height: 1em;
-  width: 33%;
-  border-bottom: 3px solid #e6e6e6;
-}
-.feedSettings .addFeedSetting .inputType.selected {
-  color: white;
-  background: #66AA33;
-  text-decoration: underline;
-  width: 34%;
-}
-.feedSettings .addFeedSetting form {
-  clear: both;
-  margin-top: 26px;
-}
-.feedSettings .feedUrl, .feedSettings .folderName {
-  float: left;
-  width: 92%;
-  margin-left: 4%;
-  border: 1px solid #66AA33;
-  margin-right: 4%;
-  margin-top: -3px;
-  padding: 8px;
-}
-.feedSettings .addFolder, .feedSettings .addFeedUrl {
-  cursor: pointer;
-  position: absolute;
-  right: 6%;
-  margin-top: 12px;
-}
-.feedSettings .settingTypeDivider {
-  float: left;
-  margin-right: 3%;
-  font-weight: bold;
-  color: #5e5e5e;
-  padding: 3px;
-}
-.feedSettings li {
-  border: none;
-}
-.feedSettings .newFolder {
-  float: left;
-  width: 99%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: none;
-}
-.feedSettings .newFolder a {
-  background: white;
-  color: #66AA33;
-  text-decoration: none;
-  padding: 2px;
-  font-size: 1.5em;
-}
-.feedSettings .newFolder a:hover {
-  background: #66AA33;
-  color: white;
-  /*border-radius: 4px;*/
-}
-.feedSettings .settingHeader {
-  height: 30px;
-  border-bottom: 1px solid #5e5e5e;
-  width: 100%;
-}
-.feedSettings .settingHeader .fa-check {
-  position: relative;
-  top: -30px;
-  left: 90%;
-  cursor: pointer;
-  display: none;
-}
-.feedSettings .fa-remove-sign {
-  color: red;
-  font-size: 1em;
-  margin-left: 2%;
-  margin-right: 2%;
-}
-.feedSettings .showHideOption.first:after {
-  content: "show all";
-}
-.feedSettings .showHideOption.second:after {
-  content: "unread only";
-}
-.feedSettings .changeFolderSetting select {
-  float: left;
-  margin-left: 4%;
-  margin-top: 5px;
-  width: 92%;
-  height: 40px;
-  font-size: 2em;
-}
-.feedSettings .changeFolderSetting .fa-check {
-  font-size: 2em;
-  margin-left: 4%;
-  cursor: pointer;
-  float: right;
-  margin-right: 6%;
-  margin-top: 5px;
-}
-.feedSettings .opmlFile {
-  border: none;
-  width: 102px;
-  float: left;
-  margin-left: 4%;
-  margin-top: 0px;
-  max-width: 50%;
-  height: 23px;
-  margin-bottom: 22px;
-}
-.feedSettings .closeSettings {
-  width: 100%;
-  border-top: 6px solid #66AA33;
-}
-.feedSettings .closeSettings span {
-  cursor: pointer;
-  margin-top: 6px;
-  display: block;
-  float: right;
-  margin-right: 1%;
-}
-.feedSettings .addOpml {
-  cursor: pointer;
-  float: right;
-  margin-top: -5px;
-  display: none;
-  margin-right: 6%;
-}
-.feedSettings .opmlText {
-  float: left;
-  margin-left: 10px;
-  margin-top: 3px;
-  font-size: 1.2em;
-}
-.feedSettings .opmlFilePath {
-  width: 29%;
-  display: none;
-  border: 1px dashed black;
-  white-space: nowrap;
-  max-width: 29%;
-  overflow: hidden;
-  margin-left: 11px;
-  float: left;
-  padding: 3px;
-}
-.feedSettings .settingTypeContainer {
-  width: 92%;
-  display: inline-block;
-  height: 22px;
-  margin-left: 4%;
-  display: block;
-}
-.feedSettings .settingType {
-  float: left;
-  display: block;
-  margin-right: 3%;
-  font-weight: bold;
-  background: white;
-  color: #5e5e5e;
-  padding: 3px;
-  line-height: 1em;
-}
-.feedSettings .deleteFolder {
-  width: 90%;
-  margin-left: 1%;
-  margin-top: 6%;
-  margin-bottom: 2%;
-}
-.feedSettings .deleteFolder .feedUnsubscribe {
-  text-align: center;
-}
-.feedSettings .deleteFolder .fa-times {
-  margin-left: 3%;
-}
-.feedSettings .closeButton {
-  margin-top: 3%;
-  margin-bottom: 3%;
-  text-align: center;
-}
-.feedSettings .closeButton .close {
-  width: 92%;
-  display: inline-block;
-}
-.feedSettings .closeButton .close .fa {
-  display: none;
-}
-.feedSettings .closeB3utton {
-  margin-top: 4%;
-  padding-bottom: 4%;
-  text-align: center;
-  color: #dad0b5;
-}
-.feedSettings .closeB3utton .close {
-  text-decoration: none;
-  padding-left: 20%;
-  padding-right: 20%;
-  padding-top: 10px;
-  padding-bottom: 4px;
-  border: 3px solid #66AA33;
-  /*border-radius: 5px;*/
-}
-.feedSettings .closeB3utton .close span:first-child {
-  color: black;
-  text-decoration: none;
-  font-size: 1.6em;
-  margin-left: 1%;
-}
-.feedSettings .closeB3utton .close .fa-times {
-  color: #66AA33;
-  font-size: 2em;
-  margin-left: 2%;
-  position: relative;
-  top: 1px;
-}
+  margin: 0px auto; }
+  .feedSettings a {
+    cursor: pointer; }
+  .feedSettings .fa-long-arrow-left {
+    color: #66AA33;
+    font-size: 2em;
+    float: right; }
+  .feedSettings .settingsTitle {
+    color: #000;
+    font-size: 1.2em;
+    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    padding: 2px 3%;
+    width: 100%;
+    float: left;
+    background: #d1d1d1; }
+  .feedSettings .setting {
+    width: 100%;
+    display: inline-block;
+    margin-top: 5%;
+    margin-bottom: 4%; }
+    .feedSettings .setting .markReadOption, .feedSettings .setting .showHideOption, .feedSettings .setting .nightmodeOption, .feedSettings .setting .feedUnsubscribe, .feedSettings .setting .close {
+      text-align: center;
+      text-decoration: none;
+      color: black;
+      font-size: 1.5em;
+      border: 2px solid #66AA33;
+      /*border-radius: 5px;*/
+      padding-top: 10px;
+      padding-bottom: 10px;
+      margin-left: 4%;
+      margin-top: 1px;
+      float: left; }
+    .feedSettings .setting .showHideOption:hover, .feedSettings .setting .showHideOption.selected, .feedSettings .setting .markReadOption:hover, .feedSettings .setting .markReadOption.selected, .feedSettings .setting .nightmodeOption:hover, .feedSettings .setting .nightmodeOption.selected, .feedSettings .setting .feedUnsubscribe:hover, .feedSettings .setting .feedUnsubscribe.selected, .feedSettings .setting .close:hover {
+      background: #66AA33;
+      color: white;
+      /*border-radius: 5px;*/ }
+    .feedSettings .setting.markReadSetting {
+      margin-top: 5%; }
+    .feedSettings .setting .markReadOption {
+      width: 28%; }
+    .feedSettings .setting .showHideOption {
+      width: 44%; }
+    .feedSettings .setting .nightmodeOption {
+      width: 22%; }
+    .feedSettings .setting .feedUnsubscribe {
+      width: 100%; }
+  .feedSettings .feedTitleUndo {
+    text-decoration: none;
+    margin-right: 2%;
+    margin-top: 6px;
+    float: left;
+    margin-left: 1%; }
+  .feedSettings .fa-times {
+    color: red; }
+  .feedSettings .feedTitleOK {
+    text-decoration: none;
+    position: relative;
+    font-size: 0.8em;
+    background: white;
+    border-left: 1px solid #f1f1f1;
+    top: -31px;
+    left: 92%; }
+  .feedSettings .feedTitleOK .fa-check {
+    position: relative;
+    top: 3px;
+    left: 2px; }
+  .feedSettings .folder {
+    margin-top: 10px; }
+    .feedSettings .folder .fa-folder {
+      margin-right: 1%;
+      color: #66AA33; }
+    .feedSettings .folder a {
+      color: black;
+      padding: 2px;
+      font-size: 2em;
+      line-height: 1.2em;
+      margin-left: 30px; }
+  .feedSettings .addFeedSetting {
+    position: relative; }
+    .feedSettings .addFeedSetting .inputType {
+      padding: 9px 2%;
+      margin-right: 0px;
+      cursor: pointer;
+      text-align: center;
+      float: left;
+      display: block;
+      font-weight: bold;
+      background: white;
+      color: #5e5e5e;
+      line-height: 1em;
+      width: 33%;
+      border-bottom: 3px solid #e6e6e6; }
+      .feedSettings .addFeedSetting .inputType.selected {
+        color: white;
+        background: #66AA33;
+        text-decoration: underline;
+        width: 34%; }
+    .feedSettings .addFeedSetting form {
+      clear: both;
+      margin-top: 26px; }
+  .feedSettings .feedUrl, .feedSettings .folderName {
+    float: left;
+    width: 92%;
+    margin-left: 4%;
+    border: 1px solid #66AA33;
+    margin-right: 4%;
+    margin-top: -3px;
+    padding: 8px; }
+  .feedSettings .addFolder, .feedSettings .addFeedUrl {
+    cursor: pointer;
+    position: absolute;
+    right: 6%;
+    margin-top: 12px; }
+  .feedSettings .settingTypeDivider {
+    float: left;
+    margin-right: 3%;
+    font-weight: bold;
+    color: #5e5e5e;
+    padding: 3px; }
+  .feedSettings li {
+    border: none; }
+  .feedSettings .newFolder {
+    float: left;
+    width: 99%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none; }
+    .feedSettings .newFolder a {
+      background: white;
+      color: #66AA33;
+      text-decoration: none;
+      padding: 2px;
+      font-size: 1.5em; }
+      .feedSettings .newFolder a:hover {
+        background: #66AA33;
+        color: white;
+        /*border-radius: 4px;*/ }
+  .feedSettings .settingHeader {
+    height: 30px;
+    border-bottom: 1px solid #5e5e5e;
+    width: 100%; }
+    .feedSettings .settingHeader .fa-check {
+      position: relative;
+      top: -30px;
+      left: 90%;
+      cursor: pointer;
+      display: none; }
+  .feedSettings .fa-remove-sign {
+    color: red;
+    font-size: 1em;
+    margin-left: 2%;
+    margin-right: 2%; }
+  .feedSettings .showHideOption.first:after {
+    content: "show all"; }
+  .feedSettings .showHideOption.second:after {
+    content: "unread only"; }
+  .feedSettings .changeFolderSetting select {
+    float: left;
+    margin-left: 4%;
+    margin-top: 5px;
+    width: 92%;
+    height: 40px;
+    font-size: 2em; }
+  .feedSettings .changeFolderSetting .fa-check {
+    font-size: 2em;
+    margin-left: 4%;
+    cursor: pointer;
+    float: right;
+    margin-right: 6%;
+    margin-top: 5px; }
+  .feedSettings .opmlFile {
+    border: none;
+    width: 102px;
+    float: left;
+    margin-left: 4%;
+    margin-top: 0px;
+    max-width: 50%;
+    height: 23px;
+    margin-bottom: 22px; }
+  .feedSettings .closeSettings {
+    width: 100%;
+    border-top: 6px solid #66AA33; }
+    .feedSettings .closeSettings span {
+      cursor: pointer;
+      margin-top: 6px;
+      display: block;
+      float: right;
+      margin-right: 1%; }
+  .feedSettings .addOpml {
+    cursor: pointer;
+    float: right;
+    margin-top: -5px;
+    display: none;
+    margin-right: 6%; }
+  .feedSettings .opmlText {
+    float: left;
+    margin-left: 10px;
+    margin-top: 3px;
+    font-size: 1.2em; }
+  .feedSettings .opmlFilePath {
+    width: 29%;
+    display: none;
+    border: 1px dashed black;
+    white-space: nowrap;
+    max-width: 29%;
+    overflow: hidden;
+    margin-left: 11px;
+    float: left;
+    padding: 3px; }
+  .feedSettings .settingTypeContainer {
+    width: 92%;
+    display: inline-block;
+    height: 22px;
+    margin-left: 4%;
+    display: block; }
+  .feedSettings .settingType {
+    float: left;
+    display: block;
+    margin-right: 3%;
+    font-weight: bold;
+    background: white;
+    color: #5e5e5e;
+    padding: 3px;
+    line-height: 1em; }
+  .feedSettings .deleteFolder {
+    width: 90%;
+    margin-left: 1%;
+    margin-top: 6%;
+    margin-bottom: 2%; }
+    .feedSettings .deleteFolder .feedUnsubscribe {
+      text-align: center; }
+    .feedSettings .deleteFolder .fa-times {
+      margin-left: 3%; }
+  .feedSettings .closeButton {
+    margin-top: 3%;
+    margin-bottom: 3%;
+    text-align: center; }
+    .feedSettings .closeButton .close {
+      width: 92%;
+      display: inline-block; }
+      .feedSettings .closeButton .close .fa {
+        display: none; }
+  .feedSettings .closeB3utton {
+    margin-top: 4%;
+    padding-bottom: 4%;
+    text-align: center;
+    color: #dad0b5; }
+    .feedSettings .closeB3utton .close {
+      text-decoration: none;
+      padding-left: 20%;
+      padding-right: 20%;
+      padding-top: 10px;
+      padding-bottom: 4px;
+      border: 3px solid #66AA33;
+      /*border-radius: 5px;*/ }
+      .feedSettings .closeB3utton .close span:first-child {
+        color: black;
+        text-decoration: none;
+        font-size: 1.6em;
+        margin-left: 1%; }
+      .feedSettings .closeB3utton .close .fa-times {
+        color: #66AA33;
+        font-size: 2em;
+        margin-left: 2%;
+        position: relative;
+        top: 1px; }
 
 @media all and (max-width: 640px) {
   .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .externalLink, .fa-long-arrow-left, .fa-angle-double-up {
-    right: 1%;
-  }
-
+    right: 1%; }
   .feedUnsubscribe {
     width: 100% !important;
-    text-align: center !important;
-  }
-}
+    text-align: center !important; } }
+
 @media all and (max-width: 410px) {
   .folderName:active {
-    width: 85% !important;
-  }
-}
+    width: 85% !important; } }
+
 @media all and (max-width: 400px) {
   .articlesList .article .authorAndDate {
-    display: none;
-  }
-
+    display: none; }
   .title {
-    margin: 0px 1% 0px 0px !important;
-  }
-}
+    margin: 0px 1% 0px 0px !important; } }
+
 @media all and (max-width: 370px) and (min-width: 1px) {
   .feedFoldersContainer {
-    display: none;
-  }
-
+    display: none; }
   .backToMenu {
     max-width: 34px;
     min-width: 34px;
     text-overflow: ellipsis;
-    margin-left: 10%;
-  }
-
+    margin-left: 10%; }
   .backToMenu span:nth-child(2) {
-    display: none;
-  }
-
+    display: none; }
   .leftCaption {
-    display: none;
-  }
-
+    display: none; }
   .rightCaption {
-    width: 55%;
-  }
-
+    width: 55%; }
   .showHideOption.second:after {
-    content: "unread" !important;
-  }
-}
+    content: "unread" !important; } }
+
 @media all and (max-width: 580px) {
   .article {
-    width: 99% !important;
-  }
-}
+    width: 99% !important; } }
+
 @media all and (max-width: 530px) {
   .article {
-    width: 98% !important;
-  }
-}
+    width: 98% !important; } }
+
 @media all and (max-width: 480px) {
   .article {
-    width: 97% !important;
-  }
-}
+    width: 97% !important; } }
