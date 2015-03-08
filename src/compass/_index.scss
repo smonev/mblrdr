@@ -20,13 +20,33 @@ body {
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent;
 
-  header {
+  .headroom-wrapper {
     width: 100%;
     margin: 0px auto;
     margin-top: 0px;
     padding-left: 2%;
     padding-right: 2%;
     background: #B0BEC5;
+
+    .headerCaption {
+      font-size: 2.03em;
+      color: #737373;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+      margin: 0px auto;
+      padding: 20px 50px;
+      text-transform: uppercase;
+
+      &:active {
+        color: #66AA33;
+      }
+    }
+
+    .headroom--pinned {
+        background: #B0BEC5;
+    }
 
     .fa-home, .fa-long-arrow-left {
         float: left;
@@ -462,22 +482,6 @@ body {
   padding-top: 24px;
   margin-left: 16px;
 
-}
-
- .headerCaption {
-  font-size: 2.03em;
-  color: #737373;
-  cursor: pointer;
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
-  margin: 0px auto;
-  padding: 20px 50px;
-  text-transform: uppercase;
-
-  &:active {
-    color: #66AA33;
-  }
 }
 
 .up {

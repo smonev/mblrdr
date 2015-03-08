@@ -3,7 +3,7 @@
 var React = require('react');
 var ReactRouter = require('react-router');
 var Navigation = ReactRouter.Navigation;
-
+var Headroom = require('react-headroom');
 var cx = React.addons.classSet;
 
 var AppHeader = React.createClass({
@@ -61,7 +61,7 @@ var AppHeader = React.createClass({
 
         return (
 
-            <header>
+            <Headroom>
                 <a className='feedSettingsAction'>
                     <span className='fa fa-bars' onClick={this.settingsClick}></span>
                 </a>
@@ -69,7 +69,7 @@ var AppHeader = React.createClass({
                 <span className='headerCaption' onClick={this.onUpClick}>{title}</span>
 
                 <a className={homeIconClassName} onClick={this.onUpClick}></a>
-            </header>
+            </Headroom>
 
         );
     }
