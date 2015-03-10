@@ -30,12 +30,33 @@ var AppUtils = {
                 if (scrollUp) {
                     Velocity(document.body, 'scroll', {
                         duration: 1,
-                        offset: scrollPos + 200
+                        offset: scrollPos + 200 // 200, because headroom shows and we need to hide it
                     });
                     //this.headroom.classList.remove('displayNone');
                 }
-            }.bind(this)
+            }//.bind(this)
         });
+    },
+
+    morphElementToHeader: function(fromElement) {
+        var newElement =  fromElement.target.cloneNode(true);
+        newElement.style.cssText =
+            document.defaultView.getComputedStyle(document.querySelector('.headerCaption'), '').cssText + ';position: absolute;top:' + $(fromElement.target).offset().top + 'px;';
+        document.body.appendChild(newElement);
+
+        Velocity(newElement, {
+                'top': '0px',
+                'left': '18px',
+                'opacity': 0
+            }, {
+                duration: 800,
+                easing: 'easeOutQuad',
+                //easing: 'easeOutElastic',
+                complete: function(elements) {
+                    newElement.parentNode.removeChild(newElement);
+                }
+            }
+        );
     },
 
     markArticleAsRead: function(data) {

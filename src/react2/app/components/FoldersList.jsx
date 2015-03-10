@@ -10,6 +10,7 @@ var PubSub = require('pubsub-js');
 
 var FeedsList = require('../components/FeedsList.jsx');
 var AppStore = require('../AppStore.js');
+var AppUtils = require('../AppUtils.js');
 var AppMessages = require('./../Const.js');
 
 var FoldersList = React.createClass({
@@ -40,6 +41,10 @@ var FoldersList = React.createClass({
         PubSub.unsubscribe( this.folderUnreadCountChanged );
     },
 
+    folderClick: function(e) {
+        AppUtils.morphElementToHeader(e);
+    },
+
     render: function() {
         var feeds, folders;
 
@@ -64,7 +69,7 @@ var FoldersList = React.createClass({
             }
             return (
                 <li className='folder' key={folder} >
-                    <Link to={linkToFolder}>
+                    <Link to={linkToFolder} onClick={this.folderClick}>
                         <span className='fa fa-folder'>
                             <span className='unreadCount'>{folderUnreadCount}</span>
                         </span>

@@ -8,6 +8,7 @@ var cx = React.addons.classSet;
 var PubSub = require('pubsub-js');
 
 var AppStore = require('../AppStore.js');
+var AppUtils = require('../AppUtils.js');
 var AppMessages = require('./../Const.js');
 
 var FeedsList = React.createClass({
@@ -42,8 +43,7 @@ var FeedsList = React.createClass({
     },
 
     feedTitleClick: function(e) {
-        //Velocity(e.target, 'callout.top', function() {
-        //});
+        AppUtils.morphElementToHeader(e);
     },
 
     render: function() {
