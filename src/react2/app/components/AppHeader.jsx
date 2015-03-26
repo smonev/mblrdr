@@ -4,15 +4,13 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var Navigation = ReactRouter.Navigation;
 var Headroom = require('react-headroom');
-var cx = React.addons.classSet;
+var classNames = require('classNames');
 
 var AppHeader = React.createClass({
-    propTypes: {
-        showSettings: React.PropTypes.func.isRequired
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
     },
-
-    mixins: [Navigation, ReactRouter.State],
-
 
     getInitialState: function() {
         return {
@@ -25,30 +23,30 @@ var AppHeader = React.createClass({
     },
 
     onUpClick: function() {
-        if (this.getParams().feedUrl) {
-            if (this.getParams().folderName !== 'root') {
-                this.transitionTo(decodeURIComponent('/' + this.getParams().folderName));
+        if (this.context.router.getCurrentParams().feedUrl) {
+            if (this.context.router.getCurrentParams().folderName !== 'root') {
+                this.context.router.transitionTo(decodeURIComponent('/' + this.context.router.getCurrentParams().folderName));
             } else {
-                this.transitionTo('/');
+                this.context.router.transitionTo('/');
             }
-        } else if (this.getParams().folderName) {
-            this.transitionTo('/');
+        } else if (this.context.router.getCurrentParams().folderName) {
+            this.context.router.transitionTo('/');
         }
     },
 
     render: function() {
-        var homeIconClassName = cx({
+        var homeIconClassName = classNames({
             'fa': true,
-            'fa-home': !this.getParams().folderName,
-            'fa-long-arrow-left': this.getParams().folderName
+            'fa-home': !this.context.router.getCurrentParams().folderName,
+            'fa-long-arrow-left': this.context.router.getCurrentParams().folderName
         });
 
         var title = '';
 
-        if (this.getParams().feedUrl) {
+        if (this.context.router.getCurrentParams().feedUrl) {
             title = this.props.title;
-        } else if (this.getParams().folderName) {
-            title = this.getParams().folderName;
+        } else if (this.context.router.getCurrentParams().folderName) {
+            title = this.context.router.getCurrentParams().folderName;
         } else {
             title = 'Home';
         }

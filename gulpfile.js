@@ -2,7 +2,10 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
+
 var reactify = require('reactify');
+var babelify = require('babelify');//.configure({experimental: true});
+
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
 var streamify = require('gulp-streamify');
@@ -43,11 +46,11 @@ var appOptions = {
 
   // Add other vendors here, if any
   vendors: [
-    'jquery',
-    'hammerjs',
-    'pubsub-js',
-    'velocity-animate',
-    'react-intl'
+    //'jquery',
+    //'hammerjs',
+    //'pubsub-js',
+    //'velocity-animate',
+    //'react-intl'
     //'react', //todo fix this, so React goes into vendor.js file => faster compile times, etc.
     //'react-router',
     //'flux-react',
@@ -81,7 +84,9 @@ var browserifyTask = function (bundleOptions) {
   });
 
   // Add reactify transformer
-  appBundler.transform(reactify);
+  //appBundler.transform(reactify);
+  appBundler.transform(babelify);
+
 
   // Add vendors as externals
   appOptions.vendors.forEach(function (vendor) {

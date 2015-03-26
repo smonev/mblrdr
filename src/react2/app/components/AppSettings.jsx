@@ -2,7 +2,7 @@
 
 var React = require('react/addons');
 var ReactRouter = require('react-router');
-var cx = React.addons.classSet;
+var classNames = require('classNames');
 
 var PubSub = require('pubsub-js');
 
@@ -108,14 +108,14 @@ var ShowHideSetting = React.createClass({
     render: function () {
         var showRead = this.resolveShowRead();
 
-        var showHideFirstClasses = cx({
+        var showHideFirstClasses = classNames({
             'showHideOption': true,
             'showAll': true,
             'first': true,
             'selected': showRead
         });
 
-        var showHideSecondClasses = cx({
+        var showHideSecondClasses = classNames({
             'showHideOption': true,
             'showUnreadOnly': true,
             'second': true,
@@ -144,13 +144,13 @@ var NightModeSetting = React.createClass({
 
     render: function() {
         // nigthmode
-        var nightmodeFirstClasses = cx({
+        var nightmodeFirstClasses = classNames({
             'nightmodeOption': true,
             'dayMode': true,
             'nightMode': false,
             'selected': this.props.nightmode === 1
         });
-        var nightmodeSecondClasses = cx({
+        var nightmodeSecondClasses = classNames({
             'nightmodeOption': true,
             'dayMode': false,
             'nightMode': true,
@@ -171,7 +171,10 @@ var NightModeSetting = React.createClass({
 });
 
 var ChangeFolderSetting = React.createClass({
-    mixins: [ ReactRouter.State, ReactRouter.Navigation ],
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     folderChange:function(e) {
         //confirm
@@ -185,7 +188,7 @@ var ChangeFolderSetting = React.createClass({
     componentDidMount: function() {
         this.feedFolderChanged = PubSub.subscribe(AppMessages.FEED_FOLDER_CHANGED, function( msg, data ) {
             var url = '/' + encodeURIComponent(data.toFolder) + '/' + encodeURIComponent(data.feed);
-            this.transitionTo(url);
+            this.context.router.transitionTo(url);
             this.props.hideSettings.call();
         }.bind(this));
     },
@@ -267,36 +270,36 @@ var AddFeedSetting = React.createClass({
     },
 
     render: function() {
-        var addFeedClasses = cx({
+        var addFeedClasses = classNames({
             'displayNone': this.state.view !== 1
         });
 
-        var addFolderClasses = cx({
+        var addFolderClasses = classNames({
             'displayNone': this.state.view !== 2
         });
 
-        var addOPMLClasses = cx({
+        var addOPMLClasses = classNames({
             'omplImportForm': true,
             'displayNone': this.state.view !== 3
         });
 
-        var addFeedClassesNav = cx({
+        var addFeedClassesNav = classNames({
             'inputType': true,
             'selected': this.state.view === 1
         });
 
-        var addFolderClassesNav = cx({
+        var addFolderClassesNav = classNames({
             'inputType': true,
             'middle': true,
             'selected': this.state.view === 2
         });
 
-        var addOPMLClassesNav = cx({
+        var addOPMLClassesNav = classNames({
             'inputType': true,
             'selected': this.state.view === 3
         });
 
-        var submitOPMLButtonClasses = cx({
+        var submitOPMLButtonClasses = classNames({
             'fa': true,
             'fa-check': true,
             'addOpml': true
@@ -335,15 +338,20 @@ var AddFeedSetting = React.createClass({
 });
 
 var DeleteFolderSettings = React.createClass( {
-    mixins: [ ReactRouter.State, ReactRouter.Navigation ],
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
+
+
 
     deleteClick: function() {
         if ((this.props.view.length === 1) && (this.props.view[0].name !== 'root')) {
             AppUtils.deleteFolder(this.props.view[0].name);
-            this.transitionTo('/');
+            this.context.router.transitionTo('/');
         } else {
             AppUtils.unsubscribeFeed(this.props.view[0].name, this.props.view[1].name);
-            this.transitionTo('/' + decodeURIComponent(this.props.view[0].name ));
+            this.context.router.transitionTo('/' + decodeURIComponent(this.props.view[0].name ));
         }
 
         this.props.hideSettings.call();
@@ -371,7 +379,10 @@ var DeleteFolderSettings = React.createClass( {
 });
 
 var AppSettings = React.createClass({
-    mixins: [ ReactRouter.State, ReactRouter.Navigation ],
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function() {
         return {
@@ -389,13 +400,13 @@ var AppSettings = React.createClass({
 
     componentWillMount: function() {
         this.newFolderAdded = PubSub.subscribe(AppMessages.NEW_FOLDER_ADDED, function( msg, data ) {
-            this.transitionTo('/' + data);
+            this.context.router.transitionTo('/' + data);
             this.hideSettings();
         }.bind(this));
 
         this.newFeedAdded = PubSub.subscribe(AppMessages.NEW_FEED_ADDED, function( msg, data ) {
             var url = '/' + encodeURIComponent(data.folder) + '/' + encodeURIComponent(data.feed) + '?new=1';
-            this.transitionTo(url);
+            this.context.router.transitionTo(url);
             this.hideSettings();
         }.bind(this));
     },
@@ -411,18 +422,19 @@ var AppSettings = React.createClass({
 
     getView: function() {
         var view, title;
+        var urlParams = this.context.router.getCurrentParams();
 
-        if (this.getParams().feedUrl) {
+        if (urlParams.feedUrl) {
             title = this.props.currentFeedName;
             view = [{
-                name: this.getParams().folderName
+                name: urlParams.folderName
             }, {
-                name: this.getParams().feedUrl
+                name: urlParams.feedUrl
             }];
-        } else if (this.getParams().folderName) {
-            title = this.getParams().folderName;
+        } else if (urlParams.folderName) {
+            title = urlParams.folderName;
             view = [{
-                name: this.getParams().folderName
+                name: urlParams.folderName
             }];
         } else {
             title = '';

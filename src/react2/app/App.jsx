@@ -8,6 +8,7 @@ var RouteHandler = Router.RouteHandler;
 var jQuery = require('jquery');
 var FastClick = require('fastclick');
 var PubSub = require('pubsub-js');
+var classNames = require('classNames');
 
 var AppHeader = require('./components/AppHeader.jsx');
 var AppSettings = require('./components/AppSettings.jsx');
@@ -23,7 +24,9 @@ AppMess.init();
 
 var App = React.createClass({
 
-    mixins: [ ReactRouter.State ],
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function() {
         return {
@@ -42,7 +45,7 @@ var App = React.createClass({
     componentDidMount: function() {
         AppUtils.getUserFeeds(this.props.source ? this.props.source : '/GetUserFeeds', function(result) {
             if (this.isMounted()) {
-                AppUtils.getReadData('/GetUserReadData', this.getParams().folderName);
+                AppUtils.getReadData('/GetUserReadData', this.context.router.getCurrentParams().folderName);
                 this.setState({
                     userSettings: result.userSettings,
                     bloglist: result.bloglist,
@@ -113,14 +116,17 @@ var App = React.createClass({
     },
 
     render: function() {
-        var cx = React.addons.classSet;
-        var nightmode = cx({
+
+        var postDate = Date.now() - (10000 * 60 * 60 * 24);
+
+        var nightmode = classNames({
             'nightmode': this.state.userSettings && this.state.userSettings.nightmode && this.state.userSettings.nightmode === 2
         });
         var view = [{name: 'root'}];
 
         return (
             <div>
+
                 <PageLoader ref="pageLoader"/>
 
                 <div className='menu'>
@@ -129,6 +135,7 @@ var App = React.createClass({
                         showSettings={this.showSettings} />
 
                     <RouteHandler
+                        locales={'en-US'}
                         isRoot='True'
                         userData={this.state.userData}
                         userSettings={this.state.userSettings}

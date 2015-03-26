@@ -1,9 +1,14 @@
 'use strict';
 
 var React = require('react');
-var cx = React.addons.classSet;
 
-var ReactIntlMixin = require('react-intl');
+var classNames = require('classNames');
+var ReactIntl = require('react-intl');
+var IntlMixin = ReactIntl.IntlMixin;
+var FormattedMessage = ReactIntl.FormattedMessage;
+var FormattedRelative = ReactIntl.FormattedRelative;
+
+
 var hammer = require('hammerjs');
 window.Hammer = hammer;
 
@@ -19,7 +24,7 @@ var ArticleHeader = React.createClass({
         author: React.PropTypes.string.isRequired
     },
 
-    mixins: [ReactIntlMixin],
+    mixins: [IntlMixin],
 
     componentDidMount: function() {
         Velocity(this.getDOMNode(), 'callout.pulseDown');
@@ -36,25 +41,19 @@ var ArticleHeader = React.createClass({
     },
 
     render: function() {
-        var starClass = cx({
+        var starClass = classNames({
             'fa': true,
             'fa-star': this.props.isStar,
             'fa-star-o': !this.props.isStar
         });
-        var articleDate;
-
-        try {
-            articleDate = this.props.date ? this.formatRelative(this.props.date) : '';
-        } catch (err) {
-            articleDate = this.props.date;
-        }
 
         return (
             <div>
                 <a href={this.props.url} target='_blank' className='headerAuthorAndDate'>
                     {this.props.author}
-                    {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ' : ''}
-                    {articleDate}
+                    {this.props.author && this.props.date ? '\u00A0 \u00b7 \u00A0 ' : ''}
+                    <FormattedRelative value={this.props.date} />
+
                 </a>
 
                 <div className='bla'>
@@ -85,7 +84,7 @@ var ArticleContent = React.createClass({
         zoomLevel: React.PropTypes.number.isRequired
     },
 
-    mixins: [ReactIntlMixin],
+    mixins: [IntlMixin],
 
     getInitialState: function() {
         return {
@@ -145,12 +144,12 @@ var ArticleContent = React.createClass({
     },
 
     render: function() {
-        var mainSectionClasses = cx({
+        var mainSectionClasses = classNames({
             'contentHeader': true,
             'displayNone': !this.props.isOpen
         });
 
-        var contentSectionClasses = cx({
+        var contentSectionClasses = classNames({
             'content': true,
             'displayNone': !this.props.isOpen
         });
@@ -159,14 +158,6 @@ var ArticleContent = React.createClass({
             fontSize: this.state.initialZoom.fontSize + (this.props.zoomLevel * 3) + 'px',
             lineHeight: this.state.initialZoom.lineHeight  + (this.props.zoomLevel * 3) + 'px'
         };
-
-        var articleDate;
-        try {
-            //formatRelative might be undefined
-            articleDate = this.props.date ? this.formatRelative(this.props.date) : '';
-        } catch (err) {
-            articleDate = this.props.date;
-        }
 
         return (
             <div>
@@ -183,8 +174,8 @@ var ArticleContent = React.createClass({
                         <a href={this.props.url} target='_blank'>
                             <span className='date'>
                                 {this.props.author}
-                                {this.props.author && articleDate ? '\u00A0 \u00b7 \u00A0 ' : ''}
-                                {articleDate}
+                                {this.props.author && this.props.date ? '\u00A0 \u00b7 \u00A0 ' : ''}
+                                <FormattedRelative value={this.props.date} />
                             </span>
                             <span className='fa fa-external-link'></span>
                         </a>
@@ -202,6 +193,8 @@ var ArticleContent = React.createClass({
 });
 
 var Article = React.createClass({
+
+    mixins: [IntlMixin],
 
     props: {
         showRead: React.PropTypes.bool.isRequired,
@@ -263,7 +256,7 @@ var Article = React.createClass({
     },
 
     render: function() {
-        var articleClasses = cx({
+        var articleClasses = classNames({
             'article': true,
             'unread': !this.props.isRead,
             'articleOpen': this.state.isOpen,
@@ -276,15 +269,18 @@ var Article = React.createClass({
         }
 
         return (
+
             <li className={articleClasses}>
                 <section className='header'>
+
+
                     <ArticleHeader
                         isRead={this.props.isRead} isStar={this.props.isStar}
                         toggleArticleStar={this.toggleArticleStar} toggleArticleOpen={this.toggleArticleOpen}
                         title={this.props.article.title}
                         url={this.props.article.link}
                         date={this.props.article.published}
-                        author={this.props.article.author}/>
+                        author={this.props.article.author} />
 
                     <ArticleContent
                         isOpen={this.state.isOpen}
@@ -299,6 +295,8 @@ var Article = React.createClass({
                         zoomContent={this.zoomContent}
                         zoomLevel={this.state.zoomLevel}
                         />
+
+
                 </section>
             </li>
         );

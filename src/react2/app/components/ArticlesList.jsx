@@ -6,12 +6,17 @@ var ReactRouter = require('react-router');
 var AppUtils = require('../AppUtils.js');
 var AppStore = require('../AppStore.js');
 
+var classNames = require('classNames');
 var PubSub = require('pubsub-js');
+
 
 var AppMessages = require('./../Const.js');
 
 var ArticlesList = React.createClass({
-    mixins: [ ReactRouter.State, ReactRouter.Navigation ],
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function() {
         return {
@@ -26,11 +31,11 @@ var ArticlesList = React.createClass({
     },
 
     componentDidMount: function() {
-        var feedUrl = this.getParams().feedUrl + '?count=-1&newFeed=0';
+        var feedUrl = this.context.router.getCurrentParams().feedUrl + '?count=-1&newFeed=0';
         AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
 
         if (AppStore.userData.bloglist) {
-            this.props.setTitle(AppUtils.getFeedTitle(this.getParams().folderName, this.getParams().feedUrl));
+            this.props.setTitle(AppUtils.getFeedTitle(this.context.router.getCurrentParams().folderName, this.context.router.getCurrentParams().feedUrl));
         }
 
         this.resolveShowRead();
@@ -77,7 +82,7 @@ var ArticlesList = React.createClass({
                 this.props.setCurrentFeedName(this.state.articles[0].feedTitle);
                 this.props.setTitle(this.state.articles[0].feedTitle);
 
-                AppUtils.updateFeedTitleIfNeeded(this.getParams().folderName, this.getParams().feedUrl, this.state.articles[0].feedTitle);
+                AppUtils.updateFeedTitleIfNeeded(this.context.router.getCurrentParams().folderName, this.context.router.getCurrentParams().feedUrl, this.state.articles[0].feedTitle);
             }
 
 
@@ -95,7 +100,6 @@ var ArticlesList = React.createClass({
                 return document.getElementsByClassName('moreLink2');
             },
             appear: function appear(){
-                console.log('more click appear');
                 that.moreClick.call();
             },
             bounds: 100,
@@ -113,8 +117,8 @@ var ArticlesList = React.createClass({
             }
         }
 
-        var serviceUrl = this.getParams().feedUrl + '?count=' + this.state.nextcount + '&newFeed=0';
-        var decodedFeedUrl =  decodeURIComponent(this.getParams().feedUrl);
+        var serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount + '&newFeed=0';
+        var decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
         var showRead = this.resolveShowRead();
         if ((showRead) || ((!showRead) && thereAreMoreUnread()) ) {
@@ -137,11 +141,11 @@ var ArticlesList = React.createClass({
     },
 
     handleAddNewFeedProcess: function() {
-        if (this.getQuery().new === '1') {
+        if (this.context.router.getCurrentQuery().new === '1') {
             this.timeoutToClear = setTimeout(function() {
                 clearTimeout(this.timeoutToClear);
-                var url = '/' + this.getParams().folderName + '/' + this.getParams().feedUrl;
-                this.transitionTo(url);
+                var url = '/' + this.context.router.getCurrentParams().folderName + '/' + this.context.router.getCurrentParams().feedUrl;
+                this.context.router.transitionTo(url);
             }.bind(this), 7000);
         }
     },
@@ -169,15 +173,15 @@ var ArticlesList = React.createClass({
     getView: function() {
         var view;
 
-        if (this.getParams().feedUrl) {
+        if (this.context.router.getCurrentParams().feedUrl) {
             view = [{
-                name: this.getParams().folderName
+                name: this.context.router.getCurrentParams().folderName
             }, {
-                name: this.getParams().feedUrl
+                name: this.context.router.getCurrentParams().feedUrl
             }];
-        } else if (this.getParams().folderName) {
+        } else if (this.context.router.getCurrentParams().folderName) {
             view = [{
-                name: this.getParams().folderName
+                name: this.context.router.getCurrentParams().folderName
             }];
         } else {
             view = [{
@@ -193,10 +197,14 @@ var ArticlesList = React.createClass({
 
         if (e.keyCode === 74) { //j
             ref = 'article' + (this.state.currentActive + 1);
-            this.refs[ref].openArticle.call();
+            if (this.refs[ref]) {
+                this.refs[ref].openArticle.call();
+            }
         } else if (e.keyCode === 75) { //k
             ref = 'article' + (this.state.currentActive - 1);
-            this.refs[ref].openArticle.call();
+            if (this.refs[ref]) {
+                this.refs[ref].openArticle.call();
+            }
         } else if (e.keyCode === 78) { //n
             ref = 'article' + (this.state.currentActive + 1);
             //this.refs[ref].movetoArticle.call();
@@ -232,8 +240,8 @@ var ArticlesList = React.createClass({
             this.state.read.push(id);
 
             AppUtils.markArticleAsRead({
-                folder: this.getParams().folderName,
-                url: this.getParams().feedUrl,
+                folder: this.context.router.getCurrentParams().folderName,
+                url: this.context.router.getCurrentParams().feedUrl,
                 id: id
             });
         }
@@ -258,7 +266,7 @@ var ArticlesList = React.createClass({
         }
 
         AppUtils.starArticle({
-            feed: decodeURIComponent(this.getParams().feedUrl),
+            feed: decodeURIComponent(this.context.router.getCurrentParams().feedUrl),
             state: starState,
             id: id
         });
@@ -269,7 +277,7 @@ var ArticlesList = React.createClass({
     },
 
     render: function() {
-        if (this.getQuery().new === '1') {
+        if (this.context.router.getCurrentQuery().new === '1') {
             var styles = {
                 width: '100%',
                 textAlign: 'center'
@@ -288,7 +296,7 @@ var ArticlesList = React.createClass({
         }
 
         var showRead = this.resolveShowRead();
-        var feedUrl = decodeURIComponent(this.getParams().feedUrl);
+        var feedUrl = decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
         this.state.componentCounter = 0;
         var articles = this.state.articles.map(function (article) {
@@ -310,7 +318,7 @@ var ArticlesList = React.createClass({
             );
         }.bind(this));
 
-        var moreIconClasses = React.addons.classSet({
+        var moreIconClasses = classNames({
             'fa': true,
             'fa-long-arrow-down': true
             //'displayNone': this.state.noMoreArticles

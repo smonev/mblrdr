@@ -3,8 +3,8 @@
 var React = require('react');
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
-var cx = React.addons.classSet;
 
+var classNames = require('classNames');
 var PubSub = require('pubsub-js');
 
 var AppStore = require('../AppStore.js');
@@ -12,7 +12,10 @@ var AppUtils = require('../AppUtils.js');
 var AppMessages = require('./../Const.js');
 
 var FeedsList = React.createClass({
-    mixins: [ ReactRouter.State ],
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function() {
         return {
@@ -22,7 +25,7 @@ var FeedsList = React.createClass({
 
     componentDidMount: function() {
         this.feedReadCountChanged = PubSub.subscribe(AppMessages.FEED_READ_COUNT_CHANGED, function( msg, data ) {
-            if (data.folder === this.getParams().folderName) {
+            if (data.folder === this.context.router.getCurrentParams().folderName) {
                 this.setState({
                     bla: Math.random()
                 });
@@ -36,7 +39,7 @@ var FeedsList = React.createClass({
     },
 
     resolveShowRead: function() {
-        var folderName = this.getParams().folderName;
+        var folderName = this.context.router.getCurrentParams().folderName;
 
         return this.props.userSettings && this.props.userSettings[folderName] && (typeof this.props.userSettings[folderName].showRead !== 'undefined') ?
                 this.props.userSettings[folderName].showRead : true;
@@ -47,7 +50,7 @@ var FeedsList = React.createClass({
     },
 
     render: function() {
-        var feeds, currentFolder = this.getParams().folderName ? this.getParams().folderName : 'root';
+        var feeds, currentFolder = this.context.router.getCurrentParams().folderName ? this.context.router.getCurrentParams().folderName : 'root';
 
         if ((!this.props.userData) || (!this.props.userData.bloglist[currentFolder])) {
             return (<div/>);
@@ -66,7 +69,7 @@ var FeedsList = React.createClass({
                     feedUnreadCount = AppStore.readData[feed.url].totalCount - AppStore.readData[feed.url].readCount;
                 }
 
-                var feedClasses = cx({
+                var feedClasses = classNames({
                     feed: true,
                     unread: feedUnreadCount > 0,
                     'displayNone': false

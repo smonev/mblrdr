@@ -39,15 +39,22 @@ var AppUtils = {
     },
 
     morphElementToHeader: function(fromElement) {
+
         var newElement =  fromElement.target.cloneNode(true);
-        newElement.style.cssText =
-            document.defaultView.getComputedStyle(document.querySelector('.headerCaption'), '').cssText + ';position: absolute;top:' + $(fromElement.target).offset().top + 'px;';
+
+        newElement.style.cssText = //'color:#2172F7 !important;' +
+            'font-size: 2.03em;color: #737373;cursor: pointer;overflow: hidden;white-space: nowrap;display: block;margin: 0px auto;padding: 20px 50px;text-transform: uppercase;' +
+            //document.defaultView.getComputedStyle(document.querySelector('.headerCaption'), '').cssText +
+            //document.defaultView.getComputedStyle(fromElement, '').cssText +
+                ';position: absolute;top:' + $(fromElement.target).offset().top + 'px;left:' + ($(fromElement.target).offset().left - 100) + 'px';
         document.body.appendChild(newElement);
+
+        fromElement.target.style.cssText = fromElement.target.style.cssText + 'visibility: hidden;';
 
         Velocity(newElement, {
                 'top': '0px',
                 'left': '18px',
-                'opacity': 0
+                'opacity': 0.1
             }, {
                 duration: 800,
                 easing: 'easeOutQuad',

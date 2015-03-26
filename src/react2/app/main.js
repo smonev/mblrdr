@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 
 var React = require('react/addons');
 var jquery = require('jquery');
@@ -22,6 +21,10 @@ var Route = ReactRouter.Route;
 var DefaultRoute = ReactRouter.DefaultRoute;
 var NotFoundRoute = ReactRouter.NotFoundRoute;
 
+var i18n = {
+    locales: ['en-US']
+};
+
 var routes = (
     <Route name='home' path='/' handler={App}>
         <Route name='folderFeeds' path='/:folderName' handler={FeedsList}></Route>
@@ -32,5 +35,6 @@ var routes = (
 );
 
 Router.run(routes, function (Handler) {
-    React.render(<Handler/>, document.body);
+    React.render(<Handler locales={i18n.locales} />, document.body);
 });
+
