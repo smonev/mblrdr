@@ -20,43 +20,6 @@ body {
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent;
 
-  .headroom-wrapper {
-    width: 100%;
-    margin: 0px auto;
-    margin-top: 0px;
-    padding-left: 2%;
-    padding-right: 2%;
-    background: #B0BEC5;
-
-    .headerCaption {
-      font-size: 2.03em;
-      color: #737373;
-      cursor: pointer;
-      overflow: hidden;
-      white-space: nowrap;
-      display: block;
-      margin: 0px auto;
-      padding: 20px 50px;
-      text-transform: uppercase;
-
-      &:active {
-        color: #66AA33;
-      }
-    }
-
-    .headroom--pinned {
-        background: #B0BEC5;
-    }
-
-    .fa-home, .fa-long-arrow-left {
-        float: left;
-        width: 30px;
-        margin-top: -52px;
-        cursor: pointer;
-    }
-
-  }
-
   .menuList {
     padding: 0;
     margin-top: 0px;
@@ -180,15 +143,17 @@ body {
   .article {
     border-top: 1px solid #e8e8e8;
     max-width: 800px;
-    width: 100%;
+    width: 96%;
     background: #ffffff;
     margin: 0px auto;
     padding: 13px 2% 10px 2%;
     overflow: hidden;
 
     &.articleOpen {
-      max-width: 880px;
-      margin-top: 10px;
+      //max-width: 880px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      width: 100%;
     }
 
     a {
@@ -480,32 +445,6 @@ body {
   font-weight: bold;
 }
 
-.feedSettingsAction {
-  float: right;
-  width: 30px;
-  cursor: pointer;
-  padding-top: 24px;
-  margin-left: 16px;
-
-}
-
-.up {
-
-  width: 90%;
-  display: block;
-  float: left;
-  white-space: nowrap;
-
-  .fa {
-    float: left;
-    padding: 16px 2% 0px 0;
-    cursor: pointer;
-  }
-
-  .fa-home {
-    display: none;
-  }
-}
 
 .moreLink2 {
   display: block;

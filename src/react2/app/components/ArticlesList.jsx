@@ -1,8 +1,9 @@
 'use strict';
 
 var React = require('react');
-var Article = require('../components/Article.jsx');
 var ReactRouter = require('react-router');
+
+var Article = require('../components/Article.jsx');
 var AppUtils = require('../AppUtils.js');
 var AppStore = require('../AppStore.js');
 
@@ -51,7 +52,7 @@ var ArticlesList = React.createClass({
 
         this.handleAddNewFeedProcess();
 
-        Velocity(this.getDOMNode(), 'callout.pulseDown');
+        // Velocity(this.getDOMNode(), 'callout.pulseDownblabla');
     },
 
     componentWillUnmount: function() {
@@ -88,7 +89,7 @@ var ArticlesList = React.createClass({
 
             if (!this.moreLinkInitialized) {
                 this.moreLinkInitialized = true;
-                this.moreLinkAppearSetup();
+                //this.moreLinkAppearSetup();
             }
         }
     },
@@ -292,7 +293,8 @@ var ArticlesList = React.createClass({
         }
 
         if (this.state.articles.length === 0) {
-            return (<div></div>);
+            this.state.articles = [];
+            //return (<div></div>);
         }
 
         var showRead = this.resolveShowRead();

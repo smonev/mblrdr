@@ -1,0 +1,75 @@
+  .headroom-wrapper {
+    width: 100%;
+    margin: 0px auto;
+    margin-top: 0px;
+    //padding-left: 2%;
+    //padding-right: 2%;
+    //background: #B0BEC5;
+    height: 78px;
+
+    .headerCaption {
+      font-size: 2.03em;
+      color: #737373;
+      cursor: pointer;
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+      margin: 0px auto;
+      margin-left: 2%;
+
+      padding: 20px 50px;
+      text-transform: uppercase;
+
+      &:active {
+        color: #66AA33;
+      }
+
+      &.home {
+          padding: 20px 50px 20px 0px;
+          padding-left: 2%;
+          margin-left: 0%;
+      }
+    }
+
+    .headroom--pinned, .headroom--unfixed {
+        background: #B0BEC5;
+        height: 72px !important;
+    }
+
+    .fa-home, .fa-long-arrow-left {
+        float: left;
+        width: 30px;
+        margin-top: -52px;
+        cursor: pointer;
+        padding-left: 2%;
+    }
+
+  }
+
+
+.feedSettingsAction {
+  float: right;
+  width: 30px;
+  cursor: pointer;
+  padding-top: 20px;
+  margin-left: 16px;
+  margin-right: 2%;
+}
+
+.up {
+
+  width: 90%;
+  display: block;
+  float: left;
+  white-space: nowrap;
+
+  .fa {
+    float: left;
+    padding: 16px 2% 0px 0;
+    cursor: pointer;
+  }
+
+  .fa-home {
+    display: none;
+  }
+}

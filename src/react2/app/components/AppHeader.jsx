@@ -35,30 +35,41 @@ var AppHeader = React.createClass({
     },
 
     render: function() {
+        var routerParams = this.context.router.getCurrentParams();
+
         var homeIconClassName = classNames({
             'fa': true,
-            'fa-home': !this.context.router.getCurrentParams().folderName,
-            'fa-long-arrow-left': this.context.router.getCurrentParams().folderName
+            'fa-home': false, //!routerParams.folderName,
+            'fa-long-arrow-left': routerParams.folderName
+        });
+
+        var headerCaptionClassname = classNames({
+            'headerCaption': true,
+            'home': !routerParams.folderName
         });
 
         var title = '';
 
-        if (this.context.router.getCurrentParams().feedUrl) {
+        if (routerParams.feedUrl) {
             title = this.props.title;
-        } else if (this.context.router.getCurrentParams().folderName) {
-            title = this.context.router.getCurrentParams().folderName;
+        } else if (routerParams.folderName) {
+            title = routerParams.folderName;
         } else {
             title = 'Home';
         }
 
+        var hrStyle = {
+            background: '#323232'
+        };
+
         return (
 
-            <Headroom>
+            <Headroom style={hrStyle}>
                 <a className='feedSettingsAction'>
                     <span className='fa fa-bars' onClick={this.settingsClick}></span>
                 </a>
 
-                <span className='headerCaption' onClick={this.onUpClick}>{title}</span>
+                <span className={headerCaptionClassname} onClick={this.onUpClick}>{title}</span>
 
                 <a className={homeIconClassName} onClick={this.onUpClick}></a>
             </Headroom>

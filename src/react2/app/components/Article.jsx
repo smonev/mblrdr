@@ -97,15 +97,16 @@ var ArticleContent = React.createClass({
             initialZoom: this.getCurrentZoomFromWindow()
         });
 
-        this.hammertime = new Hammer( this.getDOMNode() );
-        this.hammertime.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
-        this.hammertime.on('panend', this.panend);
+        // swiping is not that functional
+        // this.hammertime = new Hammer( this.getDOMNode() );
+        // this.hammertime.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
+        // this.hammertime.on('panend', this.panend);
     },
 
     componentWillUnmount: function() {
-        if (this.hammertime) {
-            this.hammertime.destroy();
-        }
+        // if (this.hammertime) {
+        //     this.hammertime.destroy();
+        // }
     },
 
     panend: function(e) {
@@ -222,7 +223,7 @@ var Article = React.createClass({
             wasOpenedThisSession: true
         });
 
-        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 80, 300);
+        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 78, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
     },

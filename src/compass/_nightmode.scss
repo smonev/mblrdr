@@ -76,7 +76,8 @@
   }
 
   .headerCaption {
-    color: #fcd114;
+    //color: #fcd114;
+    color: #A08301;
   }
 
   .articlesList .article .authorAndDate {
@@ -112,7 +113,7 @@
     color: #dad0b5;
   }
 
-  a {
+  .article .content a {
     color: #fcd114 !important;
   }
 

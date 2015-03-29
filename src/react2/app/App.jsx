@@ -9,6 +9,7 @@ var jQuery = require('jquery');
 var FastClick = require('fastclick');
 var PubSub = require('pubsub-js');
 var classNames = require('classNames');
+var FPSStats = require('react-stats').FPSStats;
 
 var AppHeader = require('./components/AppHeader.jsx');
 var AppSettings = require('./components/AppSettings.jsx');
@@ -112,27 +113,33 @@ var App = React.createClass({
     },
 
     showLoader: function() {
-        this.refs.pageLoader.animate();
+        //this.refs.pageLoader.animate();
     },
 
     render: function() {
-
-        var postDate = Date.now() - (10000 * 60 * 60 * 24);
 
         var nightmode = classNames({
             'nightmode': this.state.userSettings && this.state.userSettings.nightmode && this.state.userSettings.nightmode === 2
         });
         var view = [{name: 'root'}];
 
+        var currentRoutes = this.context.router.getCurrentRoutes();
+        var lastRoute = currentRoutes[currentRoutes.length - 1];
+        // console.log(lastRoute.name);
+        // todo use lastRoute.name to send the right ammount of data to RouteHandler bellow
+
         return (
             <div>
-
                 <PageLoader ref="pageLoader"/>
+
+                <FPSStats isActive={true} />
 
                 <div className='menu'>
                     <AppHeader
+                        routeName={lastRoute.name}
                         title={this.state.title}
-                        showSettings={this.showSettings} />
+                        showSettings={this.showSettings}>
+                    </AppHeader>
 
                     <RouteHandler
                         locales={'en-US'}
