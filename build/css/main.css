@@ -51,32 +51,6 @@ body {
   -webkit-text-size-adjust: none;
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent; }
-  .menu .headroom-wrapper {
-    width: 100%;
-    margin: 0px auto;
-    margin-top: 0px;
-    padding-left: 2%;
-    padding-right: 2%;
-    background: #B0BEC5; }
-    .menu .headroom-wrapper .headerCaption {
-      font-size: 2.03em;
-      color: #737373;
-      cursor: pointer;
-      overflow: hidden;
-      white-space: nowrap;
-      display: block;
-      margin: 0px auto;
-      padding: 20px 50px;
-      text-transform: uppercase; }
-      .menu .headroom-wrapper .headerCaption:active {
-        color: #66AA33; }
-    .menu .headroom-wrapper .headroom--pinned {
-      background: #B0BEC5; }
-    .menu .headroom-wrapper .fa-home, .menu .headroom-wrapper .fa-long-arrow-left {
-      float: left;
-      width: 30px;
-      margin-top: -52px;
-      cursor: pointer; }
   .menu .menuList {
     padding: 0;
     margin-top: 0px; }
@@ -159,14 +133,15 @@ body {
   .articlesList .article {
     border-top: 1px solid #e8e8e8;
     max-width: 800px;
-    width: 100%;
+    width: 96%;
     background: #ffffff;
     margin: 0px auto;
     padding: 13px 2% 10px 2%;
     overflow: hidden; }
     .articlesList .article.articleOpen {
-      max-width: 880px;
-      margin-top: 10px; }
+      margin-top: 5px;
+      margin-bottom: 5px;
+      width: 100%; }
     .articlesList .article a {
       color: #2172F7; }
     .articlesList .article .footer {
@@ -369,25 +344,6 @@ body {
 .unread {
   font-weight: bold; }
 
-.feedSettingsAction {
-  float: right;
-  width: 30px;
-  cursor: pointer;
-  padding-top: 24px;
-  margin-left: 16px; }
-
-.up {
-  width: 90%;
-  display: block;
-  float: left;
-  white-space: nowrap; }
-  .up .fa {
-    float: left;
-    padding: 16px 2% 0px 0;
-    cursor: pointer; }
-  .up .fa-home {
-    display: none; }
-
 .moreLink2 {
   display: block;
   font-size: 1.5em;
@@ -438,6 +394,58 @@ body {
   background: white;
   content: ''; }
 
+.headroom-wrapper {
+  width: 100%;
+  margin: 0px auto;
+  margin-top: 0px;
+  height: 78px; }
+  .headroom-wrapper .headerCaption {
+    font-size: 2.03em;
+    color: #737373;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    margin: 0px auto;
+    margin-left: 2%;
+    padding: 20px 50px;
+    text-transform: uppercase; }
+    .headroom-wrapper .headerCaption:active {
+      color: #66AA33; }
+    .headroom-wrapper .headerCaption.home {
+      padding: 20px 50px 20px 0px;
+      padding-left: 2%;
+      margin-left: 0%; }
+  .headroom-wrapper .headroom--pinned, .headroom-wrapper .headroom--unfixed {
+    background: #B0BEC5;
+    height: 72px !important; }
+  .headroom-wrapper .fa-home, .headroom-wrapper .fa-long-arrow-left {
+    float: left;
+    width: 30px;
+    margin-top: -52px;
+    cursor: pointer;
+    padding-left: 2%; }
+
+.feedSettingsAction {
+  float: right;
+  width: 30px;
+  cursor: pointer;
+  padding-top: 20px;
+  margin-left: 16px;
+  margin-right: 2%; }
+
+.up {
+  width: 90%;
+  display: block;
+  float: left;
+  white-space: nowrap; }
+  .up .fa {
+    float: left;
+    padding: 16px 2% 0px 0;
+    cursor: pointer; }
+  .up .fa-home {
+    display: none; }
+
 .nightmode {
   /*background: black;*/
   /*color: #dad0b5;*/
@@ -478,7 +486,7 @@ body {
     color: #dad0b5 !important;
     text-decoration: none; }
   .nightmode .headerCaption {
-    color: #fcd114; }
+    color: #A08301; }
   .nightmode .articlesList .article .authorAndDate {
     color: #dad0b5; }
   .nightmode .feedSettings {
@@ -496,7 +504,7 @@ body {
     border: 1px solid #dad0b5; }
   .nightmode .feedSettings .closeButton .close span:first-child {
     color: #dad0b5; }
-  .nightmode a {
+  .nightmode .article .content a {
     color: #fcd114 !important; }
   .nightmode .articlesList .article .contentSubHeader .fa-external-link {
     color: #dad0b5; }
