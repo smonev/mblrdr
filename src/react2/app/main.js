@@ -1,3 +1,4 @@
+'use strict';
 
 var React = require('react/addons');
 var jquery = require('jquery');
@@ -37,4 +38,3 @@ var routes = (
 Router.run(routes, function (Handler) {
     React.render(<Handler locales={i18n.locales} />, document.body);
 });
-

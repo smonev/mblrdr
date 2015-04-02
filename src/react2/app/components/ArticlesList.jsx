@@ -32,7 +32,7 @@ var ArticlesList = React.createClass({
     },
 
     componentDidMount: function() {
-        var feedUrl = this.context.router.getCurrentParams().feedUrl + '?count=-1&newFeed=0';
+        var feedUrl = this.context.router.getCurrentParams().feedUrl + '?count=-1';
         AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
 
         if (AppStore.userData.bloglist) {
@@ -118,11 +118,26 @@ var ArticlesList = React.createClass({
             }
         }
 
-        var serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount + '&newFeed=0';
+        function thereAreMore(componentCounter) {
+            if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
+                return AppStore.readData[decodedFeedUrl].totalCount !== componentCounter;
+            } else {
+                return true;
+            }
+        }
+
+        var serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount;
         var decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
+        if (!thereAreMoreUnread()) {
+            this.setState({
+                noMoreArticles: true
+            });
+        }
+
         var showRead = this.resolveShowRead();
-        if ((showRead) || ((!showRead) && thereAreMoreUnread()) ) {
+
+        if ((showRead && thereAreMore(this.state.componentCounter)) || ((!showRead) && thereAreMoreUnread()) ) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
         } else {
             this.setState({
@@ -322,8 +337,8 @@ var ArticlesList = React.createClass({
 
         var moreIconClasses = classNames({
             'fa': true,
-            'fa-long-arrow-down': true
-            //'displayNone': this.state.noMoreArticles
+            'fa-long-arrow-down': true,
+            'displayNone': this.state.noMoreArticles
         });
 
         return (

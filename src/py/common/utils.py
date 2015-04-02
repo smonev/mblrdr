@@ -2,9 +2,10 @@ import logging
 import json
 
 from google.appengine.ext import ndb
-from py.common.db_models import UserData
+from google.appengine.api import users
 from datetime import datetime
 
+from py.common.db_models import UserData
 from py.common.db_models import FeedData
 from py.common.db_models import FeedDataSettings
 from py.common.db_models import ReadData
@@ -64,7 +65,8 @@ def GetFeedDataSettings(feed):
         if (ud is not None):
             readDataAttr = 'readData__' + str(feed).translate(None, '.')
             app_username = ud.app_username
-            ReadData(app_username = app_username, feedUrl = feed, readData = '', readCount = 0, id = readDataAttr)
+            rd = ReadData(app_username = app_username, feedUrl = feed, readData = '', readCount = 0, id = readDataAttr)
+            rd.put_async()
 
     return fds
 

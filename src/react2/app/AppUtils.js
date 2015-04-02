@@ -263,7 +263,9 @@ var AppUtils = {
             'title': feed
         });
 
-        this.saveSettings(function() {
+        var decodedFeed = decodeURIComponent(feed);
+
+        this.saveSettingsWithAdd(decodedFeed, function() {
             PubSub.publish(AppMessages.NEW_FEED_ADDED, {
                 'folder': folder,
                 'feed': feed
@@ -304,6 +306,22 @@ var AppUtils = {
         };
 
         $.post('/SaveSettings?deleteFeed=' + deleteFeed, {
+            'data': JSON.stringify(data)
+        }, function() {
+            if (typeof successCallback === 'function') {
+                successCallback.call();
+            }
+        });
+    },
+
+    saveSettingsWithAdd: function(newFeed, successCallback) {
+        var data = {
+            'bloglist': AppStore.userData.bloglist,
+            'username': AppStore.userData.username,
+            'userSettings': AppStore.userData.userSettings
+        };
+
+        $.post('/SaveSettings?newFeed=' + newFeed, {
             'data': JSON.stringify(data)
         }, function() {
             if (typeof successCallback === 'function') {

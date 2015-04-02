@@ -108,7 +108,8 @@ class FeedHandler(webapp2.RequestHandler):
             else:
                 fd = FeedData.get_by_id(keyName)
                 if fd is None:
-                    logging.debug('getFeedData => fd is None. Why?!? %s keyName', feedUrl, keyName)
+                    logging.debug('getFeedData => fd is None. Why?!?')
+                    ##' %s keyName, feedUrl: ', keyName, feedUrl)
                     feedData = '';
                 else:
                     feedData = fd.private_data
@@ -206,6 +207,7 @@ class SaveSettingsHandler(webapp2.RequestHandler):
 
                 newFeed = self.request.get('newFeed')
                 if newFeed:
+                    logging.debug('adddddddddding new feed: %s', newFeed)
                     if self.addNewFeed(newFeed):
                         self.cronNewFeed(newFeed)
 
