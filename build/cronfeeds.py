@@ -51,7 +51,7 @@ class CronFeedHandler(webapp2.RequestHandler):
     #     FeedDataSettings.lastUpdateInterval = interval
 
     #     ## one day max
-    #     if interval > 86400:
+    #     if interval > 86800:
     #         interval = 86400
 
     #     FeedDataSettings.updateMeAfterThisTime = datetime.now() + timedelta(seconds=interval)
