@@ -58,13 +58,8 @@ var AppHeader = React.createClass({
             title = 'Home';
         }
 
-        var hrStyle = {
-            background: '#323232'
-        };
-
         return (
-
-            <Headroom style={hrStyle}>
+            <Headroom>
                 <a className='feedSettingsAction'>
                     <span className='fa fa-bars' onClick={this.settingsClick}></span>
                 </a>
