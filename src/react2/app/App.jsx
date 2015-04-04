@@ -1,29 +1,29 @@
 'use strict';
 
-var React = require('react');
-var ReactRouter = require('react-router');
-var Router = ReactRouter;
-var RouteHandler = Router.RouteHandler;
+let React = require('react');
+let ReactRouter = require('react-router');
+let Router = ReactRouter;
+let RouteHandler = Router.RouteHandler;
 
-var jQuery = require('jquery');
-var FastClick = require('fastclick');
-var PubSub = require('pubsub-js');
-var classNames = require('classNames');
-var FPSStats = require('react-stats').FPSStats;
+let jQuery = require('jquery');
+let FastClick = require('fastclick');
+let PubSub = require('pubsub-js');
+let classNames = require('classNames');
+let FPSStats = require('react-stats').FPSStats;
 
-var AppHeader = require('./components/AppHeader.jsx');
-var AppSettings = require('./components/AppSettings.jsx');
-var FeedsList = require('./components/FeedsList.jsx');
-var FoldersList = require('./components/FoldersList.jsx');
-var PageLoader = require('./components/PageLoader.jsx');
-var AppStore = require('./AppStore.js');
-var AppUtils = require('./AppUtils.js');
-var AppMess = require('./AppMess.js');
-var AppMessages = require('./Const.js');
+let AppHeader = require('./components/AppHeader.jsx');
+let AppSettings = require('./components/AppSettings.jsx');
+let FeedsList = require('./components/FeedsList.jsx');
+let FoldersList = require('./components/FoldersList.jsx');
+let PageLoader = require('./components/PageLoader.jsx');
+let AppStore = require('./AppStore.js');
+let AppUtils = require('./AppUtils.js');
+let AppMess = require('./AppMess.js');
+let AppMessages = require('./Const.js');
 
 AppMess.init();
 
-var App = React.createClass({
+let App = React.createClass({
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -118,13 +118,13 @@ var App = React.createClass({
 
     render: function() {
 
-        var nightmode = classNames({
+        let nightmode = classNames({
             'nightmode': this.state.userSettings && this.state.userSettings.nightmode && this.state.userSettings.nightmode === 2
         });
-        var view = [{name: 'root'}];
+        let view = [{name: 'root'}];
 
-        var currentRoutes = this.context.router.getCurrentRoutes();
-        var lastRoute = currentRoutes[currentRoutes.length - 1];
+        let currentRoutes = this.context.router.getCurrentRoutes();
+        let lastRoute = currentRoutes[currentRoutes.length - 1];
         // console.log(lastRoute.name);
         // todo use lastRoute.name to send the right ammount of data to RouteHandler bellow
 

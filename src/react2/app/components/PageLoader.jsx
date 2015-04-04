@@ -1,10 +1,10 @@
 'use strict';
 
-var React = require('react');
+let React = require('react');
 
-var PageLoader = React.createClass({
+let PageLoader = React.createClass({
   getInitialState: function() {
-      var innerWidth = window.innerWidth;
+      let innerWidth = window.innerWidth;
 
       return {
           loaderWidth: innerWidth,
@@ -15,9 +15,9 @@ var PageLoader = React.createClass({
   },
 
   animate: function() {
-      var that = this, animationTimer;
+      let that = this, animationTimer;
       animationTimer = setTimeout(function() {
-          var  newLeft;
+          let  newLeft;
 
           if (that.state.loaderLeft < 0){
               that.state.animationId = window.requestAnimationFrame(that.animate);
@@ -42,7 +42,7 @@ var PageLoader = React.createClass({
 
   render: function () {
 
-      var style = {
+      let style = {
           width: this.state.loaderWidth,
           height: '3px',
           backgroundColor: '#c0392b',

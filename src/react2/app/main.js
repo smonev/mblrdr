@@ -1,32 +1,32 @@
 'use strict';
 
-var React = require('react/addons');
-var jquery = require('jquery');
+let React = require('react/addons');
+let jquery = require('jquery');
 window.jQuery = jquery;
 window.$ = jquery;
 
-var Velocity = require('velocity-animate');
-var bla = require('velocity-animate/velocity.ui');
+let Velocity = require('velocity-animate');
+let bla = require('velocity-animate/velocity.ui');
 window.Velocity = Velocity;
 
-var App = require('./App.jsx');
-var FoldersList = require('./components/FoldersList.jsx');
-var FeedsList = require('./components/FeedsList.jsx');
-var ArticlesList = require('./components/ArticlesList.jsx');
-var NotFound = require('./components/NotFound.jsx');
+let App = require('./App.jsx');
+let FoldersList = require('./components/FoldersList.jsx');
+let FeedsList = require('./components/FeedsList.jsx');
+let ArticlesList = require('./components/ArticlesList.jsx');
+let NotFound = require('./components/NotFound.jsx');
 
-var ReactRouter = require('react-router');
-var Router = ReactRouter;
-var Route = ReactRouter.Route;
+let ReactRouter = require('react-router');
+let Router = ReactRouter;
+let Route = ReactRouter.Route;
 
-var DefaultRoute = ReactRouter.DefaultRoute;
-var NotFoundRoute = ReactRouter.NotFoundRoute;
+let DefaultRoute = ReactRouter.DefaultRoute;
+let NotFoundRoute = ReactRouter.NotFoundRoute;
 
-var i18n = {
+let i18n = {
     locales: ['en-US']
 };
 
-var routes = (
+let routes = (
     <Route name='home' path='/' handler={App}>
         <Route name='folderFeeds' path='/:folderName' handler={FeedsList}></Route>
         <Route name='feedItems' path='/:folderName/:feedUrl' handler={ArticlesList}></Route>

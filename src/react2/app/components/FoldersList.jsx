@@ -1,17 +1,17 @@
 'use strict';
 
-var React = require('react');
-var ReactRouter = require('react-router');
-var Link = ReactRouter.Link;
+let React = require('react');
+let ReactRouter = require('react-router');
+let Link = ReactRouter.Link;
 
-var PubSub = require('pubsub-js');
+let PubSub = require('pubsub-js');
 
-var FeedsList = require('../components/FeedsList.jsx');
-var AppStore = require('../AppStore.js');
-var AppUtils = require('../AppUtils.js');
-var AppMessages = require('./../Const.js');
+let FeedsList = require('../components/FeedsList.jsx');
+let AppStore = require('../AppStore.js');
+let AppUtils = require('../AppUtils.js');
+let AppMessages = require('./../Const.js');
 
-var FoldersList = React.createClass({
+let FoldersList = React.createClass({
     getInitialState: function() {
         return {
             foldersUnreadCount: AppStore.foldersUnreadCount ? AppStore.foldersUnreadCount : {}
@@ -24,10 +24,10 @@ var FoldersList = React.createClass({
                 foldersUnreadCount: AppStore.foldersUnreadCount
             });
         }.bind(this));
-        var folders = this.getDOMNode().querySelectorAll('.folder');
+        let folders = this.getDOMNode().querySelectorAll('.folder');
 
         if (folders.length > 0) {
-            var i = 0;
+            let i = 0;
             //$.each(folders, function(i, el) {
             //    $(el).delay(50 + (i * 10)).velocity('callout.pulseSide');
             //})
@@ -44,7 +44,7 @@ var FoldersList = React.createClass({
     },
 
     render: function() {
-        var feeds, folders;
+        let feeds, folders;
 
         if (!this.props.userData) {
             return (<div/>);
@@ -54,8 +54,8 @@ var FoldersList = React.createClass({
         folders = folders.filter(function(element){
             return element !== 'root';
         }).map(function (folder) {
-            var linkToFolder = '/' + folder;
-            var folderUnreadCount;
+            let linkToFolder = '/' + folder;
+            let folderUnreadCount;
             if (this.state.foldersUnreadCount && this.state.foldersUnreadCount[folder]) {
                 folderUnreadCount = this.state.foldersUnreadCount[folder];
 

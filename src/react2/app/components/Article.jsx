@@ -1,20 +1,20 @@
 'use strict';
 
-var React = require('react');
+let React = require('react');
 
-var classNames = require('classNames');
-var ReactIntl = require('react-intl');
-var IntlMixin = ReactIntl.IntlMixin;
-var FormattedMessage = ReactIntl.FormattedMessage;
-var FormattedRelative = ReactIntl.FormattedRelative;
+let classNames = require('classNames');
+let ReactIntl = require('react-intl');
+let IntlMixin = ReactIntl.IntlMixin;
+let FormattedMessage = ReactIntl.FormattedMessage;
+let FormattedRelative = ReactIntl.FormattedRelative;
 
 
-var hammer = require('hammerjs');
+let hammer = require('hammerjs');
 window.Hammer = hammer;
 
-var AppUtils = require('../AppUtils');
+let AppUtils = require('../AppUtils');
 
-var ArticleHeader = React.createClass({
+let ArticleHeader = React.createClass({
     props: {
         isRead: React.PropTypes.bool.isRequired,
         toggleArticleStar: React.PropTypes.func.isRequired,
@@ -41,7 +41,7 @@ var ArticleHeader = React.createClass({
     },
 
     render: function() {
-        var starClass = classNames({
+        let starClass = classNames({
             'fa': true,
             'fa-star': this.props.isStar,
             'fa-star-o': !this.props.isStar
@@ -68,7 +68,7 @@ var ArticleHeader = React.createClass({
     }
 });
 
-var ArticleContent = React.createClass({
+let ArticleContent = React.createClass({
 
     props: {
         isOpen: React.PropTypes.bool.isRequired,
@@ -135,8 +135,8 @@ var ArticleContent = React.createClass({
 
     getCurrentZoomFromWindow: function() {
         //close your eyes
-        var fontSize = parseInt(window.getComputedStyle(this.getDOMNode().querySelectorAll('.content')[0], null).getPropertyValue('font-size'));
-        var lineHeight = parseInt(window.getComputedStyle(this.getDOMNode().querySelectorAll('.content')[0], null).getPropertyValue('line-height'));
+        let fontSize = parseInt(window.getComputedStyle(this.getDOMNode().querySelectorAll('.content')[0], null).getPropertyValue('font-size'));
+        let lineHeight = parseInt(window.getComputedStyle(this.getDOMNode().querySelectorAll('.content')[0], null).getPropertyValue('line-height'));
 
         return {
             fontSize: fontSize,
@@ -145,17 +145,17 @@ var ArticleContent = React.createClass({
     },
 
     render: function() {
-        var mainSectionClasses = classNames({
+        let mainSectionClasses = classNames({
             'contentHeader': true,
             'displayNone': !this.props.isOpen
         });
 
-        var contentSectionClasses = classNames({
+        let contentSectionClasses = classNames({
             'content': true,
             'displayNone': !this.props.isOpen
         });
 
-        var zoomStyle = {
+        let zoomStyle = {
             fontSize: this.state.initialZoom.fontSize + (this.props.zoomLevel * 3) + 'px',
             lineHeight: this.state.initialZoom.lineHeight  + (this.props.zoomLevel * 3) + 'px'
         };
@@ -193,7 +193,7 @@ var ArticleContent = React.createClass({
     }
 });
 
-var Article = React.createClass({
+let Article = React.createClass({
 
     mixins: [IntlMixin],
 
@@ -229,7 +229,7 @@ var Article = React.createClass({
     },
 
     zoomContent: function(out) {
-        var zoomLevel = out === 0 ? 0 : this.state.zoomLevel + out;
+        let zoomLevel = out === 0 ? 0 : this.state.zoomLevel + out;
 
         this.setState( {
             zoomLevel: zoomLevel
@@ -257,7 +257,7 @@ var Article = React.createClass({
     },
 
     render: function() {
-        var articleClasses = classNames({
+        let articleClasses = classNames({
             'article': true,
             'unread': !this.props.isRead,
             'articleOpen': this.state.isOpen,

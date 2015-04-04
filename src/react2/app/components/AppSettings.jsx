@@ -1,15 +1,15 @@
 'use strict';
 
-var React = require('react/addons');
-var ReactRouter = require('react-router');
-var classNames = require('classNames');
+let React = require('react/addons');
+let ReactRouter = require('react-router');
+let classNames = require('classNames');
 
-var PubSub = require('pubsub-js');
+let PubSub = require('pubsub-js');
 
-var AppUtils = require('./../AppUtils.js');
-var AppMessages = require('./../Const.js');
+let AppUtils = require('./../AppUtils.js');
+let AppMessages = require('./../Const.js');
 
-var MarkReadSetting = React.createClass({
+let MarkReadSetting = React.createClass({
 
     markAsReadClick: function(e) {
         if ((this.props.view.length === 1) && (this.props.view[0].name === 'root')) { //root
@@ -38,7 +38,7 @@ var MarkReadSetting = React.createClass({
 
 });
 
-var HeaderSetting = React.createClass({
+let HeaderSetting = React.createClass({
 
     render: function() {
         return (
@@ -51,10 +51,10 @@ var HeaderSetting = React.createClass({
 
 });
 
-var ShowHideSetting = React.createClass({
+let ShowHideSetting = React.createClass({
 
     showHideClick: function (e) {
-        var showRead = e.target.classList.contains('showAll');
+        let showRead = e.target.classList.contains('showAll');
 
         if ((this.props.view.length === 1) && (this.props.view[0].name === 'root')) { //root
             this.props.userSettings.showRead = showRead;
@@ -87,7 +87,7 @@ var ShowHideSetting = React.createClass({
 
     resolveShowRead: function () {
 
-        var showAll;
+        let showAll;
 
         if ((this.props.view.length === 1) && (this.props.view[0].name === 'root')) { //root
             showAll =
@@ -106,16 +106,16 @@ var ShowHideSetting = React.createClass({
     },
 
     render: function () {
-        var showRead = this.resolveShowRead();
+        let showRead = this.resolveShowRead();
 
-        var showHideFirstClasses = classNames({
+        let showHideFirstClasses = classNames({
             'showHideOption': true,
             'showAll': true,
             'first': true,
             'selected': showRead
         });
 
-        var showHideSecondClasses = classNames({
+        let showHideSecondClasses = classNames({
             'showHideOption': true,
             'showUnreadOnly': true,
             'second': true,
@@ -135,7 +135,7 @@ var ShowHideSetting = React.createClass({
     }
 });
 
-var NightModeSetting = React.createClass({
+let NightModeSetting = React.createClass({
 
     nightModeClick: function(e) {
         PubSub.publish(AppMessages.NIGHT_MODE_CHANGE, e.target.classList.contains('dayMode'));
@@ -144,13 +144,13 @@ var NightModeSetting = React.createClass({
 
     render: function() {
         // nigthmode
-        var nightmodeFirstClasses = classNames({
+        let nightmodeFirstClasses = classNames({
             'nightmodeOption': true,
             'dayMode': true,
             'nightMode': false,
             'selected': this.props.nightmode === 1
         });
-        var nightmodeSecondClasses = classNames({
+        let nightmodeSecondClasses = classNames({
             'nightmodeOption': true,
             'dayMode': false,
             'nightMode': true,
@@ -170,7 +170,7 @@ var NightModeSetting = React.createClass({
     }
 });
 
-var ChangeFolderSetting = React.createClass({
+let ChangeFolderSetting = React.createClass({
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -178,16 +178,16 @@ var ChangeFolderSetting = React.createClass({
 
     folderChange:function(e) {
         //confirm
-        var fromFolder = this.props.view[0].name;
-        var toFolder = e.target.value;
-        var feed = this.props.view[1].name;
+        let fromFolder = this.props.view[0].name;
+        let toFolder = e.target.value;
+        let feed = this.props.view[1].name;
 
         AppUtils.changeFeedFolder(fromFolder, toFolder, feed);
     },
 
     componentDidMount: function() {
         this.feedFolderChanged = PubSub.subscribe(AppMessages.FEED_FOLDER_CHANGED, function( msg, data ) {
-            var url = '/' + encodeURIComponent(data.toFolder) + '/' + encodeURIComponent(data.feed);
+            let url = '/' + encodeURIComponent(data.toFolder) + '/' + encodeURIComponent(data.feed);
             this.context.router.transitionTo(url);
             this.props.hideSettings.call();
         }.bind(this));
@@ -203,7 +203,7 @@ var ChangeFolderSetting = React.createClass({
             return (<div />);
         }
 
-        var foldersList2 = Object.keys(this.props.bloglist).map(function(folder, index) {
+        let foldersList2 = Object.keys(this.props.bloglist).map(function(folder, index) {
             return (
                 <option key={folder} value={folder}>
                     {folder}
@@ -225,7 +225,7 @@ var ChangeFolderSetting = React.createClass({
     }
 });
 
-var AddFeedSetting = React.createClass({
+let AddFeedSetting = React.createClass({
     getInitialState: function() {
         return {
             view: 1,
@@ -236,7 +236,7 @@ var AddFeedSetting = React.createClass({
 
     handleOPMLChange: function(e) {
 
-        var fileName = this.refs.opmlInput.getDOMNode().value;
+        let fileName = this.refs.opmlInput.getDOMNode().value;
         fileName = fileName.match(/[^\/\\]+$/);
 
         if (fileName.length > 0) {
@@ -261,7 +261,7 @@ var AddFeedSetting = React.createClass({
     },
 
     addFeed: function(e) {
-        var folder = this.props.view[0].name;
+        let folder = this.props.view[0].name;
         AppUtils.addNewFeed(folder, this.refs.newFeed.getDOMNode().value);
     },
 
@@ -270,42 +270,42 @@ var AddFeedSetting = React.createClass({
     },
 
     render: function() {
-        var addFeedClasses = classNames({
+        let addFeedClasses = classNames({
             'displayNone': this.state.view !== 1
         });
 
-        var addFolderClasses = classNames({
+        let addFolderClasses = classNames({
             'displayNone': this.state.view !== 2
         });
 
-        var addOPMLClasses = classNames({
+        let addOPMLClasses = classNames({
             'omplImportForm': true,
             'displayNone': this.state.view !== 3
         });
 
-        var addFeedClassesNav = classNames({
+        let addFeedClassesNav = classNames({
             'inputType': true,
             'selected': this.state.view === 1
         });
 
-        var addFolderClassesNav = classNames({
+        let addFolderClassesNav = classNames({
             'inputType': true,
             'middle': true,
             'selected': this.state.view === 2
         });
 
-        var addOPMLClassesNav = classNames({
+        let addOPMLClassesNav = classNames({
             'inputType': true,
             'selected': this.state.view === 3
         });
 
-        var submitOPMLButtonClasses = classNames({
+        let submitOPMLButtonClasses = classNames({
             'fa': true,
             'fa-check': true,
             'addOpml': true
         });
 
-        var opmlInputControlsDisplay = {
+        let opmlInputControlsDisplay = {
             'display': ((this.state.view === 3) && (this.state.opmlFileName !== '')) ? 'inline' : 'none'
         };
 
@@ -337,7 +337,7 @@ var AddFeedSetting = React.createClass({
     }
 });
 
-var DeleteFolderSettings = React.createClass( {
+let DeleteFolderSettings = React.createClass( {
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -358,7 +358,7 @@ var DeleteFolderSettings = React.createClass( {
     },
 
     render: function() {
-        var caption;
+        let caption;
         if ((this.props.view.length === 1) && (this.props.view[0].name === 'root')) { //root
             return (<div></div>);
         } else if ((this.props.view.length === 1) && (this.props.view[0].name !== 'root')) {
@@ -378,7 +378,7 @@ var DeleteFolderSettings = React.createClass( {
 
 });
 
-var AppSettings = React.createClass({
+let AppSettings = React.createClass({
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -405,7 +405,7 @@ var AppSettings = React.createClass({
         }.bind(this));
 
         this.newFeedAdded = PubSub.subscribe(AppMessages.NEW_FEED_ADDED, function( msg, data ) {
-            var url = '/' + encodeURIComponent(data.folder) + '/' + encodeURIComponent(data.feed) + '?new=1';
+            let url = '/' + encodeURIComponent(data.folder) + '/' + encodeURIComponent(data.feed) + '?new=1';
             this.context.router.transitionTo(url);
             this.hideSettings();
         }.bind(this));
@@ -421,8 +421,8 @@ var AppSettings = React.createClass({
     },
 
     getView: function() {
-        var view, title;
-        var urlParams = this.context.router.getCurrentParams();
+        let view, title;
+        let urlParams = this.context.router.getCurrentParams();
 
         if (urlParams.feedUrl) {
             title = this.props.currentFeedName;
@@ -454,11 +454,11 @@ var AppSettings = React.createClass({
             return (<div />);
         }
 
-        var styles = {
+        let styles = {
             display: this.props.visible ? 'block' : 'none'
         };
 
-        var view = this.getView();
+        let view = this.getView();
 
         return (
             <ul className='feedSettings' style={styles}>

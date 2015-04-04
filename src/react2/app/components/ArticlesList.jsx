@@ -1,19 +1,17 @@
 'use strict';
 
-var React = require('react');
-var ReactRouter = require('react-router');
+let React = require('react');
+let ReactRouter = require('react-router');
 
-var Article = require('../components/Article.jsx');
-var AppUtils = require('../AppUtils.js');
-var AppStore = require('../AppStore.js');
+let classNames = require('classNames');
+let PubSub = require('pubsub-js');
 
-var classNames = require('classNames');
-var PubSub = require('pubsub-js');
+let Article = require('../components/Article.jsx');
+let AppUtils = require('../AppUtils.js');
+let AppStore = require('../AppStore.js');
+let AppMessages = require('./../Const.js');
 
-
-var AppMessages = require('./../Const.js');
-
-var ArticlesList = React.createClass({
+let ArticlesList = React.createClass({
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -32,7 +30,7 @@ var ArticlesList = React.createClass({
     },
 
     componentDidMount: function() {
-        var feedUrl = this.context.router.getCurrentParams().feedUrl + '?count=-1';
+        let feedUrl = this.context.router.getCurrentParams().feedUrl + '?count=-1';
         AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
 
         if (AppStore.userData.bloglist) {
@@ -86,7 +84,6 @@ var ArticlesList = React.createClass({
                 AppUtils.updateFeedTitleIfNeeded(this.context.router.getCurrentParams().folderName, this.context.router.getCurrentParams().feedUrl, this.state.articles[0].feedTitle);
             }
 
-
             if (!this.moreLinkInitialized) {
                 this.moreLinkInitialized = true;
                 //this.moreLinkAppearSetup();
@@ -95,7 +92,7 @@ var ArticlesList = React.createClass({
     },
 
     moreLinkAppearSetup: function() {
-        var that = this;
+        let that = this;
         appear({
             elements: function elements(){
                 return document.getElementsByClassName('moreLink2');
@@ -126,8 +123,8 @@ var ArticlesList = React.createClass({
             }
         }
 
-        var serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount;
-        var decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
+        let serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount;
+        let decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
         if (!thereAreMoreUnread()) {
             this.setState({
@@ -135,7 +132,7 @@ var ArticlesList = React.createClass({
             });
         }
 
-        var showRead = this.resolveShowRead();
+        let showRead = this.resolveShowRead();
 
         if ((showRead && thereAreMore(this.state.componentCounter)) || ((!showRead) && thereAreMoreUnread()) ) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
@@ -147,7 +144,7 @@ var ArticlesList = React.createClass({
     },
 
     resolveShowRead: function() {
-        var view = this.getView(), showRead = true;
+        let view = this.getView(), showRead = true;
         try {
             showRead = this.props.userSettings[view[0].name][view[1].name].showRead;
         } catch (e) {
@@ -160,7 +157,7 @@ var ArticlesList = React.createClass({
         if (this.context.router.getCurrentQuery().new === '1') {
             this.timeoutToClear = setTimeout(function() {
                 clearTimeout(this.timeoutToClear);
-                var url = '/' + this.context.router.getCurrentParams().folderName + '/' + this.context.router.getCurrentParams().feedUrl;
+                let url = '/' + this.context.router.getCurrentParams().folderName + '/' + this.context.router.getCurrentParams().feedUrl;
                 this.context.router.transitionTo(url);
             }.bind(this), 7000);
         }
@@ -170,7 +167,7 @@ var ArticlesList = React.createClass({
         this.setState({
             currentActive: currentActive
         });
-        var ref = 'article' + (currentActive + direction);
+        let ref = 'article' + (currentActive + direction);
         if (this.refs[ref]) {
             this.refs[ref].openArticle.call();
             this.props.showLoader.call();
@@ -187,7 +184,7 @@ var ArticlesList = React.createClass({
     },
 
     getView: function() {
-        var view;
+        let view;
 
         if (this.context.router.getCurrentParams().feedUrl) {
             view = [{
@@ -209,7 +206,7 @@ var ArticlesList = React.createClass({
     },
 
     keyUp: function(e) {
-        var ref;
+        let ref;
 
         if (e.keyCode === 74) { //j
             ref = 'article' + (this.state.currentActive + 1);
@@ -269,7 +266,7 @@ var ArticlesList = React.createClass({
     },
 
     toggleArticleStar: function(id) {
-        var stars = this.state.star, starState;
+        let stars = this.state.star, starState;
         if (this.state.star.indexOf(id) === -1) {
             this.state.star.push(id);
             starState = 1;
@@ -294,7 +291,7 @@ var ArticlesList = React.createClass({
 
     render: function() {
         if (this.context.router.getCurrentQuery().new === '1') {
-            var styles = {
+            let styles = {
                 width: '100%',
                 textAlign: 'center'
             };
@@ -312,16 +309,16 @@ var ArticlesList = React.createClass({
             //return (<div></div>);
         }
 
-        var showRead = this.resolveShowRead();
-        var feedUrl = decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
+        let showRead = this.resolveShowRead();
+        let feedUrl = decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
         this.state.componentCounter = 0;
-        var articles = this.state.articles.map(function (article) {
+        let articles = this.state.articles.map(function (article) {
             this.state.componentCounter = this.state.componentCounter + 1;
-            var isRead = this.state.allArticlesAreRead || (this.state.read.indexOf(article.id) > -1) ||
+            let isRead = this.state.allArticlesAreRead || (this.state.read.indexOf(article.id) > -1) ||
                 (AppStore.readData && AppStore.readData[feedUrl] && AppStore.readData[feedUrl].localReadData && AppStore.readData[feedUrl].localReadData.indexOf(article.id) > -1);
-            var isStar = this.state.star.indexOf(article.id) > -1;
-            var refName = 'article' + this.state.componentCounter;
+            let isStar = this.state.star.indexOf(article.id) > -1;
+            let refName = 'article' + this.state.componentCounter;
 
             return (
                 <Article key={refName} ref={refName}
@@ -335,7 +332,7 @@ var ArticlesList = React.createClass({
             );
         }.bind(this));
 
-        var moreIconClasses = classNames({
+        let moreIconClasses = classNames({
             'fa': true,
             'fa-long-arrow-down': true,
             'displayNone': this.state.noMoreArticles

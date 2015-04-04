@@ -1,18 +1,18 @@
 'use strict';
 
-var AppStore = require('./AppStore.js');
-var AppMessages = require('./Const.js');
+let AppStore = require('./AppStore.js');
+let AppMessages = require('./Const.js');
 
-var PubSub = require('pubsub-js');
+let PubSub = require('pubsub-js');
 
-var AppUtils = {
+let AppUtils = {
 
     getHeadroom: function() {
         return document.querySelectorAll('.headroom')[0];
     },
 
     scrollTo: function(scrollPos, interval) {
-        var scrollUp = (scrollPos - document.body.scrollTop) < 0;
+        let scrollUp = (scrollPos - document.body.scrollTop) < 0;
         if (scrollUp) {
             scrollPos = scrollPos - 200;
 
@@ -40,7 +40,7 @@ var AppUtils = {
 
     morphElementToHeader: function(fromElement) {
 
-        var newElement =  fromElement.target.cloneNode(true);
+        let newElement =  fromElement.target.cloneNode(true);
 
         newElement.style.cssText = //'color:#2172F7 !important;' +
             'font-size: 2.03em;color: #737373;cursor: pointer;overflow: hidden;white-space: nowrap;display: block;margin: 0px auto;padding: 20px 50px;text-transform: uppercase;' +
@@ -67,7 +67,7 @@ var AppUtils = {
     },
 
     markArticleAsRead: function(data) {
-        var markReadData = {}, decodedUrl = decodeURIComponent(data.url);
+        let markReadData = {}, decodedUrl = decodeURIComponent(data.url);
         markReadData[decodedUrl] = [data.id];
 
         $.post('/MarkArticlesAsRead?read=1&allRead=-1', {
@@ -105,7 +105,7 @@ var AppUtils = {
     },
 
     markFeedAsRead: function(folder, url) {
-        var markReadData = {}, decodedUrl = decodeURIComponent(url), decodedFolder = decodeURIComponent(folder);
+        let markReadData = {}, decodedUrl = decodeURIComponent(url), decodedFolder = decodeURIComponent(folder);
         markReadData[decodedUrl] = [];
 
         $.post('/MarkArticlesAsRead?read=1&allRead=1', {
@@ -124,7 +124,7 @@ var AppUtils = {
     },
 
     markFolderAsRead: function(folder) {
-        var feeds = AppStore.userData.bloglist[folder];
+        let feeds = AppStore.userData.bloglist[folder];
         feeds.map(function (feed) {
             this.markFeedAsRead(folder, feed.url);
         }.bind(this));
@@ -151,10 +151,10 @@ var AppUtils = {
             alert('You are now unsubscibed from ' + decodedFeed);
         }
 
-        var decodedFeed = decodeURIComponent(feed);
-        var decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
+        let decodedFeed = decodeURIComponent(feed);
+        let decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
 
-        for (var i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
+        for (let i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
                 AppStore.userData.bloglist[decodedFolder].splice(i, 1);
                 this.saveSettingsWithDelete(decodedFeed, successUnsubscribe);
@@ -164,14 +164,14 @@ var AppUtils = {
     },
 
     updateFeedTitleIfNeeded: function(folder, feed, title) {
-        var decodedFeed = decodeURIComponent(feed);
-        var decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
+        let decodedFeed = decodeURIComponent(feed);
+        let decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
 
         if (typeof AppStore.userData.bloglist === 'undefined') {
             return;
         }
 
-        for (var i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
+        for (let i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
                 if (AppStore.userData.bloglist[decodedFolder][i].title !== title) {
                     AppStore.userData.bloglist[decodedFolder][i].title = title;
@@ -183,10 +183,10 @@ var AppUtils = {
     },
 
     getFeedTitle: function( folder, feed ) {
-        var decodedFeed = decodeURIComponent(feed);
-        var decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
+        let decodedFeed = decodeURIComponent(feed);
+        let decodedFolder = decodeURIComponent(folder); //todo shouldn't here be encodeURIComponent
 
-        for (var i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
+        for (let i = 0; i < AppStore.userData.bloglist[decodedFolder].length; i++) {
             if (AppStore.userData.bloglist[decodedFolder][i].url === decodedFeed) {
                 return AppStore.userData.bloglist[decodedFolder][i].title;
             }
@@ -194,11 +194,11 @@ var AppUtils = {
     },
 
     getFeedData: function (feedUrl, successCallback) {
-        var colorWheel = document.getElementById('colorWheel');
-        var deg = 0;
-        var inAnimation = false;
-        var animationTimeoutID;
-        var rafAnimationID;
+        let colorWheel = document.getElementById('colorWheel');
+        let deg = 0;
+        let inAnimation = false;
+        let animationTimeoutID;
+        let rafAnimationID;
 
         function animateLoader() {
             colorWheel = colorWheel || document.getElementById('colorWheel');
@@ -240,15 +240,15 @@ var AppUtils = {
     },
 
     updateForCache: function(feedUrl) {
-        var decodedUrl = decodeURIComponent(feedUrl);
+        let decodedUrl = decodeURIComponent(feedUrl);
 
         if (AppStore.nextRequestFromServer[decodedUrl]) {
             AppStore.nextRequestFromServer[decodedUrl] = false;
             feedUrl = feedUrl + '&v=' + Math.random();
         } else {
-            var d1 = new Date(); d1.setHours(0); d1.setMinutes(0); d1.setSeconds(0); d1.setMilliseconds(0);
-            var d2 = new Date();
-            var period =  ((d2 - d1) / 1000 / 60 ) % 60; //waaat :) // ok, get the minutes between two dates (not more than an hour). waat :)
+            let d1 = new Date(); d1.setHours(0); d1.setMinutes(0); d1.setSeconds(0); d1.setMilliseconds(0);
+            let d2 = new Date();
+            let period =  ((d2 - d1) / 1000 / 60 ) % 60; //waaat :) // ok, get the minutes between two dates (not more than an hour). waat :)
             period =  Math.floor(period / 10);
 
             feedUrl = feedUrl + '&v=' +  d1.getTime() + '___' + period;
@@ -263,7 +263,7 @@ var AppUtils = {
             'title': feed
         });
 
-        var decodedFeed = decodeURIComponent(feed);
+        let decodedFeed = decodeURIComponent(feed);
 
         this.saveSettingsWithAdd(decodedFeed, function() {
             PubSub.publish(AppMessages.NEW_FEED_ADDED, {
@@ -283,7 +283,7 @@ var AppUtils = {
     },
 
     saveSettings: function (successCallback) {
-        var data = {
+        let data = {
             'bloglist': AppStore.userData.bloglist,
             'username': AppStore.userData.username,
             'userSettings': AppStore.userData.userSettings
@@ -299,7 +299,7 @@ var AppUtils = {
     },
 
     saveSettingsWithDelete: function(deleteFeed, successCallback) {
-        var data = {
+        let data = {
             'bloglist': AppStore.userData.bloglist,
             'username': AppStore.userData.username,
             'userSettings': AppStore.userData.userSettings
@@ -315,7 +315,7 @@ var AppUtils = {
     },
 
     saveSettingsWithAdd: function(newFeed, successCallback) {
-        var data = {
+        let data = {
             'bloglist': AppStore.userData.bloglist,
             'username': AppStore.userData.username,
             'userSettings': AppStore.userData.userSettings
@@ -338,7 +338,7 @@ var AppUtils = {
     },
 
     calcFoldersUnreadCount: function() {
-        var folder;
+        let folder;
         AppStore.foldersUnreadCount = {};
 
         for (folder in AppStore.userData.bloglist) {
@@ -347,14 +347,14 @@ var AppUtils = {
     },
 
     calcFolderUnreadCount: function(folder) {
-        var folderUnreadCount = 0, feedUrl;
+        let folderUnreadCount = 0, feedUrl;
 
         if (typeof AppStore.userData.bloglist === 'undefined') {
             return;
         }
 
         //get all folder feeds
-        for (var i = 0; i < AppStore.userData.bloglist[folder].length; i++) {
+        for (let i = 0; i < AppStore.userData.bloglist[folder].length; i++) {
             feedUrl = AppStore.userData.bloglist[folder][i].url;
             if (typeof AppStore.readData[feedUrl] !== 'undefined') {
                 if (AppStore.readData[feedUrl].totalCount - AppStore.readData[feedUrl].readCount > 0) {
@@ -368,9 +368,9 @@ var AppUtils = {
     },
 
     changeFeedFolder: function(fromFolder, toFolder, url) {
-        var decodedUrl = decodeURIComponent(url);
-        var decodedFromFolder = decodeURIComponent(fromFolder); //todo shouldn't here be encodeURIComponent
-        var decodedToFolder = decodeURIComponent(toFolder); //todo shouldn't here be encodeURIComponent
+        let decodedUrl = decodeURIComponent(url);
+        let decodedFromFolder = decodeURIComponent(fromFolder); //todo shouldn't here be encodeURIComponent
+        let decodedToFolder = decodeURIComponent(toFolder); //todo shouldn't here be encodeURIComponent
 
         //find and remove it
         $.each(AppStore.userData.bloglist[decodedFromFolder], function(i, feed) {

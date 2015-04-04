@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require('react');
-var ReactRouter = require('react-router');
-var Navigation = ReactRouter.Navigation;
-var Headroom = require('react-headroom');
-var classNames = require('classNames');
+let React = require('react');
+let ReactRouter = require('react-router');
+let Navigation = ReactRouter.Navigation;
+let Headroom = require('react-headroom');
+let classNames = require('classNames');
 
-var AppHeader = React.createClass({
+let AppHeader = React.createClass({
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -35,20 +35,20 @@ var AppHeader = React.createClass({
     },
 
     render: function() {
-        var routerParams = this.context.router.getCurrentParams();
+        let routerParams = this.context.router.getCurrentParams();
 
-        var homeIconClassName = classNames({
+        let homeIconClassName = classNames({
             'fa': true,
             'fa-home': false, //!routerParams.folderName,
             'fa-long-arrow-left': routerParams.folderName
         });
 
-        var headerCaptionClassname = classNames({
+        let headerCaptionClassname = classNames({
             'headerCaption': true,
             'home': !routerParams.folderName
         });
 
-        var title = '';
+        let title = '';
 
         if (routerParams.feedUrl) {
             title = this.props.title;

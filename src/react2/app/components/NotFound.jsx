@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react');
-var ReactRouter = require('react-router');
-var Link = ReactRouter.Link;
+let React = require('react');
+let ReactRouter = require('react-router');
+let Link = ReactRouter.Link;
 
 
-var NotFound = React.createClass({
+let NotFound = React.createClass({
     render: function() {
-        var style = {
+        let style = {
             textAlign: 'center ',
             margin: '70px',
             fontSize: '2em'

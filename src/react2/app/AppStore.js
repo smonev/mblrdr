@@ -1,6 +1,6 @@
 'use strict';
 
-var AppStore = {
+let AppStore = {
     userData : {},
     readData : {},
     starData : {},

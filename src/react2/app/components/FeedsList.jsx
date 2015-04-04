@@ -1,17 +1,17 @@
 'use strict';
 
-var React = require('react');
-var ReactRouter = require('react-router');
-var Link = ReactRouter.Link;
+let React = require('react');
+let ReactRouter = require('react-router');
+let Link = ReactRouter.Link;
 
-var classNames = require('classNames');
-var PubSub = require('pubsub-js');
+let classNames = require('classNames');
+let PubSub = require('pubsub-js');
 
-var AppStore = require('../AppStore.js');
-var AppUtils = require('../AppUtils.js');
-var AppMessages = require('./../Const.js');
+let AppStore = require('../AppStore.js');
+let AppUtils = require('../AppUtils.js');
+let AppMessages = require('./../Const.js');
 
-var FeedsList = React.createClass({
+let FeedsList = React.createClass({
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -39,7 +39,7 @@ var FeedsList = React.createClass({
     },
 
     resolveShowRead: function() {
-        var folderName = this.context.router.getCurrentParams().folderName;
+        let folderName = this.context.router.getCurrentParams().folderName;
 
         return this.props.userSettings && this.props.userSettings[folderName] && (typeof this.props.userSettings[folderName].showRead !== 'undefined') ?
                 this.props.userSettings[folderName].showRead : true;
@@ -50,26 +50,26 @@ var FeedsList = React.createClass({
     },
 
     render: function() {
-        var feeds, currentFolder = this.context.router.getCurrentParams().folderName ? this.context.router.getCurrentParams().folderName : 'root';
+        let feeds, currentFolder = this.context.router.getCurrentParams().folderName ? this.context.router.getCurrentParams().folderName : 'root';
 
         if ((!this.props.userData) || (!this.props.userData.bloglist[currentFolder])) {
             return (<div/>);
         }
 
-        var showRead = this.resolveShowRead();
+        let showRead = this.resolveShowRead();
 
         feeds = this.props.userData.bloglist[currentFolder];
         feeds = feeds
             .map(function (feed) {
-                var url = '/' + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feed.url);
+                let url = '/' + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feed.url);
 
-                var feedUnreadCount = 0;
+                let feedUnreadCount = 0;
 
                 if (AppStore.readData && AppStore.readData[feed.url]) {
                     feedUnreadCount = AppStore.readData[feed.url].totalCount - AppStore.readData[feed.url].readCount;
                 }
 
-                var feedClasses = classNames({
+                let feedClasses = classNames({
                     feed: true,
                     unread: feedUnreadCount > 0,
                     'displayNone': false
