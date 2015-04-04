@@ -6,54 +6,50 @@ let Navigation = ReactRouter.Navigation;
 let Headroom = require('react-headroom');
 let classNames = require('classNames');
 
-let AppHeader = React.createClass({
+class AppHeader extends React.Component {
 
-    contextTypes: {
-        router: React.PropTypes.func.isRequired
-    },
-
-    getInitialState: function() {
-        return {
-            title: ''
+    constructor(props, context) {
+        super(props);
+        this.context = context;
+        this.state = {
+            title: '',
+            currentParams: context.router.getCurrentParams()
         };
-    },
+    }
 
-    settingsClick: function() {
+    settingsClick() {
         this.props.showSettings.call();
-    },
+    }
 
-    onUpClick: function() {
-        if (this.context.router.getCurrentParams().feedUrl) {
-            if (this.context.router.getCurrentParams().folderName !== 'root') {
+    onUpClick() {
+        if (this.state.currentParams.feedUrl) {
+            if (this.state.currentParams.folderName !== 'root') {
                 this.context.router.transitionTo(decodeURIComponent('/' + this.context.router.getCurrentParams().folderName));
             } else {
                 this.context.router.transitionTo('/');
             }
-        } else if (this.context.router.getCurrentParams().folderName) {
+        } else if (this.state.currentParams.folderName) {
             this.context.router.transitionTo('/');
         }
-    },
+    }
 
-    render: function() {
-        let routerParams = this.context.router.getCurrentParams();
-
+    render() {
         let homeIconClassName = classNames({
             'fa': true,
-            'fa-home': false, //!routerParams.folderName,
-            'fa-long-arrow-left': routerParams.folderName
+            'fa-home': false, //!this.state.currentParams.folderName,
+            'fa-long-arrow-left': this.state.currentParams.folderName
         });
 
         let headerCaptionClassname = classNames({
             'headerCaption': true,
-            'home': !routerParams.folderName
+            'home': !this.state.currentParams.folderName
         });
 
         let title = '';
-
-        if (routerParams.feedUrl) {
+        if (this.state.currentParams.feedUrl) {
             title = this.props.title;
-        } else if (routerParams.folderName) {
-            title = routerParams.folderName;
+        } else if (this.state.currentParams.folderName) {
+            title = this.state.currentParams.folderName;
         } else {
             title = 'Home';
         }
@@ -61,16 +57,19 @@ let AppHeader = React.createClass({
         return (
             <Headroom>
                 <a className='feedSettingsAction'>
-                    <span className='fa fa-bars' onClick={this.settingsClick}></span>
+                    <span className='fa fa-bars' onClick={this.settingsClick.bind(this)}></span>
                 </a>
 
-                <span className={headerCaptionClassname} onClick={this.onUpClick}>{title}</span>
+                <span className={headerCaptionClassname} onClick={this.onUpClick.bind(this)}>{title}</span>
 
-                <a className={homeIconClassName} onClick={this.onUpClick}></a>
+                <a className={homeIconClassName} onClick={this.onUpClick.bind(this)}></a>
             </Headroom>
-
         );
     }
-});
+}
+
+AppHeader.contextTypes = {
+  router: React.PropTypes.func
+};
 
 module.exports = AppHeader;
