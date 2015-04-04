@@ -6,6 +6,7 @@ settings:
 env:
   browser: true
   node: true
+  es6: true
 
 globals:
   __DEV__: true
@@ -25,6 +26,7 @@ rules:
   eol-last: 2
   dot-notation: 2
   consistent-return: 2
+
 
   # WARNINGS
   quotes: [1, 'single']
@@ -50,3 +52,6 @@ rules:
 
   # DISABLED. These currently cause errors when running.
   no-multi-spaces: 0
+
+ecmaFeatures:
+  classes: true
