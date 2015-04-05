@@ -12,8 +12,7 @@ class AppHeader extends React.Component {
         super(props);
         this.context = context;
         this.state = {
-            title: '',
-            currentParams: context.router.getCurrentParams()
+            title: ''
         };
     }
 
@@ -22,34 +21,38 @@ class AppHeader extends React.Component {
     }
 
     onUpClick() {
-        if (this.state.currentParams.feedUrl) {
-            if (this.state.currentParams.folderName !== 'root') {
+        let currentParams = this.context.router.getCurrentParams();
+
+        if (currentParams.feedUrl) {
+            if (currentParams.folderName !== 'root') {
                 this.context.router.transitionTo(decodeURIComponent('/' + this.context.router.getCurrentParams().folderName));
             } else {
                 this.context.router.transitionTo('/');
             }
-        } else if (this.state.currentParams.folderName) {
+        } else if (currentParams.folderName) {
             this.context.router.transitionTo('/');
         }
     }
 
     render() {
+        let currentParams = this.context.router.getCurrentParams();
+
         let homeIconClassName = classNames({
             'fa': true,
-            'fa-home': false, //!this.state.currentParams.folderName,
-            'fa-long-arrow-left': this.state.currentParams.folderName
+            'fa-home': false, //!currentParams.folderName,
+            'fa-long-arrow-left': currentParams.folderName
         });
 
         let headerCaptionClassname = classNames({
             'headerCaption': true,
-            'home': !this.state.currentParams.folderName
+            'home': !currentParams.folderName
         });
 
         let title = '';
-        if (this.state.currentParams.feedUrl) {
+        if (currentParams.feedUrl) {
             title = this.props.title;
-        } else if (this.state.currentParams.folderName) {
-            title = this.state.currentParams.folderName;
+        } else if (currentParams.folderName) {
+            title = currentParams.folderName;
         } else {
             title = 'Home';
         }
