@@ -41,9 +41,15 @@ let MarkReadSetting = React.createClass({
 let HeaderSetting = React.createClass({
 
     render: function() {
+        var title = this.props.title;
+        if (this.props.view.length === 2) {
+            title = this.props.view[this.props.view.length - 1].name;
+            title = decodeURIComponent(title);
+        }
+
         return (
             <li className='settingHeader'>
-                <input className='settingsTitle' readOnly value={this.props.title}></input>
+                <input className='settingsTitle' readOnly value={title}></input>
                 <span className='fa fa-check'></span>
             </li>
         );
@@ -469,7 +475,7 @@ let AppSettings = React.createClass({
                     </a>
                 </li>
 
-                <HeaderSetting title={view.title}/>
+                <HeaderSetting title={view.title} view={view.view}/>
 
                 <MarkReadSetting
                     view={view.view} hideSettings={this.props.hideSettings} />
