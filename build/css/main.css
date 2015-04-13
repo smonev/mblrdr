@@ -52,11 +52,13 @@ body {
   -webkit-highlight: none;
   -webkit-tap-highlight-color: transparent; }
   .menu .menuList {
-    padding: 0;
+    padding: 0 2% 0 2%;
     margin-top: 0px; }
     .menu .menuList .feed, .menu .menuList .folder {
       border-top: 1px solid #e8e8e8;
       text-align: left; }
+    .menu .menuList .feed:first-child, .menu .menuList .folder:first-child {
+      border-top: 5px solid #e8e8e8; }
     .menu .menuList .feed:last-child, .menu .menuList .folder:last-child {
       border-bottom: 1px solid #e8e8e8; }
     .menu .menuList > .feed, .menu .menuList > .folder {
@@ -69,10 +71,11 @@ body {
       width: 100%;
       background: #ffffff;
       margin: 0px auto;
-      margin-top: 4px;
+      margin-top: 8px;
       padding-left: 2%;
       padding-right: 2%;
-      padding-bottom: 4px; }
+      padding-bottom: 4px;
+      box-shadow: 0 -1px 0 #e5e5e5, 0 0 2px rgba(196, 196, 196, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24); }
     .menu .menuList > .feed a, .menu .menuList > .folder a {
       text-decoration: none;
       display: block;
