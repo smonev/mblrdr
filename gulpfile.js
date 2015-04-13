@@ -4,7 +4,7 @@ var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 
 var reactify = require('reactify');
-var babelify = require('babelify');//.configure({experimental: true});
+var babelify = require('babelify').configure({experimental: true});
 
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
