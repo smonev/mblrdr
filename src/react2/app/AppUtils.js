@@ -333,7 +333,12 @@ let AppUtils = {
     getUserFeeds: function(url, successCallback) {
         $.get(url, function(result) {
             AppStore.userData = result;
-            successCallback.apply(this, [result]);
+            if (typeof successCallback === 'function') {
+                successCallback.apply(this, [result]);
+            } else {
+                return result;
+            }
+
         });
     },
 

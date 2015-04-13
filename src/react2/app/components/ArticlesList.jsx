@@ -86,7 +86,7 @@ let ArticlesList = React.createClass({
 
             if (!this.moreLinkInitialized) {
                 this.moreLinkInitialized = true;
-                //this.moreLinkAppearSetup();
+                this.moreLinkAppearSetup();
             }
         }
     },
