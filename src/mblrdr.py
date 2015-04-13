@@ -4,16 +4,12 @@
 ## TODO
 ## -1. html escape when parsing and when use inputs sth
 ## 3. cron user - keep track of feed usasge and decrease/increase cron times
-## 4. date.js
 ## 5. star folder
 ## 6. move from hash to somelib.hash
-## 7. star cache
 ## 8. @ndb.transactional , async, dont wait urlopen requests
 
 #  https://github.com/julien-maurel/jQuery-Storage-API
 #  redirects https://github.com/ether/etherpad-lite/issues/1603
-
-## cron runs every 2 minites and adds every 30 feed in a task to  get and parse new.
 
 import os, sys
 
@@ -229,32 +225,31 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
         readData = ReadData.get_by_id(readDataAttr)
         if readData is None:
             readData = ReadData(app_username = self.ud.app_username, feedUrl = feedUrl, readData = '', readCount = 0, id = readDataAttr)
+            readData.put()
 
         return readData
 
-    def findArticlesFromData(self, feedData):
-        if feedData != '':
-            articles = json.loads(feedData)
-            return [article['id'] for article in articles]
-        else:
-            return []
+    def findArticlesFromFeedData(self, feedData):
+        articles = json.loads(feedData)
+        return [article['id'] for article in articles]
 
     def findArticles(self, feedUrl, feedDataSettings):
-        count = 1
-        articlesToMarkAsRead = self.findArticlesFromData(feedDataSettings.private_data)
+        feedDataCount = 1
+        articlesToMarkAsRead = self.findArticlesFromFeedData(feedDataSettings.private_data)
 
-        while (count <= feedDataSettings.feedDataCount):
-            fd = FeedData.get_by_id(str(hash(feedUrl) * hash(feedUrl)) + '_' + str(count))
-            if fd.private_data is None:
-                break
+        while (feedDataCount <= feedDataSettings.feedDataCount):
+            id = str(hash(feedUrl) * hash(feedUrl)) + '_' + str(feedDataCount)
+            fd = FeedData.get_by_id(id, use_cache=False, use_memcache=False) ## memory hog otherwise!!!
+            if fd.private_data is not None and fd.private_data != '':
+                articlesToMarkAsRead = articlesToMarkAsRead + self.findArticlesFromFeedData(fd.private_data)
 
-            articlesToMarkAsRead = articlesToMarkAsRead + self.findArticlesFromData(fd.private_data)
-            count = count + 1
+            feedDataCount = feedDataCount + 1
 
         return articlesToMarkAsRead
 
     def markAllRead(self):
         for feedUrl in self.data:
+            logging.debug('[READCOUNT DEBUG ALL] 11111')
 
             feedUrl = urllib.unquote_plus(feedUrl)
             feedDataSettings = GetFeedDataSettings(feedUrl)
@@ -266,9 +261,17 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
                 if not str(readArticle) in readUntilNow:
                     readUntilNow.append(str(readArticle))
 
+            ## cleanup bad data,
+            ## some entries have lots of repeats in readUntilNow for some reason, clean it here
+            ## by deduplicating the list with the next two line of py magic:
+            logging.debug('[READCOUNT DEBUG ALL] length before cleanup: %s', len(readUntilNow))
+            readUntilNow = list(set(readUntilNow))
+            logging.debug('[READCOUNT DEBUG ALL] length after cleanup: %s', len(readUntilNow))
+
             readData.readData = ','.join(str(entry) for entry in readUntilNow)
             readData.readCount = len(readUntilNow) - 1
             readData.put()
+
 
             feedDataSettings.article_count = readData.readCount
             feedDataSettings.put()
