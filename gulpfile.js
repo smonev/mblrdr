@@ -166,6 +166,9 @@ var backendTask = function (bundleOptions) {
   gulp.src(['./src/py/**/*'])
     .pipe(gulp.dest('./build/py'));
 
+  gulp.src(['./src/images/**/*'])
+    .pipe(gulp.dest('./build/images'));
+
 };
 
 
