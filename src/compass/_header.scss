@@ -1,10 +1,11 @@
-  .headroom-wrapper {
+  .headerWrapper {
     width: 100%;
     margin: 0px auto;
     margin-top: 0px;
-    //padding-left: 2%;
-    //padding-right: 2%;
     height: 78px;
+
+    height: 72px !important;
+    background: #323232;
 
     .headerCaption {
       font-size: 2.03em;
@@ -28,11 +29,6 @@
           padding-left: 2%;
           margin-left: 0%;
       }
-    }
-
-    .headroom--pinned, .headroom--unfixed {
-        height: 72px !important;
-        background: #323232;
     }
 
     .fa-home, .fa-long-arrow-left {

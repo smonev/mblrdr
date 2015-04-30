@@ -397,12 +397,14 @@ body {
   background: white;
   content: ''; }
 
-.headroom-wrapper {
+.headerWrapper {
   width: 100%;
   margin: 0px auto;
   margin-top: 0px;
-  height: 78px; }
-  .headroom-wrapper .headerCaption {
+  height: 78px;
+  height: 72px !important;
+  background: #323232; }
+  .headerWrapper .headerCaption {
     font-size: 2.03em;
     color: #737373;
     cursor: pointer;
@@ -413,16 +415,13 @@ body {
     margin-left: 2%;
     padding: 20px 50px;
     text-transform: uppercase; }
-    .headroom-wrapper .headerCaption:active {
+    .headerWrapper .headerCaption:active {
       color: #66AA33; }
-    .headroom-wrapper .headerCaption.home {
+    .headerWrapper .headerCaption.home {
       padding: 20px 50px 20px 0px;
       padding-left: 2%;
       margin-left: 0%; }
-  .headroom-wrapper .headroom--pinned, .headroom-wrapper .headroom--unfixed {
-    height: 72px !important;
-    background: #323232; }
-  .headroom-wrapper .fa-home, .headroom-wrapper .fa-long-arrow-left {
+  .headerWrapper .fa-home, .headerWrapper .fa-long-arrow-left {
     float: left;
     width: 30px;
     margin-top: -52px;
@@ -454,7 +453,7 @@ body {
   color: #ddd; }
   .nightmode .menu .menuList > .feed, .nightmode .menu .menuList > .folder, .nightmode header, .nightmode .articlesList .article {
     background: #212324 !important; }
-  .nightmode .headroom--pinned, .nightmode .headroom--unfixed {
+  .nightmode .headerWrapper {
     background: #212324 !important; }
   .nightmode .feed:first-child, .nightmode .folder:first-child {
     margin-top: 0px; }
@@ -469,7 +468,8 @@ body {
   .nightmode .menu .menuList > .folder a {
     color: #dad0b5 !important; }
   .nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
-    border-top: 1px solid #353535; }
+    border-top: 1px solid #353535;
+    box-shadow: none; }
   .nightmode .menu .menuList .folder:last-child, .nightmode .menu .menuList .feed:last-child, .nightmode .menu .menuList .article:last-child, .nightmode .articlesList .folder:last-child, .nightmode .articlesList .feed:last-child, .nightmode .articlesList .article:last-child {
     border-bottom: 1px solid #353535; }
   .nightmode .unreadCount {

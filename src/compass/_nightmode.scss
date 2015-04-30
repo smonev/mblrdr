@@ -7,14 +7,13 @@
     background: #212324 !important;
   }
 
-  .headroom--pinned, .headroom--unfixed {
+  .headerWrapper {
     background: #212324 !important;
   }
 
   .feed:first-child, .folder:first-child {
     margin-top: 0px;
   }
-
 
   .headerAuthorAndDate  {
     color: #dad0b5 !important;
@@ -39,6 +38,7 @@
   .menu .menuList, .articlesList {
     .folder, .feed, .article {
       border-top: 1px solid #353535;
+      box-shadow: none;
     }
 
     .folder:last-child, .feed:last-child, .article:last-child {
