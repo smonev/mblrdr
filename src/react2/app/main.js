@@ -15,6 +15,9 @@ let FeedsList = require('./components/FeedsList.jsx');
 let ArticlesList = require('./components/ArticlesList.jsx');
 let NotFound = require('./components/NotFound.jsx');
 
+let AppUtils = require('./AppUtils.js');
+let Animations = require('./Animations.js');
+
 let ReactRouter = require('react-router');
 let Router = ReactRouter;
 let Route = ReactRouter.Route;
@@ -38,3 +41,4 @@ let routes = (
 Router.run(routes, function (Handler) {
     React.render(<Handler locales={i18n.locales} />, document.body);
 });
+

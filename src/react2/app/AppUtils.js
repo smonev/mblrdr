@@ -1,40 +1,25 @@
 'use strict';
 
 let AppStore = require('./AppStore.js');
-let AppMessages = require('./Const.js');
+let AppMessages = require('./AppMessages.js');
 
 let PubSub = require('pubsub-js');
 
 let AppUtils = {
 
-    getHeadroom: function() {
-        return document.querySelectorAll('.headroom')[0];
-    },
-
     scrollTo: function(scrollPos, interval) {
-        let scrollUp = (scrollPos - document.body.scrollTop) < 0;
-        if (scrollUp) {
-            scrollPos = scrollPos - 200;
-
-            if (!this.headroom) {
-                this.headroom = this.getHeadroom();
-                //this.headroom.classList.removeClass('displayNone');
-            }
-        }
 
         Velocity(document.body, 'scroll', {
             duration: 250,
             offset: scrollPos,
             easing: 'easeOutQuad',
-            complete: function(elements) {
-                if (scrollUp) {
-                    Velocity(document.body, 'scroll', {
-                        duration: 1,
-                        offset: scrollPos + 200 // 200, because headroom shows and we need to hide it
-                    });
-                    //this.headroom.classList.remove('displayNone');
-                }
-            }//.bind(this)
+
+            // complete: function(elements) {
+            //     Velocity(document.body, 'scroll', {
+            //         duration: 1,
+            //         offset: scrollPos
+            //     });
+            // }//.bind(this)
         });
     },
 
@@ -67,6 +52,10 @@ let AppUtils = {
     },
 
     markArticleAsRead: function(data) {
+        if  (window.readonlyApp) {
+            return;
+        }
+
         let markReadData = {}, decodedUrl = decodeURIComponent(data.url);
         markReadData[decodedUrl] = [data.id];
 

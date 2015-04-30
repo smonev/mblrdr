@@ -19,7 +19,7 @@ let PageLoader = require('./components/PageLoader.jsx');
 let AppStore = require('./AppStore.js');
 let AppUtils = require('./AppUtils.js');
 let AppMess = require('./AppMess.js');
-let AppMessages = require('./Const.js');
+let AppMessages = require('./AppMessages.js');
 
 AppMess.init();
 

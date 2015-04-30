@@ -9,7 +9,7 @@ let PubSub = require('pubsub-js');
 
 let AppStore = require('../AppStore.js');
 let AppUtils = require('../AppUtils.js');
-let AppMessages = require('./../Const.js');
+let AppMessages = require('./../AppMessages.js');
 
 let FeedsList = React.createClass({
 

@@ -7,7 +7,7 @@ let classNames = require('classNames');
 let PubSub = require('pubsub-js');
 
 let AppUtils = require('./../AppUtils.js');
-let AppMessages = require('./../Const.js');
+let AppMessages = require('./../AppMessages.js');
 
 let MarkReadSetting = React.createClass({
 

@@ -9,7 +9,7 @@ let PubSub = require('pubsub-js');
 let FeedsList = require('../components/FeedsList.jsx');
 let AppStore = require('../AppStore.js');
 let AppUtils = require('../AppUtils.js');
-let AppMessages = require('./../Const.js');
+let AppMessages = require('./../AppMessages.js');
 
 let FoldersList = React.createClass({
     getInitialState: function() {
@@ -28,10 +28,6 @@ let FoldersList = React.createClass({
 
         if (folders.length > 0) {
             let i = 0;
-            //$.each(folders, function(i, el) {
-            //    $(el).delay(50 + (i * 10)).velocity('callout.pulseSide');
-            //})
-            //Velocity(this.getDOMNode(), 'callout.pulseSide');
         }
     },
 
@@ -91,3 +87,4 @@ let FoldersList = React.createClass({
 });
 
 module.exports = FoldersList;
+
