@@ -3,11 +3,23 @@
 let React = require('react');
 
 let classNames = require('classNames');
-let ReactIntl = require('react-intl');
-let IntlMixin = ReactIntl.IntlMixin;
-let FormattedMessage = ReactIntl.FormattedMessage;
-let FormattedRelative = ReactIntl.FormattedRelative;
 
+try {
+    let ReactIntl = require('react-intl');
+    let FormattedMessage = ReactIntl.FormattedMessage;
+    let FormattedRelative = ReactIntl.FormattedRelative;
+} catch (err) {
+    // react-intl does not support some mobile borowsers
+    let FormattedRelative = React.createClass({
+        render: function() {
+            return (
+                <span>
+                    {this.props.value}
+                </span>
+            )
+        }
+    })
+}
 
 let hammer = require('hammerjs');
 window.Hammer = hammer;
@@ -23,8 +35,6 @@ let ArticleHeader = React.createClass({
         date: React.PropTypes.string.isRequired,
         author: React.PropTypes.string.isRequired
     },
-
-    mixins: [IntlMixin],
 
     componentDidMount: function() {
         Velocity(this.getDOMNode(), 'callout.pulseDown');
@@ -83,8 +93,6 @@ let ArticleContent = React.createClass({
         zoomContent: React.PropTypes.func.isRequired,
         zoomLevel: React.PropTypes.number.isRequired
     },
-
-    mixins: [IntlMixin],
 
     getInitialState: function() {
         return {
@@ -194,8 +202,6 @@ let ArticleContent = React.createClass({
 });
 
 let Article = React.createClass({
-
-    mixins: [IntlMixin],
 
     props: {
         showRead: React.PropTypes.bool.isRequired,
