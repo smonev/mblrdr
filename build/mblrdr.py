@@ -42,6 +42,9 @@ from py.common.parser import GetAndParse
 from py.common.parser import GetFeedDataSettings
 from py.common.utils import *
 
+def isReadOnly(host):
+    return 'demo.' in host
+
 class MainHandler(webapp2.RequestHandler):
     @ndb.toplevel
     def get(self):
@@ -193,6 +196,11 @@ class SaveSettingsHandler(webapp2.RequestHandler):
 
 
     def post(self):
+        if isReadOnly(self.request.host):
+            logging.debug('READONLY_MODE')
+            self.response.out.write("ok")
+            return
+
         from google.appengine.api import users
 
         user = users.get_current_user()
@@ -301,6 +309,11 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
         self.response.out.write(str(json.dumps({'unreadCount': -1, 'feedUrl': feedUrl})))
 
     def post(self):
+        if isReadOnly(self.request.host):
+            logging.debug('READONLY_MODE')
+            self.response.out.write("ok")
+            return
+
         from google.appengine.api import users
 
         user = users.get_current_user()
@@ -341,6 +354,11 @@ class StarArticle(webapp2.RequestHandler):
         starData.put()
 
     def post(self):
+        if isReadOnly(self.request.host):
+            logging.debug('READONLY_MODE')
+            self.response.out.write("ok")
+            return
+
         from google.appengine.api import users
 
         user = users.get_current_user()
