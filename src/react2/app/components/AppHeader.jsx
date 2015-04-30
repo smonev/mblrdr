@@ -3,11 +3,11 @@
 let React = require('react');
 let ReactRouter = require('react-router');
 let Navigation = ReactRouter.Navigation;
-let Headroom = require('react-headroom');
 let classNames = require('classNames');
 
 class AppHeader extends React.Component {
 
+    // some es6 testing
     constructor(props, context) {
         super(props);
         this.context = context;
@@ -58,7 +58,7 @@ class AppHeader extends React.Component {
         }
 
         return (
-            <Headroom>
+            <div className="headerWrapper">
                 <a className='feedSettingsAction'>
                     <span className='fa fa-bars' onClick={this.settingsClick.bind(this)}></span>
                 </a>
@@ -66,13 +66,13 @@ class AppHeader extends React.Component {
                 <span className={headerCaptionClassname} onClick={this.onUpClick.bind(this)}>{title}</span>
 
                 <a className={homeIconClassName} onClick={this.onUpClick.bind(this)}></a>
-            </Headroom>
+            </div>
         );
     }
 }
 
 AppHeader.contextTypes = {
-  router: React.PropTypes.func
+    router: React.PropTypes.func
 };
 
 module.exports = AppHeader;
