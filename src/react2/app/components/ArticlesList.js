@@ -6,7 +6,7 @@ let ReactRouter = require('react-router');
 let classNames = require('classNames');
 let PubSub = require('pubsub-js');
 
-let Article = require('../components/Article.jsx');
+let Article = require('../components/Article.js');
 let AppUtils = require('../AppUtils.js');
 let AppStore = require('../AppStore.js');
 let AppMessages = require('./../AppMessages.js');

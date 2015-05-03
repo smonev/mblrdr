@@ -6,7 +6,7 @@ let Link = ReactRouter.Link;
 
 let PubSub = require('pubsub-js');
 
-let FeedsList = require('../components/FeedsList.jsx');
+let FeedsList = require('../components/FeedsList.js');
 let AppStore = require('../AppStore.js');
 let AppUtils = require('../AppUtils.js');
 let AppMessages = require('./../AppMessages.js');

@@ -9,11 +9,11 @@ let Velocity = require('velocity-animate');
 let bla = require('velocity-animate/velocity.ui');
 window.Velocity = Velocity;
 
-let App = require('./App.jsx');
-let FoldersList = require('./components/FoldersList.jsx');
-let FeedsList = require('./components/FeedsList.jsx');
-let ArticlesList = require('./components/ArticlesList.jsx');
-let NotFound = require('./components/NotFound.jsx');
+let App = require('./App.js');
+let FoldersList = require('./components/FoldersList.js');
+let FeedsList = require('./components/FeedsList.js');
+let ArticlesList = require('./components/ArticlesList.js');
+let NotFound = require('./components/NotFound.js');
 
 let AppUtils = require('./AppUtils.js');
 let Animations = require('./Animations.js');

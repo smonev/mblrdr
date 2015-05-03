@@ -11,11 +11,11 @@ let PubSub = require('pubsub-js');
 let classNames = require('classNames');
 let FPSStats = require('react-stats').FPSStats;
 
-let AppHeader = require('./components/AppHeader.jsx');
-let AppSettings = require('./components/AppSettings.jsx');
-let FeedsList = require('./components/FeedsList.jsx');
-let FoldersList = require('./components/FoldersList.jsx');
-let PageLoader = require('./components/PageLoader.jsx');
+let AppHeader = require('./components/AppHeader.js');
+let AppSettings = require('./components/AppSettings.js');
+let FeedsList = require('./components/FeedsList.js');
+let FoldersList = require('./components/FoldersList.js');
+let PageLoader = require('./components/PageLoader.js');
 let AppStore = require('./AppStore.js');
 let AppUtils = require('./AppUtils.js');
 let AppMess = require('./AppMess.js');
