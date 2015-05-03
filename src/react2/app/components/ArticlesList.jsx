@@ -345,7 +345,7 @@ let ArticlesList = React.createClass({
                 </ul>
                 <a className='moreLink2' onClick={this.moreClick} nextcount={this.state.nextcount}>
                     {this.state.noMoreArticles ? 'no more articles   ' : 'load more   '}
-                    <div id='colorWheel' className='colorWheel'></div>
+                    <div id='colorWheel' className='colorWheel displayNone'></div>
                     <i className={moreIconClasses}></i>
                 </a>
             </div>
