@@ -8,18 +8,10 @@ let PubSub = require('pubsub-js');
 let AppUtils = {
 
     scrollTo: function(scrollPos, interval) {
-
         Velocity(document.body, 'scroll', {
             duration: 250,
             offset: scrollPos,
             easing: 'easeOutQuad',
-
-            // complete: function(elements) {
-            //     Velocity(document.body, 'scroll', {
-            //         duration: 1,
-            //         offset: scrollPos
-            //     });
-            // }//.bind(this)
         });
     },
 
@@ -31,7 +23,7 @@ let AppUtils = {
             'font-size: 2.03em;color: #737373;cursor: pointer;overflow: hidden;white-space: nowrap;display: block;margin: 0px auto;padding: 20px 50px;text-transform: uppercase;' +
             //document.defaultView.getComputedStyle(document.querySelector('.headerCaption'), '').cssText +
             //document.defaultView.getComputedStyle(fromElement, '').cssText +
-                ';position: absolute;top:' + $(fromElement.target).offset().top + 'px;left:' + ($(fromElement.target).offset().left - 100) + 'px';
+                ';position: absolute;top:' + fromElement.target.offsetTop + 'px;left:' + (fromElement.target.offsetLeft - 100) + 'px';
         document.body.appendChild(newElement);
 
         fromElement.target.style.cssText = fromElement.target.style.cssText + 'visibility: hidden;';
@@ -190,7 +182,7 @@ let AppUtils = {
         let rafAnimationID;
 
         function animateLoader() {
-            colorWheel = colorWheel || document.getElementById('colorWheel');
+            colorWheel = colorWheel || document.getElementById('colorWheel')
             animationTimeoutID = setTimeout(function() {
                 rafAnimationID = requestAnimationFrame(animateLoader);
                 deg = deg + 30;
@@ -204,7 +196,7 @@ let AppUtils = {
         }
 
         function startAnimation() {
-            $('#colorWheel').show();
+            colorWheel.classList.remove('displayNone');
             if (!inAnimation) {
                 inAnimation = true;
                 animateLoader();
@@ -215,7 +207,7 @@ let AppUtils = {
             inAnimation = false;
             clearTimeout(animationTimeoutID);
             window.cancelAnimationFrame(rafAnimationID);
-            $('#colorWheel').hide();
+            colorWheel.classList.add('displayNone');
         }
 
         startAnimation();
