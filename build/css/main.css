@@ -384,8 +384,7 @@ body {
   transition: 1s;
   display: inline-block;
   float: left;
-  margin-left: 17px;
-  display: none; }
+  margin-left: 17px; }
 
 .colorWheel:after {
   position: absolute;
