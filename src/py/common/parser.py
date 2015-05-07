@@ -1,8 +1,7 @@
-import os, sys
+import sys
 import urllib
 import logging
 from datetime import datetime
-import json
 
 from py.ext import feedparser
 
@@ -11,7 +10,7 @@ from py.common.utils import *
 
 def GetAndParse(feed, debug, feedDataSettings):
     a1 = datetime.now()
-    feed = urllib.unquote_plus(feed) ## because of encodeURIComponent
+    feed = urllib.unquote_plus(feed)  # because of encodeURIComponent
     if feedDataSettings is None:
         feedDataSettings = GetFeedDataSettings(feed)
     someDataWasAdded = False
@@ -25,10 +24,9 @@ def GetAndParse(feed, debug, feedDataSettings):
     a = datetime.now()
     d = feedparser.parse(feed, etag=etag, modified=modified)
     b = datetime.now()
-    c = b - a;
+    c = b - a
     logging.debug('parse (%s) entries for %s', len(d['entries']), feed)
     logging.debug('parsing took %s seconds', c.seconds)
-
 
     items = []
     itemSize = sys.getsizeof(feedDataSettings.private_data)
@@ -39,13 +37,15 @@ def GetAndParse(feed, debug, feedDataSettings):
         di = {}
 
         di['link'] = getattr(e, 'link', 'THIS_WILL_HUNT_ME')
-        di['id'] = str(hash(getattr(e, 'id', di['link']))) ## use hashlib.hexdigest?
+        # use hashlib.hexdigest?
+        di['id'] = str(hash(getattr(e, 'id', di['link'])))
 
         httpId = di['link']
         if httpId.startswith('https'):
             httpId = httpId.replace('https', 'http', 1)
 
-        ## compare by id and by http link (some feeds keep generating radnom(?!?) http or https prefix thus the normalization)
+        # compare by id and by http link (some feeds keep generating
+        # radnom(?!?) http or https prefix thus the normalization)
         if feedDataSettings.latest_item_id == di['id']:
             if len(items) > 0:
                 AddSomeData(d, feed, items, feedDataSettings, False)
@@ -65,8 +65,10 @@ def GetAndParse(feed, debug, feedDataSettings):
         di['title'] = getattr(e, 'title', '')
         di['author'] = getattr(e, 'author', '')
 
-        try:  di['published'] = e.published
-        except: di['published'] = GetCurrentDateTime()
+        try:
+            di['published'] = e.published
+        except:
+            di['published'] = GetCurrentDateTime()
 
         try:
             if hasattr(e, 'content'):
@@ -74,7 +76,8 @@ def GetAndParse(feed, debug, feedDataSettings):
                     headline_content = ''
                     lEntries = len(e.content)
                     for eCount in range(0, lEntries):
-                        headline_content = headline_content + e.content[eCount].value
+                        headline_content = headline_content + \
+                            e.content[eCount].value
                     di['content'] = headline_content
             else:
                 di['content'] = e.description
@@ -88,7 +91,7 @@ def GetAndParse(feed, debug, feedDataSettings):
         ##feedDataSettings.article_count = feedDataSettings.article_count + 1
 
         itemSize = itemSize + sys.getsizeof(di)
-        if itemSize < 80000: ## todo more preciese calcs here
+        if itemSize < 80000:  # todo more preciese calcs here
             items.append(di)
         else:
             AddSomeData(d, feed, items, feedDataSettings, True)
@@ -98,7 +101,7 @@ def GetAndParse(feed, debug, feedDataSettings):
 
         entriesCount = entriesCount + 1
         if entriesCount > 100:
-            ## well, just stop
+            # well, just stop
             break
 
     if len(items) > 0:
