@@ -401,22 +401,20 @@ body {
   margin-right: 7px; }
 
 .someFeeds {
-  height: 22px;
+  height: 17px;
   font-size: 17px;
-  line-height: 20px;
+  line-height: 17px;
   overflow: hidden;
   display: block; }
   .someFeeds .title {
-    max-width: 175px;
+    max-width: 165px;
     overflow: hidden;
-    display: inline-block;
-    color: #000000; }
+    color: #000000;
+    display: inline-block; }
   .someFeeds .sunreadCount {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    margin-left: 3px;
-    color: #66AA33; }
+    color: #66AA33;
+    position: relative;
+    top: -2px; }
 
 .headerWrapper {
   width: 100%;
@@ -537,17 +535,17 @@ body {
   .nightmode .folder a:active, .nightmode .feedTitle:active, .nightmode .header .title:active {
     color: #dad0b5; }
 
-.fa-desktop, .fa-remove, .fa-folder-o-alt, .fa-mobile-phone, .fa-plus, .fa-folder-o, .fa-share, .fa-signout, .fa-arrow-left, .fa-star, .fa-star-o, .fa-file, .fa-home, .fa-external-link, .fa-bars, .fa-long-arrow-left, .fa-remove-sign, .fa-undo, .fa-check, .fa-spinner {
+.fa-desktop, .fa-remove, .fa-folder-o-alt, .fa-mobile-phone, .fa-plus, .fa-folder-o, .fa-share, .fa-signout, .fa-arrow-left, .fa-star, .fa-star-o, .fa-file, .fa-home, .fa-external-link, .fa-bars, .fa-long-arrow-left, .fa-remove-sign, .fa-undo, .fa-check, .fa-spinner, .fa-plus {
   text-decoration: none !important; }
 
-.fa-long-arrow-left, .fa-home, .fa-bars {
+.fa-long-arrow-left, .fa-home, .fa-bars, .fa-plus {
   font-size: 2em; }
 
 .fa-remove {
   float: right;
   margin: 10px; }
 
-.fa-folder-o, .fa-file, .fa-star, .fa-star-o, .fa-long-arrow-left, .fa-home, .fa-bars, .fa-folder, .fa-spinner {
+.fa-folder-o, .fa-file, .fa-star, .fa-star-o, .fa-long-arrow-left, .fa-home, .fa-bars, .fa-folder, .fa-spinner, .fa-bars, .fa-plus {
   color: #66AA33; }
 
 .fa-spinner {

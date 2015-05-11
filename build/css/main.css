@@ -396,65 +396,25 @@ body {
   background: white;
   content: ''; }
 
-.someFeeds {
-  /*  float: right;
-  display: inline-block;
-  height: 44px;
-  max-width: 50%;
-  overflow: hidden;
-  position: relative;
-  top: 20px;
-*/
-  height: 22px;
-  font-size: 17px;
-  line-height: 20px;
-  overflow: hidden;
-  display: block;
-  /*    display:flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-content: flex-start;
-    align-items: flex-start;
-*/ }
-
 .menu .menuList > .folder .someFeeds a {
   display: inline-block;
-  margin-right: 7px;
-  /*  display: inherit;
-  overflow: hidden;
-  margin-top: 2px;
-  float: right;
-  font-size: 17px;
-  line-height: 20px;
-  word-wrap: break-word;
-  color: #6FA0F0;
-  padding: 0% 0px;
-  margin-left: 7px;
-  text-decoration: underline;
-*/
-  /*  float: left;
-  font-size: 17px;
-  line-height: 20px;
-  margin-right: 3%;
-*/
-  /*    flex-grow: 1;
-    flex-shrink: 0;
-    flex-basis: 100px;
-*/ }
+  margin-right: 7px; }
 
 .someFeeds {
-  overflow: hidden; }
+  height: 17px;
+  font-size: 17px;
+  line-height: 17px;
+  overflow: hidden;
+  display: block; }
   .someFeeds .title {
-    max-width: 175px;
+    max-width: 165px;
     overflow: hidden;
+    color: #000000;
     display: inline-block; }
   .someFeeds .sunreadCount {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    margin-left: 3px;
-    color: #66AA33; }
+    color: #66AA33;
+    position: relative;
+    top: -2px; }
 
 .headerWrapper {
   width: 100%;
@@ -526,6 +486,8 @@ body {
     color: #dad0b5 !important; }
   .nightmode .menu .menuList > .folder a {
     color: #dad0b5 !important; }
+  .nightmode .someFeeds .title {
+    color: #dad0b5 !important; }
   .nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
     border-top: 1px solid #353535;
     box-shadow: none; }
@@ -573,17 +535,17 @@ body {
   .nightmode .folder a:active, .nightmode .feedTitle:active, .nightmode .header .title:active {
     color: #dad0b5; }
 
-.fa-desktop, .fa-remove, .fa-folder-o-alt, .fa-mobile-phone, .fa-plus, .fa-folder-o, .fa-share, .fa-signout, .fa-arrow-left, .fa-star, .fa-star-o, .fa-file, .fa-home, .fa-external-link, .fa-bars, .fa-long-arrow-left, .fa-remove-sign, .fa-undo, .fa-check, .fa-spinner {
+.fa-desktop, .fa-remove, .fa-folder-o-alt, .fa-mobile-phone, .fa-plus, .fa-folder-o, .fa-share, .fa-signout, .fa-arrow-left, .fa-star, .fa-star-o, .fa-file, .fa-home, .fa-external-link, .fa-bars, .fa-long-arrow-left, .fa-remove-sign, .fa-undo, .fa-check, .fa-spinner, .fa-plus {
   text-decoration: none !important; }
 
-.fa-long-arrow-left, .fa-home, .fa-bars {
+.fa-long-arrow-left, .fa-home, .fa-bars, .fa-plus {
   font-size: 2em; }
 
 .fa-remove {
   float: right;
   margin: 10px; }
 
-.fa-folder-o, .fa-file, .fa-star, .fa-star-o, .fa-long-arrow-left, .fa-home, .fa-bars, .fa-folder, .fa-spinner {
+.fa-folder-o, .fa-file, .fa-star, .fa-star-o, .fa-long-arrow-left, .fa-home, .fa-bars, .fa-folder, .fa-spinner, .fa-bars, .fa-plus {
   color: #66AA33; }
 
 .fa-spinner {
