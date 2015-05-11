@@ -23,7 +23,9 @@ inspired by:
 
 __license__ = "Python"
 
-import re, unicodedata, urlparse
+import re
+import unicodedata
+import urlparse
 from urllib import quote, unquote
 
 default_port = {
@@ -39,75 +41,83 @@ default_port = {
     'snntp': 563,
 }
 
+
 def normalize(url):
     """Normalize a URL."""
     if not isinstance(url, basestring):
         return url
-        
-    scheme,auth,path,query,fragment = urlparse.urlsplit(url.strip())
-    (userinfo,host,port)=re.search('([^@]*@)?([^:]*):?(.*)',auth).groups()
+
+    scheme, auth, path, query, fragment = urlparse.urlsplit(url.strip())
+    (userinfo, host, port) = re.search('([^@]*@)?([^:]*):?(.*)', auth).groups()
 
     # Always provide the URI scheme in lowercase characters.
     scheme = scheme.lower()
 
     # Always provide the host, if any, in lowercase characters.
     host = host.lower()
-    if host and host[-1] == '.': host = host[:-1]
+    if host and host[-1] == '.':
+        host = host[:-1]
 
     # Only perform percent-encoding where it is essential.
     # Always use uppercase A-through-F characters when percent-encoding.
     # All portions of the URI must be utf-8 encoded NFC from Unicode strings
     def clean(string):
         try:
-            string=unicode(unquote(string))
-            return unicodedata.normalize('NFC',string).encode('utf-8')
+            string = unicode(unquote(string))
+            return unicodedata.normalize('NFC', string).encode('utf-8')
         except UnicodeDecodeError:
             return string
-    path=quote(clean(path),"~:/?#[]@!$&'()*+,;=")
-    fragment=quote(clean(fragment),"~")
+    path = quote(clean(path), "~:/?#[]@!$&'()*+,;=")
+    fragment = quote(clean(fragment), "~")
 
     # note care must be taken to only encode & and = characters as values
-    query="&".join(["=".join([quote(clean(t) ,"~:/?#[]@!$'()*+,;=")
-        for t in q.split("=",1)]) for q in query.split("&")])
+    query = "&".join(["=".join([quote(clean(t), "~:/?#[]@!$'()*+,;=")
+                                for t in q.split("=", 1)]) for q in query.split("&")])
 
     # Prevent dot-segments appearing in non-relative URI paths.
-    if scheme in ["","http","https","ftp","file"]:
-        output=[]
+    if scheme in ["", "http", "https", "ftp", "file"]:
+        output = []
         for input in path.split('/'):
-            if input=="":
-                if not output: output.append(input)
-            elif input==".":
+            if input == "":
+                if not output:
+                    output.append(input)
+            elif input == ".":
                 pass
-            elif input=="..":
-                if len(output)>1: output.pop()
+            elif input == "..":
+                if len(output) > 1:
+                    output.pop()
             else:
                 output.append(input)
-        if input in ["",".",".."]: output.append("")
-        path='/'.join(output)
+        if input in ["", ".", ".."]:
+            output.append("")
+        path = '/'.join(output)
 
     # For schemes that define a default authority, use an empty authority if
     # the default is desired.
-    if userinfo in ["@",":@"]: userinfo=""
+    if userinfo in ["@", ":@"]:
+        userinfo = ""
 
     # For schemes that define an empty path to be equivalent to a path of "/",
     # use "/".
-    if path=="" and scheme in ["http","https","ftp","file"]:
-        path="/"
+    if path == "" and scheme in ["http", "https", "ftp", "file"]:
+        path = "/"
 
     # For schemes that define a port, use an empty port if the default is
     # desired
     if port and scheme in default_port.keys():
         if port.isdigit():
-            port=str(int(port))
-            if int(port)==default_port[scheme]:
+            port = str(int(port))
+            if int(port) == default_port[scheme]:
                 port = ''
 
     # Put it all back together again
-    auth=(userinfo or "") + host
-    if port: auth+=":"+port
-    if url.endswith("#") and query=="" and fragment=="": path+="#"
-    url = urlparse.urlunsplit((scheme,auth,path,query,fragment))
-    
+    auth = (userinfo or "") + host
+    if port:
+        auth += ":" + port
+    if url.endswith("#") and query == "" and fragment == "":
+        path += "#"
+    url = urlparse.urlunsplit((scheme, auth, path, query, fragment))
+
     if '://' not in url:
         url = 'http://' + url
     if url.startswith('feed://'):
@@ -120,7 +130,7 @@ if __name__ == "__main__":
     suite = unittest.TestSuite()
 
     """ from http://www.intertwingly.net/wiki/pie/PaceCanonicalIds """
-    tests= [
+    tests = [
         (False, "http://:@example.com/"),
         (False, "http://@example.com/"),
         (False, "http://example.com"),
@@ -159,15 +169,16 @@ if __name__ == "__main__":
         (False, "http://example.com:081/"),
     ]
 
-    def testcase(expected,value):
+    def testcase(expected, value):
         class test(unittest.TestCase):
+
             def runTest(self):
-                assert (normalize(value)==value)==expected, \
+                assert (normalize(value) == value) == expected, \
                     (expected, value, normalize(value))
         return test()
 
-    for (expected,value) in tests:
-        suite.addTest(testcase(expected,value))
+    for (expected, value) in tests:
+        suite.addTest(testcase(expected, value))
 
     """ mnot test suite; three tests updated for rfc2396bis. """
     tests = {
@@ -179,15 +190,15 @@ if __name__ == "__main__":
         '/foo/bar/../..':                '/',
         '/foo/bar/../../':               '/',
         '/foo/bar/../../baz':            '/baz',
-        '/foo/bar/../../../baz':         '/baz', #was: '/../baz',
+        '/foo/bar/../../../baz':         '/baz',  # was: '/../baz',
         '/foo/bar/../../../../baz':      '/baz',
         '/./foo':                        '/foo',
-        '/../foo':                       '/foo', #was: '/../foo',
+        '/../foo':                       '/foo',  # was: '/../foo',
         '/foo.':                         '/foo.',
         '/.foo':                         '/.foo',
         '/foo..':                        '/foo..',
         '/..foo':                        '/..foo',
-        '/./../foo':                     '/foo', #was: '/../foo',
+        '/./../foo':                     '/foo',  # was: '/../foo',
         '/./foo/.':                      '/foo/',
         '/foo/./bar':                    '/foo/bar',
         '/foo/../bar':                   '/bar',
@@ -200,22 +211,23 @@ if __name__ == "__main__":
         'http://www.foo.com/%7ebar':     'http://www.foo.com/~bar',
         'http://www.foo.com/%7Ebar':     'http://www.foo.com/~bar',
         'ftp://user:pass@ftp.foo.net/foo/bar':
-             'ftp://user:pass@ftp.foo.net/foo/bar',
+        'ftp://user:pass@ftp.foo.net/foo/bar',
         'http://USER:pass@www.Example.COM/foo/bar':
-             'http://USER:pass@www.example.com/foo/bar',
+        'http://USER:pass@www.example.com/foo/bar',
         'http://www.example.com./':      'http://www.example.com/',
         '-':                             '-',
     }
 
-    def testcase(original,normalized):
+    def testcase(original, normalized):
         class test(unittest.TestCase):
+
             def runTest(self):
-                assert normalize(original)==normalized, \
+                assert normalize(original) == normalized, \
                     (original, normalized, normalize(original))
         return test()
 
-    for (original,normalized) in tests.items():
-        suite.addTest(testcase(original,normalized))
+    for (original, normalized) in tests.items():
+        suite.addTest(testcase(original, normalized))
 
     """ execute tests """
     unittest.TextTestRunner().run(suite)

@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 import webapp2
 import logging
 from datetime import datetime
@@ -9,6 +10,7 @@ from google.appengine.api import taskqueue
 from py.common.utils import FeedDataSettings
 from py.common.parser import GetAndParse
 
+
 class CronFeedsHandler(webapp2.RequestHandler):
 
     def getUrls(self, allFeeds):
@@ -16,19 +18,22 @@ class CronFeedsHandler(webapp2.RequestHandler):
         feeds = memcache.get(cacheKey)
         if (feeds is None):
             allFeedDataSettings = FeedDataSettings.query()
-            feeds = [feed.url for feed in allFeedDataSettings];
-            memcache.set(cacheKey, feeds, 3600) ## 1h
-            logging.debug('adding allFeedDataSettings to cache. Count: %s', len(feeds))
+            feeds = [feed.url for feed in allFeedDataSettings]
+            memcache.set(cacheKey, feeds, 3600)  # 1h
+            logging.debug(
+                'adding allFeedDataSettings to cache. Count: %s', len(feeds))
 
-        ##return feeds if allFeeds else feeds[datetime.now().minute / 1::60] ## every 20th feed
-        ##return feeds if allFeeds else feeds[datetime.now().minute / 30::2] ## every 2nd feed
+        # return feeds if allFeeds else feeds[datetime.now().minute / 1::60] ## every 20th feed
+        # return feeds if allFeeds else feeds[datetime.now().minute / 30::2] ##
+        # every 2nd feed
         return feeds
 
     def get(self):
         logging.debug('getting urls 2')
         urls = self.getUrls(self.request.get('allFeeds') == '1')
         for url in urls:
-            taskqueue.add(queue_name='cron-feeds', url='/cronfeed', params={'url': url})
+            taskqueue.add(
+                queue_name='cron-feeds', url='/cronfeed', params={'url': url})
 
         logging.debug('tasks added: %s', len(urls))
 
@@ -47,10 +52,10 @@ class CronFeedHandler(webapp2.RequestHandler):
     #         interval = feedDataSettings.lastUpdateInterval - (feedDataSettings.lastUpdateInterval / 10)
     #         feedDataSettings.updatesWithoutNewFeeds = feedDataSettings.updatesWithoutNewFeeds + 1
 
-    #     ## save orignal value for future references
+    # save orignal value for future references
     #     FeedDataSettings.lastUpdateInterval = interval
 
-    #     ## one day max
+    # one day max
     #     if interval > 86400:
     #         interval = 86400
 

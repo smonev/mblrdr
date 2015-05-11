@@ -396,6 +396,28 @@ body {
   background: white;
   content: ''; }
 
+.menu .menuList > .folder .someFeeds a {
+  display: inline-block;
+  margin-right: 7px; }
+
+.someFeeds {
+  height: 22px;
+  font-size: 17px;
+  line-height: 20px;
+  overflow: hidden;
+  display: block; }
+  .someFeeds .title {
+    max-width: 175px;
+    overflow: hidden;
+    display: inline-block;
+    color: #000000; }
+  .someFeeds .sunreadCount {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    margin-left: 3px;
+    color: #66AA33; }
+
 .headerWrapper {
   width: 100%;
   margin: 0px auto;
@@ -465,6 +487,8 @@ body {
   .nightmode .date {
     color: #dad0b5 !important; }
   .nightmode .menu .menuList > .folder a {
+    color: #dad0b5 !important; }
+  .nightmode .someFeeds .title {
     color: #dad0b5 !important; }
   .nightmode .menu .menuList .folder, .nightmode .menu .menuList .feed, .nightmode .menu .menuList .article, .nightmode .articlesList .folder, .nightmode .articlesList .feed, .nightmode .articlesList .article {
     border-top: 1px solid #353535;

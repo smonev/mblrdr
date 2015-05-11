@@ -1,6 +1,8 @@
 import lxml.etree
 
+
 class OutlineElement(object):
+
     def __init__(self, root):
         self._root = root
 
@@ -20,7 +22,9 @@ class OutlineElement(object):
     def __getitem__(self, index):
         return self._outlines[index]
 
+
 class Opml(object):
+
     def __init__(self, xml_tree):
         self._tree = xml_tree
 
@@ -42,11 +46,10 @@ class Opml(object):
     def __getitem__(self, index):
         return self._outlines[index]
 
+
 def from_string(opml_text):
     return Opml(lxml.etree.fromstring(opml_text))
 
+
 def parse(opml_url):
     return Opml(lxml.etree.parse(opml_url))
-
-
-

@@ -1,31 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-## TODO
-## -1. html escape when parsing and when use inputs sth
-## 3. cron user - keep track of feed usasge and decrease/increase cron times
-## 5. star folder
-## 6. move from hash to somelib.hash
-## 8. @ndb.transactional , async, dont wait urlopen requests
+# TODO
+# -1. html escape when parsing and when use inputs sth
+# 3. cron user - keep track of feed usasge and decrease/increase cron times
+# 5. star folder
+# 6. move from hash to somelib.hash
+# 8. @ndb.transactional , async, dont wait urlopen requests
 
 #  https://github.com/julien-maurel/jQuery-Storage-API
 #  redirects https://github.com/ether/etherpad-lite/issues/1603
 
-import os, sys
+import os
+import sys
 
 from jinja2 import Environment, FileSystemLoader
-jinja_environment = Environment(loader=FileSystemLoader(os.path.dirname(__file__)))
+jinja_environment = Environment(
+    loader=FileSystemLoader(os.path.dirname(__file__)))
 
 import webapp2
 
-from google.appengine.api import memcache
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.ext import ndb
 from google.appengine.api import taskqueue
 
-##import feedparser
 import urllib
 import json
 import logging
@@ -42,20 +42,23 @@ from py.common.parser import GetAndParse
 from py.common.parser import GetFeedDataSettings
 from py.common.utils import *
 
+
 def isReadOnly(host):
     return 'demo.' in host
 
+
 class MainHandler(webapp2.RequestHandler):
+
     @ndb.toplevel
     def get(self):
         user = users.get_current_user()
 
-        if not user: ## NOT LOGGED IN
+        if not user:  # NOT LOGGED IN
             html_template = 'html/hello.htm'
             template_values = {
                 'login_url': users.create_login_url(self.request.uri)
             }
-        else: ## LOGGED IN
+        else:  # LOGGED IN
             ud = GetAppUserByEmail(user.email())
 
             if ud is None:
@@ -63,7 +66,7 @@ class MainHandler(webapp2.RequestHandler):
                 self.redirect('/')
                 return
 
-            if ud.isActive == False:
+            if ud.isActive is False:
                 logging.debug('user not active: %s', ud.app_username)
                 html_template = 'html/hello.htm'
                 template_values = {
@@ -75,7 +78,7 @@ class MainHandler(webapp2.RequestHandler):
                 html_template = 'html/index.react.html'
 
                 template_values = {
-                    'logout':users.create_logout_url(self.request.uri),
+                    'logout': users.create_logout_url(self.request.uri),
                     'upload_url': upload_url
                 }
 
@@ -99,7 +102,8 @@ class FeedHandler(webapp2.RequestHandler):
         feedDataSettings = GetFeedDataSettings(feedUrl)
 
         if feedDataSettings is None:
-            logging.debug('getFeedData => feedDataSettings is None. Why?!? %s keyName', feedUrl, keyName)
+            logging.debug(
+                'getFeedData => feedDataSettings is None. Why?!? %s keyName', feedUrl, keyName)
         else:
             if count == '-1':
                 feedData = feedDataSettings.private_data
@@ -108,8 +112,8 @@ class FeedHandler(webapp2.RequestHandler):
                 fd = FeedData.get_by_id(keyName)
                 if fd is None:
                     logging.debug('getFeedData => fd is None. Why?!?')
-                    ##' %s keyName, feedUrl: ', keyName, feedUrl)
-                    feedData = '';
+                    # ' %s keyName, feedUrl: ', keyName, feedUrl)
+                    feedData = ''
                 else:
                     feedData = fd.private_data
                 priorData = int(count) - 1
@@ -117,7 +121,8 @@ class FeedHandler(webapp2.RequestHandler):
         return feedData, keyName, priorData, feedDataSettings.article_count
 
     def getReadData(self, feedUrl, ud):
-        readDataAttr = 'readData__' + ud.app_username + '__' + str(feedUrl).translate(None, '.')
+        readDataAttr = 'readData__' + ud.app_username + \
+            '__' + str(feedUrl).translate(None, '.')
         readData = ReadData.get_by_id(readDataAttr)
         if readData is not None:
             return readData.readData, readData.readCount
@@ -125,12 +130,13 @@ class FeedHandler(webapp2.RequestHandler):
             return '', 0
 
     def getStarData(self, feed_url, ud):
-        starDataAttr = 'starData__' + ud.app_username + '__' + str(feed_url.translate(None, '.'))
+        starDataAttr = 'starData__' + ud.app_username + \
+            '__' + str(feed_url.translate(None, '.'))
         starData = StarData.get_by_id(starDataAttr)
         return starData.starData if starData is not None else ''
 
     def get(self, feed_url):
-        ## user
+        # user
         user = users.get_current_user()
         if user:
             ud = GetAppUserByEmail(user.email())
@@ -139,35 +145,39 @@ class FeedHandler(webapp2.RequestHandler):
 
         feed_url = urllib.unquote_plus(feed_url)
 
-        ## pagination
+        # pagination
         count = self.request.get('count')
         if (count is None):
             count = -1
 
-        ## data
-        feed_data, key_name, nextCount, article_count = self.getFeedData(feed_url, count)
+        # data
+        feed_data, key_name, nextCount, article_count = self.getFeedData(
+            feed_url, count)
         read_data, read_count = self.getReadData(feed_url, ud)
         star_data = self.getStarData(feed_url, ud)
 
-        combined = {'feed': feed_data, 'read': read_data, 'feedIsRead': article_count <= read_count, 'read_count': read_count, 'article_count': article_count, 'star': star_data, 'key_name': key_name, 'nextcount': nextCount, 'ver': random.randrange(1,100000)}
+        combined = {'feed': feed_data, 'read': read_data, 'feedIsRead': article_count <= read_count, 'read_count': read_count,
+                    'article_count': article_count, 'star': star_data, 'key_name': key_name, 'nextcount': nextCount, 'ver': random.randrange(1, 100000)}
 
-        ## NB when logged in as admin, GAE changes these to cache-control: no-cache, must-revalidate.
+        # NB when logged in as admin, GAE changes these to cache-control:
+        # no-cache, must-revalidate.
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.headers['Cache-Control'] = "public, max-age=1800" ##30 minutes
-        ##self.response.headers['Cache-Control'] = "private" ##30 minutes
+        self.response.headers[
+            'Cache-Control'] = "public, max-age=1800"  # 30 minutes
+        # self.response.headers['Cache-Control'] = "private" ##30 minutes
         self.response.out.write(str(json.dumps(combined)))
+
 
 class SaveSettingsHandler(webapp2.RequestHandler):
 
     def addNewFeed(self, feedUrl):
-        newFeed = False
         logging.debug('adding feed: %s', feedUrl)
         fds = FeedDataSettings.get_by_id(feedUrl)
 
         if fds is None:
-            fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
-            newFeed = True
-            fds.put(use_cache=False, use_memcache=False) ##!
+            fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0,
+                                   feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
+            fds.put(use_cache=False, use_memcache=False)  # !
             logging.debug('adding feed, fds is None: %s', feedUrl)
             GetAndParse(feedUrl, False, fds)
         else:
@@ -180,7 +190,8 @@ class SaveSettingsHandler(webapp2.RequestHandler):
 
         if fds is not None:
             fds.refCount = fds.refCount - 1
-            logging.debug('deleting feed %s, refCount: %s', feedUrl, fds.refCount)
+            logging.debug(
+                'deleting feed %s, refCount: %s', feedUrl, fds.refCount)
             if fds.refCount > 0:
                 fds.put()
             else:
@@ -188,12 +199,13 @@ class SaveSettingsHandler(webapp2.RequestHandler):
 
     def cronNewFeed(self, newFeed):
         import urllib
-        logging.debug('triggering cronfeed for: ' + 'http://' + self.request.host + '/cronfeed/' + newFeed)
-        urllib.urlopen('http://' + self.request.host + '/cronfeed/' + newFeed).read()
+        logging.debug('triggering cronfeed for: ' + 'http://' +
+                      self.request.host + '/cronfeed/' + newFeed)
+        urllib.urlopen(
+            'http://' + self.request.host + '/cronfeed/' + newFeed).read()
 
         feedUrl = 'http://' + self.request.host + '/cronfeed/' + feedUrl
-        result = urllib.urlopen(feedUrl).read()
-
+        urllib.urlopen(feedUrl).read()
 
     def post(self):
         if isReadOnly(self.request.host):
@@ -206,7 +218,7 @@ class SaveSettingsHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             ud = GetAppUserByEmail(user.email())
-            if ud != None:
+            if ud is not None:
                 data = self.request.get('data')
 
                 newFeed = self.request.get('newFeed')
@@ -214,7 +226,6 @@ class SaveSettingsHandler(webapp2.RequestHandler):
                     logging.debug('adddddddddding new feed: %s', newFeed)
                     if self.addNewFeed(newFeed):
                         self.cronNewFeed(newFeed)
-
 
                 deleteFeed = self.request.get('deleteFeed')
                 if deleteFeed:
@@ -226,13 +237,15 @@ class SaveSettingsHandler(webapp2.RequestHandler):
 
                 self.response.out.write("ok")
 
+
 class MarkArticlesAsRead(webapp2.RequestHandler):
 
     def getReadData(self, feedUrl):
-        readDataAttr = 'readData__' + self.ud.app_username + '__' + str(feedUrl).translate(None, '.')
+        readDataAttr = 'readData__' + self.ud.app_username + \
+            '__' + str(feedUrl).translate(None, '.')
         readData = ReadData.get_by_id(readDataAttr)
         if readData is None:
-            readData = ReadData(app_username = self.ud.app_username, feedUrl = feedUrl, readData = '', readCount = 0, id = readDataAttr)
+            readData = ReadData(app_username=self.ud.app_username, feedUrl=feedUrl, readData='', readCount=0, id=readDataAttr)
             readData.put()
 
         return readData
@@ -243,13 +256,16 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
 
     def findArticles(self, feedUrl, feedDataSettings):
         feedDataCount = 1
-        articlesToMarkAsRead = self.findArticlesFromFeedData(feedDataSettings.private_data)
+        articlesToMarkAsRead = self.findArticlesFromFeedData(
+            feedDataSettings.private_data)
 
         while (feedDataCount <= feedDataSettings.feedDataCount):
             id = str(hash(feedUrl) * hash(feedUrl)) + '_' + str(feedDataCount)
-            fd = FeedData.get_by_id(id, use_cache=False, use_memcache=False) ## memory hog otherwise!!!
+            # memory hog otherwise!!!
+            fd = FeedData.get_by_id(id, use_cache=False, use_memcache=False)
             if fd.private_data is not None and fd.private_data != '':
-                articlesToMarkAsRead = articlesToMarkAsRead + self.findArticlesFromFeedData(fd.private_data)
+                articlesToMarkAsRead = articlesToMarkAsRead + \
+                    self.findArticlesFromFeedData(fd.private_data)
 
             feedDataCount = feedDataCount + 1
 
@@ -269,23 +285,26 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
                 if not str(readArticle) in readUntilNow:
                     readUntilNow.append(str(readArticle))
 
-            ## cleanup bad data,
-            ## some entries have lots of repeats in readUntilNow for some reason, clean it here
-            ## by deduplicating the list with the next two line of py magic:
-            logging.debug('[READCOUNT DEBUG ALL] length before cleanup: %s', len(readUntilNow))
+            # cleanup bad data,
+            # some entries have lots of repeats in readUntilNow for some reason, clean it here
+            # by deduplicating the list with the next two line of py magic:
+            logging.debug(
+                '[READCOUNT DEBUG ALL] length before cleanup: %s', len(readUntilNow))
             readUntilNow = list(set(readUntilNow))
-            logging.debug('[READCOUNT DEBUG ALL] length after cleanup: %s', len(readUntilNow))
+            logging.debug(
+                '[READCOUNT DEBUG ALL] length after cleanup: %s', len(readUntilNow))
 
             readData.readData = ','.join(str(entry) for entry in readUntilNow)
             readData.readCount = len(readUntilNow) - 1
             readData.put()
 
-
             feedDataSettings.article_count = readData.readCount
             feedDataSettings.put()
 
-            logging.debug('[READCOUNT DEBUG ALL] Set read count to: %s of %s (total article count: %s)', readData.readCount, feedUrl, feedDataSettings.article_count)
-            self.response.out.write(str(json.dumps({'unreadCount': feedDataSettings.article_count - readData.readCount, 'feedUrl': feedUrl})))
+            logging.debug('[READCOUNT DEBUG ALL] Set read count to: %s of %s (total article count: %s)',
+                          readData.readCount, feedUrl, feedDataSettings.article_count)
+            self.response.out.write(str(json.dumps(
+                {'unreadCount': feedDataSettings.article_count - readData.readCount, 'feedUrl': feedUrl})))
 
     def markSingleArticleAsRead(self):
         feedUrl = self.data.keys()[0]
@@ -306,7 +325,8 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
         readData.readCount = len(readUntilNow) - 1
         readData.put()
 
-        self.response.out.write(str(json.dumps({'unreadCount': -1, 'feedUrl': feedUrl})))
+        self.response.out.write(
+            str(json.dumps({'unreadCount': -1, 'feedUrl': feedUrl})))
 
     def post(self):
         if isReadOnly(self.request.host):
@@ -319,7 +339,7 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             ud = GetAppUserByEmail(user.email())
-            if ud != None:
+            if ud is not None:
                 self.data = json.loads(self.request.get('data'))
                 self.ud = ud
                 self.read = self.request.get('read') == '1'
@@ -339,10 +359,12 @@ class StarArticle(webapp2.RequestHandler):
         if starArticle == '':
             return
 
-        starDataAttr = 'starData__' + self.ud.app_username + '__' + str(feedUrl).translate(None, '.')
+        starDataAttr = 'starData__' + self.ud.app_username + \
+            '__' + str(feedUrl).translate(None, '.')
         starData = StarData.get_by_id(starDataAttr)
         if starData is None:
-            starData = StarData(app_username = self.ud.app_username, feedUrl = feedUrl, starData = '', id = starDataAttr)
+            starData = StarData(
+                app_username=self.ud.app_username, feedUrl=feedUrl, starData='', id=starDataAttr)
 
         starUntilNow = starData.starData.split(',')
         if star:
@@ -364,12 +386,14 @@ class StarArticle(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             self.ud = GetAppUserByEmail(user.email())
-            if self.ud != None:
+            if self.ud is not None:
                 self.data = json.loads(self.request.get('data'))
                 self.StarSingleArticle()
                 self.response.out.write("ok")
 
+
 class GetUserFeedsHandler(webapp2.RequestHandler):
+
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.headers['Cache-Control'] = "private, max-age=0"
@@ -380,7 +404,9 @@ class GetUserFeedsHandler(webapp2.RequestHandler):
             if ud is not None:
                 self.response.out.write(ud.private_data)
 
+
 class GetUserReadDataHandler(webapp2.RequestHandler):
+
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.headers['Cache-Control'] = "private, max-age=0"
@@ -390,16 +416,18 @@ class GetUserReadDataHandler(webapp2.RequestHandler):
             ud = GetAppUserByEmail(user.email())
             if ud is not None:
 
-                ## rebuild indexs
+                # rebuild indexs
                 # allFeedDataSettings = FeedDataSettings.query()
                 # for feed in allFeedDataSettings:
                 #     feed.url = feed.url
                 #     feed.put()
 
-                allUserRead = ReadData.query(ReadData.app_username == ud.app_username).fetch()
+                allUserRead = ReadData.query(
+                    ReadData.app_username == ud.app_username).fetch()
 
-                ##data = [{'url': read.feedUrl, 'readCount': read.readCount} for read in allUserRead]
-                ##data = [{read.feedUrl: {read: read.readCount} for read in allUserRead]
+                #data = [{'url': read.feedUrl, 'readCount': read.readCount} for read in allUserRead]
+                # data = [{read.feedUrl: {read: read.readCount} for read in
+                # allUserRead]
 
                 data = {}
 
@@ -408,20 +436,21 @@ class GetUserReadDataHandler(webapp2.RequestHandler):
                         'readCount': read.readCount
                     }
 
-                ##futures = [FeedDataSettings.query(FeedDataSettings.url == read.feedUrl).fetch_async(1) for read in allUserRead]
-                futures = [FeedDataSettings.get_by_id_async(read.feedUrl) for read in allUserRead]
+                #futures = [FeedDataSettings.query(FeedDataSettings.url == read.feedUrl).fetch_async(1) for read in allUserRead]
+                futures = [FeedDataSettings.get_by_id_async(
+                    read.feedUrl) for read in allUserRead]
 
-                ## todo:
-                ## get read keys
-                ## read mylti async
-                ##fdss = [ndb.get_multi_async(for read in allUserRead]
-                    # @ndb.tasklet
-                    # def get_cart_plus_offers(acct):
-                    #   cart, offers = yield get_cart_async(acct), get_offers_async(acct)
-                    #   raise ndb.Return((cart, offers))
-                    # https://developers.google.com/appengine/docs/python/ndb/async#using
+                # todo:
+                # get read keys
+                # read mylti async
+                # fdss = [ndb.get_multi_async(for read in allUserRead]
+                # @ndb.tasklet
+                # def get_cart_plus_offers(acct):
+                #   cart, offers = yield get_cart_async(acct), get_offers_async(acct)
+                #   raise ndb.Return((cart, offers))
+                # https://developers.google.com/appengine/docs/python/ndb/async#using
 
-                ## todo test keys only and then multy async
+                # todo test keys only and then multy async
                 # (70) 2014-05-26 14:15:05.645 "GET /GetUserReadData" 200 real=4603ms api=0ms overhead=201ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
                 # (71) 2014-05-26 14:15:01.630 "GET /GetUserReadData" 200 real=3819ms api=0ms overhead=201ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
                 # (72) 2014-05-26 14:14:57.326 "GET /GetUserReadData" 200 real=4030ms api=0ms overhead=196ms (139 RPCs, cost=28420, billed_ops=[DATASTORE_READ:406])
@@ -441,7 +470,9 @@ class GetUserReadDataHandler(webapp2.RequestHandler):
 
                 self.response.out.write(str(json.dumps(data)))
 
+
 class GetUserArticleCountHandler(webapp2.RequestHandler):
+
     def get(self):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.headers['Cache-Control'] = "private, max-age=0"
@@ -451,7 +482,8 @@ class GetUserArticleCountHandler(webapp2.RequestHandler):
             ud = GetAppUserByEmail(user.email())
             if ud is not None:
 
-                allUserRead = FeedData.query(ReadData.app_username == ud.app_username).fetch()
+                allUserRead = FeedData.query(
+                    ReadData.app_username == ud.app_username).fetch()
 
                 ##data = [{'url': read.feedUrl, 'readCount': read.readCount} for read in allUserRead]
                 data = [{read.feedUrl: read.readCount} for read in allUserRead]
@@ -464,11 +496,13 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
     def addFeedToDataStore(self, feedUrl):
         fds = FeedDataSettings.get_by_id(feedUrl)
         if fds is None:
-            fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0, feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
+            fds = FeedDataSettings(url=feedUrl, id=feedUrl, article_count=0,
+                                   feedDataCount=0, private_data='', new_etag='', new_modified='', refCount=1)
         else:
             fds.refCount = fds.refCount + 1
 
-        logging.debug('adding feed to data store %s, refCount: %s', feedUrl, fds.refCount)
+        logging.debug(
+            'adding feed to data store %s, refCount: %s', feedUrl, fds.refCount)
 
         fds.put()
 
@@ -478,8 +512,8 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
         try:
             folderUrls = [f['url'] for f in self.bloglist[folder]]
         except KeyError:
-            self.bloglist[folder] = [];
-            folderUrls = [];
+            self.bloglist[folder] = []
+            folderUrls = []
 
         feedShouldBeAdded = False
         try:
@@ -490,13 +524,13 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
         if feedShouldBeAdded:
             self.bloglist[folder].append({'url': feed, 'title': title})
 
-
     def processOutline(self, outline, currentFolder):
         logging.debug('processing folder: %s ', currentFolder)
         for item in outline:
             if (not hasattr(item, 'xmlUrl') and (hasattr(item, 'text') or hasattr(item, 'title'))):
                 folder = item
-                title = getattr(item, 'text', None) or getattr(item, 'title', None)
+                title = getattr(item, 'text', None) or getattr(
+                    item, 'title', None)
                 self.processOutline(folder, title)
             elif hasattr(item, 'xmlUrl'):
 
@@ -505,7 +539,8 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
                 else:
                     title = urlnorm.normalize(item.xmlUrl)
 
-                self.addFeedToBlogList(currentFolder, urlnorm.normalize(item.xmlUrl), title)
+                self.addFeedToBlogList(
+                    currentFolder, urlnorm.normalize(item.xmlUrl), title)
                 self.addFeedToDataStore(urlnorm.normalize(item.xmlUrl))
 
     def post(self):
@@ -516,22 +551,22 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
         from google.appengine.ext import blobstore
         import opml
 
-        ## get file
+        # get file
         upload_files = self.get_uploads('file')
         blob_info = upload_files[0]
         blob_reader = blobstore.BlobReader(blob_info.key())
         opmlFile = blob_reader.read()
 
-        ## get user
+        # get user
         ud = GetAppUserByEmail(user.email())
         private_data = json.loads(ud.private_data)
         self.bloglist = private_data['bloglist']
 
-        ## parse file
+        # parse file
         outline = opml.from_string(opmlFile)
         self.processOutline(outline, 'root')
 
-        ## save new data
+        # save new data
         private_data['bloglist'] = self.bloglist
         ud.private_data = json.dumps(private_data)
         ud.put()
@@ -540,26 +575,35 @@ class UploadOPMLHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         self.redirect('/')
 
+
 class UnauthorizedHandler(webapp2.RequestHandler):
+
     def get(self):
         self.error(403)
-        self.response.out.write("mobile reader says:  nothing here. Coming soon:  Cooler nothinghere page!")
+        self.response.out.write(
+            "mobile reader says:  nothing here. Coming soon:  Cooler nothinghere page!")
+
 
 class NotFoundHandler(webapp2.RequestHandler):
+
     def get(self):
         self.error(404)
 
+
 class RedirectHandler(webapp2.RequestHandler):
+
     def get(self):
         user = users.get_current_user()
         if not user:
             self.redirect('/')
 
-        ## todo https://github.com/ether/etherpad-lite/issues/1603
+        # todo https://github.com/ether/etherpad-lite/issues/1603
         url = self.request.get('url')
         self.redirect(str(url), True)
 
+
 class GenerateUploadUrlHandler(webapp2.RequestHandler):
+
     def get(self):
         upload_url = blobstore.create_upload_url('/upload')
         self.response.headers['Content-Type'] = 'text/plain'
@@ -576,9 +620,9 @@ ROUTES = [
     ('/GetUserFeeds', GetUserFeedsHandler),
     ('/GetUserReadData', GetUserReadDataHandler),
 
-    ('/SaveSettings',SaveSettingsHandler),
-    ('/MarkArticlesAsRead',MarkArticlesAsRead),
-    ('/StarArticle',StarArticle),
+    ('/SaveSettings', SaveSettingsHandler),
+    ('/MarkArticlesAsRead', MarkArticlesAsRead),
+    ('/StarArticle', StarArticle),
 
     ('/feed/(.*)', FeedHandler),
 
