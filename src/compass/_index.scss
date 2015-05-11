@@ -513,25 +513,23 @@ body {
 }
 
 .someFeeds {
-  height: 22px;
+  height: 17px;
   font-size: 17px;
-  line-height: 20px;
+  line-height: 17px;
   overflow: hidden;
   display: block;
 
   .title {
-    max-width: 175px;
+    max-width: 165px;
     overflow: hidden;
-    display: inline-block;
     color: #000000;
+    display: inline-block;
   }
 
   .sunreadCount {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    margin-left: 3px;
-    color: #66AA33;
+      color: #66AA33;
+      position: relative;
+      top: -2px;
   }
 }
 
