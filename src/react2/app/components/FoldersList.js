@@ -61,14 +61,49 @@ let FoldersList = React.createClass({
                     folderUnreadCount = '999';
                 }
             }
+
+            // get all folder feeds
+            let unreadFeeds = this.props.userData.bloglist[folder];
+
+            // get unread
+            unreadFeeds = unreadFeeds.filter(function(feed, i) {
+                let unreadData, unreadCount;
+                unreadData = AppStore.readData[feed.url];
+                if (typeof unreadData !== 'undefined') {
+                    unreadCount = AppStore.readData[feed.url].totalCount - AppStore.readData[feed.url].readCount;
+                    if (unreadCount > 0) {
+                        feed.unreadCount = unreadCount;
+                        return feed;
+                    }
+                }
+            });
+
+            // get first 5, todo sort them before
+            unreadFeeds = unreadFeeds.slice(0, 5).map(function(feed) {
+                let url = linkToFolder + '/' + encodeURIComponent(feed.url);
+                return <Link to={url} key={url}>
+                        <span className="title">{feed.title}</span>
+                        <span className="sunreadCount">({feed.unreadCount})</span>
+                </Link>;
+            });
+
+            if (unreadFeeds.length > 0) {
+                unreadFeeds = <div className="someFeeds">{unreadFeeds}</div>;
+            } else {
+                unreadFeeds = '';
+            }
+
             return (
                 <li className='folder' key={folder} >
-                    <Link to={linkToFolder} onClick={this.folderClick}>
+                    <Link to={linkToFolder} onClick={this.folderClick} >
                         <span className='fa fa-folder'>
                             <span className='unreadCount'>{folderUnreadCount}</span>
                         </span>
-                        <span className='feedTitle'>{folder}</span>
+                        <span>
+                            {folder}
+                        </span>
                     </Link>
+                    {unreadFeeds}
                 </li>
             );
         }.bind(this));

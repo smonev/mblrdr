@@ -507,3 +507,31 @@ body {
     content: '';
 }
 
+.menu .menuList > .folder .someFeeds a {
+  display: inline-block;
+  margin-right: 7px;
+}
+
+.someFeeds {
+  height: 22px;
+  font-size: 17px;
+  line-height: 20px;
+  overflow: hidden;
+  display: block;
+
+  .title {
+    max-width: 175px;
+    overflow: hidden;
+    display: inline-block;
+    color: #000000;
+  }
+
+  .sunreadCount {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    margin-left: 3px;
+    color: #66AA33;
+  }
+}
+
