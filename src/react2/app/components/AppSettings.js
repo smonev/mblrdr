@@ -465,6 +465,30 @@ let AppSettings = React.createClass({
         };
 
         let view = this.getView();
+        let settings;
+        if (this.props.settingsType === 1) {
+            settings = <div>
+                    <MarkReadSetting
+                        view={view.view} hideSettings={this.props.hideSettings} />
+
+                    <ShowHideSetting
+                        view={view.view} userSettings={this.props.userSettings} saveSettings={this.props.saveSettings} hideSettings={this.props.hideSettings} />
+
+                    <NightModeSetting
+                        nightmode={this.props.userSettings.nightmode} hideSettings={this.props.hideSettings} />
+                </div>;
+        } else {
+            settings = <div>
+                    <ChangeFolderSetting
+                        view={view.view} bloglist={this.props.bloglist} hideSettings={this.props.hideSettings} />
+
+                    <AddFeedSetting
+                        view={view.view} />
+
+                    <DeleteFolderSettings
+                        view={view.view} hideSettings={this.props.hideSettings} />
+                </div>;
+        }
 
         return (
             <ul className='feedSettings' style={styles}>
@@ -477,24 +501,7 @@ let AppSettings = React.createClass({
 
                 <HeaderSetting title={view.title} view={view.view}/>
 
-                <MarkReadSetting
-                    view={view.view} hideSettings={this.props.hideSettings} />
-
-                <ShowHideSetting
-                    view={view.view} userSettings={this.props.userSettings} saveSettings={this.props.saveSettings} hideSettings={this.props.hideSettings} />
-
-                <NightModeSetting
-                    nightmode={this.props.userSettings.nightmode} hideSettings={this.props.hideSettings} />
-
-                <ChangeFolderSetting
-                    view={view.view} bloglist={this.props.bloglist} hideSettings={this.props.hideSettings} />
-
-                <AddFeedSetting
-                    view={view.view} />
-
-                <DeleteFolderSettings
-                    view={view.view} hideSettings={this.props.hideSettings} />
-
+                {settings}
             </ul>
         );
     }

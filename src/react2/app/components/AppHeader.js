@@ -16,8 +16,8 @@ class AppHeader extends React.Component {
         };
     }
 
-    settingsClick() {
-        this.props.showSettings.call();
+    settingsClick(settingsType) {
+        this.props.showSettings.call(this, settingsType);
     }
 
     onUpClick() {
@@ -60,7 +60,10 @@ class AppHeader extends React.Component {
         return (
             <div className="headerWrapper">
                 <a className='feedSettingsAction'>
-                    <span className='fa fa-bars' onClick={this.settingsClick.bind(this)}></span>
+                    <span className='fa fa-bars' onClick={this.settingsClick.bind(this, 1)}></span>
+                </a>
+                <a className='feedSettingsAction'>
+                    <span className='fa fa-plus' onClick={this.settingsClick.bind(this, 2)}></span>
                 </a>
 
                 <span className={headerCaptionClassname} onClick={this.onUpClick.bind(this)}>{title}</span>

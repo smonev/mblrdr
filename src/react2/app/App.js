@@ -77,9 +77,10 @@ let App = React.createClass({
         PubSub.unsubscribe( this.dayOrNigthModeEvent );
     },
 
-    showSettings: function() {
+    showSettings: function(settingsType) {
         this.setState({
-            settingsVisible: true
+            settingsVisible: true,
+            settingsType: settingsType
         });
     },
 
@@ -152,6 +153,7 @@ let App = React.createClass({
                 </div>
 
                 <AppSettings
+                    settingsType={this.state.settingsType}
                     currentFeedName={this.state.currentFeedName}
                     visible={this.state.settingsVisible}
                     bloglist={this.state.bloglist}
