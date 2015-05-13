@@ -94,7 +94,6 @@ body {
     margin-right: 3%;
     margin-top: 4px; }
   .menu .feed > a:active, .menu .folder > a:active, .menu .up:active {
-    color: red;
     -webkit-transform: translate3d(0px, -5px, 0px);
     -moz-transform: translate3d(0px, -5px, 0px);
     -ms-transform: translate3d(0px, -5px, 0px);
@@ -401,11 +400,13 @@ body {
   margin-right: 7px; }
 
 .someFeeds {
-  height: 17px;
-  font-size: 17px;
-  line-height: 17px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
   overflow: hidden;
   display: block; }
+  .someFeeds a:active > span {
+    color: #66AA33; }
   .someFeeds .title {
     max-width: 165px;
     overflow: hidden;
@@ -570,7 +571,7 @@ body {
   margin-right: auto;
   background-color: white;
   border: 1px solid #5e5e5e;
-  top: 4px;
+  top: 0px;
   overflow-y: auto;
   opacity: 0.98;
   opacity: 1;
@@ -578,8 +579,9 @@ body {
   padding-left: 0px;
   z-index: 100;
   max-width: 90%;
-  max-width: 560px;
-  margin: 0px auto; }
+  max-width: 800px;
+  margin: 0px auto;
+  height: 100%; }
   .feedSettings a {
     cursor: pointer; }
   .feedSettings .fa-long-arrow-left {
@@ -587,16 +589,16 @@ body {
     font-size: 2em;
     float: right; }
   .feedSettings .settingsTitle {
-    color: #000;
+    color: #B8B8B8;
     font-size: 1.2em;
     text-overflow: clip;
     white-space: nowrap;
     overflow: hidden;
-    border: 1px solid #e1e1e1;
-    padding: 2px 3%;
+    border: 0px solid #e1e1e1;
+    padding: 10px 3%;
     width: 100%;
     float: left;
-    background: #d1d1d1; }
+    background: #323232; }
   .feedSettings .setting {
     width: 100%;
     display: inline-block;
@@ -621,11 +623,11 @@ body {
     .feedSettings .setting.markReadSetting {
       margin-top: 5%; }
     .feedSettings .setting .markReadOption {
-      width: 28%; }
+      width: 92%; }
     .feedSettings .setting .showHideOption {
       width: 44%; }
     .feedSettings .setting .nightmodeOption {
-      width: 22%; }
+      width: 20%; }
     .feedSettings .setting .feedUnsubscribe {
       width: 100%; }
   .feedSettings .feedTitleUndo {
@@ -719,16 +721,12 @@ body {
         background: #66AA33;
         color: white;
         /*border-radius: 4px;*/ }
-  .feedSettings .settingHeader {
-    height: 30px;
-    border-bottom: 1px solid #5e5e5e;
-    width: 100%; }
-    .feedSettings .settingHeader .fa-check {
-      position: relative;
-      top: -30px;
-      left: 90%;
-      cursor: pointer;
-      display: none; }
+  .feedSettings .settingHeader .fa-check {
+    position: relative;
+    top: -30px;
+    left: 90%;
+    cursor: pointer;
+    display: none; }
   .feedSettings .fa-remove-sign {
     color: red;
     font-size: 1em;
