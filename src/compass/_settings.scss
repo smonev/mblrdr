@@ -10,7 +10,7 @@
   //position: relative;
   background-color: white;
   border: 1px solid #5e5e5e;
-  top: 4px;
+  top: 0px;
   overflow-y: auto;
   opacity: 0.98;
   opacity: 1;
@@ -22,10 +22,11 @@
   padding-left: 0px;
   z-index: 100;
   max-width: 90%;
-  max-width: 560px;
+  max-width: 800px;
   //border-bottom: 10px solid #5e5e5e;
   //border-top: 3px solid #5e5e5e;
   margin: 0px auto;
+  height: 100%;
 
   a {
     cursor: pointer;
@@ -38,17 +39,17 @@
   }
 
   .settingsTitle {
-    color: #000;
-    font-size: 1.2em;
-    text-overflow: clip;
-    white-space: nowrap;
-    overflow: hidden;
-    border: 1px solid #e1e1e1;
-    padding: 2px 3%;
-    width: 100%;
-    float: left;
-    background: rgb(209, 209, 209);
-  }
+      color: #B8B8B8;
+      font-size: 1.2em;
+      text-overflow: clip;
+      white-space: nowrap;
+      overflow: hidden;
+      border: 0px solid #e1e1e1;
+      padding: 10px 3%;
+      width: 100%;
+      float: left;
+      background: #323232;
+    }
 
   .setting {
     width: 100%;
@@ -84,7 +85,7 @@
     }
 
     .markReadOption {
-      width: 28%;
+      width: 92%;
     }
 
     .showHideOption {
@@ -92,7 +93,7 @@
     }
 
     .nightmodeOption {
-      width: 22%;
+      width: 20%;
     }
 
     .feedUnsubscribe {
@@ -231,9 +232,9 @@
   }
 
   .settingHeader {
-    height: 30px;
-    border-bottom: 1px solid #5e5e5e;
-    width: 100%;
+    // height: 30px;
+    // border-bottom: 1px solid #5e5e5e;
+    // width: 100%;
 
     .fa-check {
       position: relative;
