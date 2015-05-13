@@ -86,7 +86,7 @@ body {
   }
 
   .feed > a:active, .folder > a:active, .up:active {
-    color: red;
+      // color: red;
 
       -webkit-transform: translate3d(0px, -5px, 0px);
       -moz-transform: translate3d(0px, -5px, 0px);
@@ -513,11 +513,15 @@ body {
 }
 
 .someFeeds {
-  height: 17px;
-  font-size: 17px;
-  line-height: 17px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
   overflow: hidden;
   display: block;
+
+  a:active > span {
+    color: #66AA33;
+  }
 
   .title {
     max-width: 165px;

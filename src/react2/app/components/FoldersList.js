@@ -39,6 +39,10 @@ let FoldersList = React.createClass({
         AppUtils.morphElementToHeader(e);
     },
 
+    blaClick: function(e) {
+        AppUtils.morphElementToHeader(e);
+    },
+
     render: function() {
         let feeds, folders;
 
@@ -81,11 +85,11 @@ let FoldersList = React.createClass({
             // get first 5, todo sort them before
             unreadFeeds = unreadFeeds.slice(0, 5).map(function(feed) {
                 let url = linkToFolder + '/' + encodeURIComponent(feed.url);
-                return <Link to={url} key={url}>
-                        <span className="title">{feed.title}</span>
+                return <Link to={url} key={url} onClick={this.folderClick} >
+                        <span className="title" title={feed.title}>{feed.title}</span>
                         <span className="sunreadCount">({feed.unreadCount})</span>
                 </Link>;
-            });
+            }.bind(this));
 
             if (unreadFeeds.length > 0) {
                 unreadFeeds = <div className="someFeeds">{unreadFeeds}</div>;
