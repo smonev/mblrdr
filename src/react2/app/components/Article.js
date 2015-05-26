@@ -6,7 +6,6 @@ let classNames = require('classNames');
 
 try {
     let ReactIntl = require('react-intl');
-    let FormattedMessage = ReactIntl.FormattedMessage;
     let FormattedRelative = ReactIntl.FormattedRelative;
 } catch (err) {
     // react-intl does not support some mobile borowsers
@@ -16,13 +15,13 @@ try {
                 <span>
                     {this.props.value}
                 </span>
-            )
+            );
         }
-    })
+    });
 }
 
-let hammer = require('hammerjs');
-window.Hammer = hammer;
+//let hammer = require('hammerjs');
+//window.Hammer = hammer;
 
 let AppUtils = require('../AppUtils');
 
@@ -202,6 +201,7 @@ let ArticleContent = React.createClass({
 });
 
 let Article = React.createClass({
+    //mixins: [React.addons.PureRenderMixin],
 
     props: {
         showRead: React.PropTypes.bool.isRequired,
@@ -229,7 +229,8 @@ let Article = React.createClass({
             wasOpenedThisSession: true
         });
 
-        AppUtils.scrollTo($(this.getDOMNode()).offset().top + 78, 300);
+        let addForFirst = this.props.componentCounter === 1 ? 0 : -20;
+        AppUtils.scrollTo($(this.getDOMNode()).offset().top + addForFirst + 90, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
     },
@@ -265,7 +266,7 @@ let Article = React.createClass({
     render: function() {
         let articleClasses = classNames({
             'article': true,
-            'unread': !this.props.isRead,
+            'unreadArticle': !this.props.isRead,
             'articleOpen': this.state.isOpen,
             'articleActive': this.state.isOpen
 

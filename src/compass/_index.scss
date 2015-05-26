@@ -50,9 +50,11 @@ body {
       margin: 0px auto;
       margin-top: 8px;
       padding-left: 2%;
-      padding-right: 2%;
-      padding-bottom: 4px;
+      // padding-right: 2%;
+      // padding-bottom: 4px;
       box-shadow: 0 -1px 0 #e5e5e5,0 0 2px rgba(196, 196, 196, 0.12),0 2px 4px rgba(0,0,0,.24);
+
+      overflow: hidden;
     }
 
     &>.feed:first-child, &>.folder:first-child {
@@ -61,7 +63,7 @@ body {
 
     &>.feed a, &>.folder a {
       text-decoration: none;
-      display: block;
+      //display: block;
       color: #2172F7;
       cursor: pointer;
     }
@@ -72,17 +74,18 @@ body {
     margin-left: 20px;
   }
 
-  .fa-file, .fa-spinner, .fa-folder {
+  .fa-file, .fa-spinner, .fa-folder, .fa-circle {
     float: left;
-    width: 30px;
-    min-width: 30px;
-    margin-top: 2px;
-    font-size: 1.2em;
+    // width: 30px;
+    // min-width: 30px;
+    // margin-top: 2px;
+    // font-size: 1.2em;
   }
 
-  .fa-folder {
-    margin-right: 3%;
+  .fa-folder, .fa-circle {
     margin-top: 4px;
+    font-size: 43px;
+    margin-right: 1%;
   }
 
   .feed > a:active, .folder > a:active, .up:active {
@@ -126,18 +129,37 @@ body {
       display: block;
   }
 
+  .unreadCountMultipleView {
+    font-size: 16px;
+    background: #66AA33;
+    width: 36px;
+    border-radius: 50%;
+    color: #fff;
+    height: 36px;
+    text-align: center;
+    line-height: 38px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    //top: 9px;
+
+    &.hasFeeds {
+      top: 22px;
+    }
+  }
+
   .folder .unreadCount {
-      margin-top: -21px;
-      margin-left: -8px;
+      margin-top: -29px;
+      margin-left: -7px;
   }
 
   .feed .unreadCount {
-      margin-top: -18px;
-      margin-left: -12px;
+      margin-top: -30px;
+      margin-left: -7px;
   }
 
   .noUnreadCount {
-    margin-right: 0px;
+      margin-right: 0px;
   }
 }
 
@@ -156,9 +178,10 @@ body {
 
     &.articleOpen {
       //max-width: 880px;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      margin-top: 20px;
+      margin-bottom: 20px;
       width: 100%;
+      max-width: 860px;
     }
 
     a {
@@ -244,12 +267,7 @@ body {
     }
 
     .contentHeader, .content {
-      padding-top: 7px;
-      padding-bottom: 7px;
-      font-size: 0.5em;
-      position: relative;
       color: #444444;
-
       font-size: 16px;
       line-height: 24px;
 
@@ -259,7 +277,7 @@ body {
         white-space: inherit;
         line-height: 1.2em;
         float: left;
-        width: 90%;
+        white-space: normal;
       }
 
       .imgScaled {
@@ -268,8 +286,8 @@ body {
       }
 
       img {
-          max-width: 100%;
-          height: auto;
+        max-width: 100%;
+        height: auto;
       }
 
       .fa-undo, .fa-angle-double-right, .fa-angle-double-left, .fa-long-arrow-left, .fa-angle-double-up, .fa-star-o, .fa-share, .fa-facebook, .fa-twitter, .fa-google-plus {
@@ -331,22 +349,34 @@ body {
   .star {
     margin-right: 7px;
     float: left;
-    width: 30px;
-    margin-top: -2px;
   }
 
   .content {
-    margin-left: 2%;
-    margin-right: 10%;
-    margin-bottom: 20px;
-    line-height: 1.4em;
-    float: left;
     min-height: 100px;
     max-width: 800px;
+    white-space: normal;
+
+    p {
+      margin: 1.1em 0;
+    }    
+
+    .title {
+      width: 100%;
+    }
+    
+
+  }
+
+  .contentHeader {
+    position: relative;
+
+    .title {
+      width: 97%;
+    }
   }
 
   .contentSubHeader {
-    width: 96%;
+    width: 100%;
     display: block;
     float: left;
     margin-top: 4px;
@@ -388,10 +418,6 @@ body {
     }
 
   }
-}
-
-.content p {
-  margin: 1.1em 0;
 }
 
 .articlesHeader {
@@ -446,8 +472,10 @@ body {
   display: none !important;
 }
 
-.unread {
-  font-weight: bold;
+.unreadArticle {
+  .title {
+    font-weight: bold;
+  }
 }
 
 
@@ -471,8 +499,10 @@ body {
 }
 
 .fontSizeContainer {
-  width: 96%;
+  width: 100%;
   text-align: center;
+  display: block;
+  float: left;
 
   span {
       color: #fcd114;
@@ -507,7 +537,7 @@ body {
     content: '';
 }
 
-.menu .menuList > .folder .someFeeds a {
+.menu .menuList > .folder .someFeeds li {
   display: inline-block;
   margin-right: 7px;
 }
@@ -517,9 +547,11 @@ body {
   font-size: 16px;
   line-height: 16px;
   overflow: hidden;
-  display: block;
+  display: inline;
+  margin-left: 2%;
+  white-space: nowrap;
 
-  a:active > span {
+  li:active > span {
     color: #66AA33;
   }
 
@@ -531,9 +563,46 @@ body {
   }
 
   .sunreadCount {
-      color: #66AA33;
-      position: relative;
-      top: -2px;
+    color: #66AA33;
+    position: relative;
+    top: -3px;
+    font-weight: bold;
+    font-size: 12px;
+    left: 2px;
   }
 }
 
+.multipleFeeds {
+
+  .feedTitle {
+    color: #000000;
+    margin-left: 4%;
+    font-size: 16px;
+    //text-decoration: underline;
+    display: initial;
+    position: relative;
+    top: 2px;
+  }
+
+  .articlesList .article .header .headerAuthorAndDate {
+    font-size: 14px;
+    margin-left: 0px;
+  }  
+
+  .articlesList .article .header a.title {
+    font-size: 24px;
+    line-height: 40px;
+  }
+
+  .articlesList .article:last-child {
+    border-bottom: 0px;
+  }
+
+  // .articlesList .article:visible:first-child {
+  //   border-top: 1px solid #66AA33;
+  // }
+}
+
+.menu .multipleFeeds > .feed a.star {
+  display: none
+}

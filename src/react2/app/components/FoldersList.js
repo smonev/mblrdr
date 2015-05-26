@@ -24,11 +24,6 @@ let FoldersList = React.createClass({
                 foldersUnreadCount: AppStore.foldersUnreadCount
             });
         }.bind(this));
-        let folders = this.getDOMNode().querySelectorAll('.folder');
-
-        if (folders.length > 0) {
-            let i = 0;
-        }
     },
 
     componentWillUnmount: function() {
@@ -36,10 +31,6 @@ let FoldersList = React.createClass({
     },
 
     folderClick: function(e) {
-        AppUtils.morphElementToHeader(e);
-    },
-
-    blaClick: function(e) {
         AppUtils.morphElementToHeader(e);
     },
 
@@ -85,35 +76,34 @@ let FoldersList = React.createClass({
             // get first 5, todo sort them before
             unreadFeeds = unreadFeeds.slice(0, 5).map(function(feed) {
                 let url = linkToFolder + '/' + encodeURIComponent(feed.url);
-                return <Link to={url} key={url} onClick={this.folderClick} >
+                return <li><Link to={url} key={url} onClick={this.folderClick} >
                         <span className="title" title={feed.title}>{feed.title}</span>
                         <span className="sunreadCount">({feed.unreadCount})</span>
-                </Link>;
+                </Link></li>;
             }.bind(this));
 
+            let unreadFeedsString = '';
             if (unreadFeeds.length > 0) {
-                unreadFeeds = <div className="someFeeds">{unreadFeeds}</div>;
-            } else {
-                unreadFeeds = '';
+                unreadFeedsString = <ul className="someFeeds">{unreadFeeds}</ul>;
             }
 
             return (
                 <li className='folder' key={folder} >
                     <Link to={linkToFolder} onClick={this.folderClick} >
-                        <span className='fa fa-folder'>
+                        <span className='fa fa-circle'>
                             <span className='unreadCount'>{folderUnreadCount}</span>
                         </span>
                         <span>
                             {folder}
                         </span>
                     </Link>
-                    {unreadFeeds}
+                    {unreadFeedsString}
                 </li>
             );
         }.bind(this));
 
         if (this.props.isRoot === 'True') {
-            feeds = <FeedsList userData={this.props.userData} />;
+            feeds = <FeedsList userData={this.props.userData} multipleFeedsView={false}/>;
         }
 
         return (

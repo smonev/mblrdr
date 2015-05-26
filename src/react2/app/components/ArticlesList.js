@@ -12,6 +12,7 @@ let AppStore = require('../AppStore.js');
 let AppMessages = require('./../AppMessages.js');
 
 let ArticlesList = React.createClass({
+    mixins: [React.addons.PureRenderMixin],
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -30,15 +31,22 @@ let ArticlesList = React.createClass({
     },
 
     componentDidMount: function() {
-        let feedUrl = this.context.router.getCurrentParams().feedUrl + '?count=-1';
-        AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
-
-        if (AppStore.userData.bloglist) {
-            this.props.setTitle(AppUtils.getFeedTitle(this.context.router.getCurrentParams().folderName, this.context.router.getCurrentParams().feedUrl));
+        let feedUrl = this.props.feedUrl;
+        if (!feedUrl) {
+            feedUrl = this.context.router.getCurrentParams().feedUrl;
         }
 
+        feedUrl = feedUrl + '?count=-1';
+
+        AppUtils.getFeedData(feedUrl, this.getFeedDataSuccess);
+
         this.resolveShowRead();
-        document.addEventListener('keyup', this.keyUp);
+
+        if (!this.props.multipleFeedsView) {
+            document.addEventListener('keyup', this.keyUp);
+        }
+
+        this.handleAddNewFeedProcess();
 
         this.markReadFeedEvent = PubSub.subscribe(AppMessages.MARK_READ_FEED, function( msg, data ) {
             this.markFeedAsRead(data);
@@ -48,18 +56,14 @@ let ArticlesList = React.createClass({
             this.render();
         }.bind(this));
 
-        this.handleAddNewFeedProcess();
-
         // Velocity(this.getDOMNode(), 'callout.pulseDownblabla');
     },
 
     componentWillUnmount: function() {
-        PubSub.unsubscribe( this.markReadFolderEvent );
         PubSub.unsubscribe( this.markReadFeedEvent );
         PubSub.unsubscribe( this.showReadChangeEvent );
 
         document.removeEventListener('keyup', this.keyUp);
-        this.props.setTitle('');
     },
 
     getFeedDataSuccess: function (result) {
@@ -78,15 +82,46 @@ let ArticlesList = React.createClass({
             });
 
             if (this.state.articles.length > 0) {
-                this.props.setCurrentFeedName(this.state.articles[0].feedTitle);
-                this.props.setTitle(this.state.articles[0].feedTitle);
+                let feedUrl = this.props.feedUrl;
+                if (!feedUrl) {
+                    feedUrl = this.context.router.getCurrentParams().feedUrl;
+                }
 
-                AppUtils.updateFeedTitleIfNeeded(this.context.router.getCurrentParams().folderName, this.context.router.getCurrentParams().feedUrl, this.state.articles[0].feedTitle);
+                AppUtils.updateFeedTitleIfNeeded(
+                    this.context.router.getCurrentParams().folderName,
+                    feedUrl,
+                    this.state.articles[0].feedTitle
+                );
+
+                if (!this.props.multipleFeedsView) {
+                    PubSub.publish(AppMessages.TITLE_CHANGE_EVENT, this.state.articles[0].feedTitle);
+                }
             }
 
-            if (!this.moreLinkInitialized) {
-                this.moreLinkInitialized = true;
-                this.moreLinkAppearSetup();
+            if (!this.props.multipleFeedsView) {
+                if (!this.moreLinkInitialized) {
+                    this.moreLinkInitialized = true;
+                    this.moreLinkAppearSetup();
+                }
+            } else {
+                if (this.state.articles.length > 20) {
+                    // enough preview
+                    return;
+                }
+
+                let feedUrl = this.props.feedUrl;
+                if (!feedUrl) {
+                    feedUrl = this.context.router.getCurrentParams().feedUrl;
+                }
+
+                let serviceUrl = feedUrl + '?count=' + this.state.nextcount;
+                let decodedFeedUrl =  decodeURIComponent(feedUrl);
+
+
+
+                if (this.thereAreMoreUnread(decodedFeedUrl)) {
+                    AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
+                }
             }
         }
     },
@@ -105,36 +140,41 @@ let ArticlesList = React.createClass({
         });
     },
 
+    thereAreMoreUnread: function(decodedFeedUrl) {
+        if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
+            return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount;
+        } else {
+            return true;
+        }
+    },
+
+    thereAreMore: function (componentCounter, decodedFeedUrl) {
+        if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
+            return AppStore.readData[decodedFeedUrl].totalCount !== componentCounter;
+        } else {
+            return true;
+        }
+    },
+
     moreClick: function() {
-
-        function thereAreMoreUnread() {
-            if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
-                return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount;
-            } else {
-                return true;
-            }
-        }
-
-        function thereAreMore(componentCounter) {
-            if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
-                return AppStore.readData[decodedFeedUrl].totalCount !== componentCounter;
-            } else {
-                return true;
-            }
-        }
 
         let serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount;
         let decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
-        if (!thereAreMoreUnread()) {
+        if (!this.thereAreMoreUnread(decodedFeedUrl)) {
             this.setState({
                 noMoreArticles: true
             });
         }
 
         let showRead = this.resolveShowRead();
+        if (this.props.multipleFeedsView) {
+            showRead = false;
+        }
 
-        if ((showRead && thereAreMore(this.state.componentCounter)) || ((!showRead) && thereAreMoreUnread()) ) {
+        if (showRead && this.thereAreMore(this.state.componentCounter, decodedFeedUrl)) {
+            AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
+        } else if ((!showRead) && this.thereAreMoreUnread(decodedFeedUrl)) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
         } else {
             this.setState({
@@ -170,7 +210,6 @@ let ArticlesList = React.createClass({
         let ref = 'article' + (currentActive + direction);
         if (this.refs[ref]) {
             this.refs[ref].openArticle.call();
-            this.props.showLoader.call();
         } else {
             AppUtils.scrollTo(0, 300);
         }
@@ -252,15 +291,20 @@ let ArticlesList = React.createClass({
         if (this.state.read.indexOf(id) === -1) {
             this.state.read.push(id);
 
+            let feedUrl = this.props.feedUrl;
+            if (!feedUrl) {
+                feedUrl = this.context.router.getCurrentParams().feedUrl;
+            }
+
             AppUtils.markArticleAsRead({
                 folder: this.context.router.getCurrentParams().folderName,
-                url: this.context.router.getCurrentParams().feedUrl,
+                url: feedUrl,
                 id: id
             });
         }
 
         this.setState({
-            read: this.state.read,
+            //read: this.state.read,
             currentActive: currentActive
         });
     },
@@ -278,8 +322,13 @@ let ArticlesList = React.createClass({
             starState = 0;
         }
 
+        let feedUrl = this.props.feedUrl;
+        if (!feedUrl) {
+            feedUrl = this.context.router.getCurrentParams().feedUrl;
+        }
+
         AppUtils.starArticle({
-            feed: decodeURIComponent(this.context.router.getCurrentParams().feedUrl),
+            feed: decodeURIComponent(feedUrl),
             state: starState,
             id: id
         });
@@ -310,7 +359,15 @@ let ArticlesList = React.createClass({
         }
 
         let showRead = this.resolveShowRead();
-        let feedUrl = decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
+        if (this.props.multipleFeedsView) {
+            showRead = false;
+        }
+
+        let feedUrl = this.props.feedUrl;
+        if (!feedUrl) {
+            feedUrl = this.context.router.getCurrentParams().feedUrl;
+        }
+        feedUrl = decodeURIComponent(feedUrl);
 
         this.state.componentCounter = 0;
         let articles = this.state.articles.map(function (article) {
@@ -338,12 +395,17 @@ let ArticlesList = React.createClass({
             'displayNone': this.state.noMoreArticles
         });
 
+        let moreButtonClasses = classNames({
+            'moreLink2': true,
+            'displayNone': this.props.multipleFeedsView
+        });
+
         return (
             <div>
                 <ul className='articlesList' ref='feedContainer' onKeyPress={this.keyPress}>
                     {articles}
                 </ul>
-                <a className='moreLink2' onClick={this.moreClick} nextcount={this.state.nextcount}>
+                <a className={moreButtonClasses} onClick={this.moreClick} nextcount={this.state.nextcount}>
                     {this.state.noMoreArticles ? 'no more articles   ' : 'load more   '}
                     <div id='colorWheel' className='colorWheel displayNone'></div>
                     <i className={moreIconClasses}></i>

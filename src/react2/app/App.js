@@ -97,24 +97,8 @@ let App = React.createClass({
         AppUtils.saveSettings();
     },
 
-    setTitle: function(title) {
-        this.setState({
-            title: title
-        });
-    },
-
-    setCurrentFeedName: function(currentFeedName) {
-        this.setState({
-            currentFeedName: currentFeedName
-        });
-    },
-
     markAsRead: function(data) {
         console.log('mark me as read');
-    },
-
-    showLoader: function() {
-        //this.refs.pageLoader.animate();
     },
 
     render: function() {
@@ -147,14 +131,11 @@ let App = React.createClass({
                         isRoot='True'
                         userData={this.state.userData}
                         userSettings={this.state.userSettings}
-                        setTitle={this.setTitle}
-                        showLoader={this.showLoader}
-                        setCurrentFeedName={this.setCurrentFeedName} />
+                     />
                 </div>
 
                 <AppSettings
                     settingsType={this.state.settingsType}
-                    currentFeedName={this.state.currentFeedName}
                     visible={this.state.settingsVisible}
                     bloglist={this.state.bloglist}
                     userSettings={this.state.userSettings}

@@ -74,6 +74,7 @@ let AppUtils = {
         AppStore.readData[decodedUrl].localReadData.push(data.id);
 
         this.calcFolderUnreadCount(decodeURIComponent(data.folder));
+        PubSub.publish(AppMessages.FEED_READ_COUNT_CHANGED, {folder: data.folder});
         PubSub.publish(AppMessages.FOLDERS_UNREAD_COUNT_CHANGED, {});
     },
 

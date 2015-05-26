@@ -3,7 +3,11 @@
 let React = require('react');
 let ReactRouter = require('react-router');
 let Navigation = ReactRouter.Navigation;
+
 let classNames = require('classNames');
+let PubSub = require('pubsub-js');
+
+let AppMessages = require('./../AppMessages.js');
 
 class AppHeader extends React.Component {
 
@@ -14,6 +18,16 @@ class AppHeader extends React.Component {
         this.state = {
             title: ''
         };
+
+        this.titleChangeEvent = PubSub.subscribe(AppMessages.TITLE_CHANGE_EVENT, function( msg, title ) {
+            this.setState({
+                title: title
+            });
+        }.bind(this));
+    }
+
+    destructor() {
+        PubSub.unsubscribe( this.titleChangeEvent );
     }
 
     settingsClick(settingsType) {
@@ -50,7 +64,7 @@ class AppHeader extends React.Component {
 
         let title = '';
         if (currentParams.feedUrl) {
-            title = this.props.title;
+            title = this.props.titl ? this.props.title : this.state.title;
         } else if (currentParams.folderName) {
             title = currentParams.folderName;
         } else {

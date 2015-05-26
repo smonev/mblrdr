@@ -431,7 +431,11 @@ let AppSettings = React.createClass({
         let urlParams = this.context.router.getCurrentParams();
 
         if (urlParams.feedUrl) {
-            title = this.props.currentFeedName;
+            title = AppUtils.getFeedTitle(
+                this.context.router.getCurrentParams().folderName,
+                this.context.router.getCurrentParams().feedUrl
+            );
+
             view = [{
                 name: urlParams.folderName
             }, {
