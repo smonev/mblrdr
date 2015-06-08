@@ -132,19 +132,19 @@ body {
   .unreadCountMultipleView {
     font-size: 16px;
     background: #66AA33;
-    width: 36px;
+    width: 48px;
     border-radius: 50%;
     color: #fff;
-    height: 36px;
+    height: 48px;
     text-align: center;
-    line-height: 38px;
+    line-height: 48px;
     display: inline-block;
     position: relative;
     cursor: pointer;
     //top: 9px;
 
     &.hasFeeds {
-      top: 22px;
+      top: 12px;
     }
   }
 
@@ -311,6 +311,11 @@ body {
         top: 70px;
       }
 
+      .fa-angle-double-left, .fa-angle-double-right {
+        background-color: white;
+        padding: 0 2px;
+      }
+
       .fa-angle-double-up {
         top: 110px;
       }
@@ -371,7 +376,7 @@ body {
     position: relative;
 
     .title {
-      width: 97%;
+      width: 100%;
     }
   }
 
