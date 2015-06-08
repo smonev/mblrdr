@@ -12,7 +12,7 @@ let AppStore = require('../AppStore.js');
 let AppMessages = require('./../AppMessages.js');
 
 let ArticlesList = React.createClass({
-    mixins: [React.addons.PureRenderMixin],
+//    mixins: [React.addons.PureRenderMixin],
 
     contextTypes: {
         router: React.PropTypes.func.isRequired
@@ -26,7 +26,8 @@ let ArticlesList = React.createClass({
             componentCounter: 0,
             nextcount: -1,
             allArticlesAreRead: false,
-            noMoreArticles: false
+            noMoreArticles: false,
+            articlesOpenThisSession: []
         };
     },
 
@@ -68,16 +69,31 @@ let ArticlesList = React.createClass({
 
     getFeedDataSuccess: function (result) {
         if (this.isMounted()) {
-            this.state.articles.push.apply(this.state.articles, JSON.parse(result.feed ? result.feed : '[]'));
+            let articles = this.state.articles;
+            articles.push.apply(this.state.articles, JSON.parse(result.feed ? result.feed : '[]'));
 
-            this.state.read.push.apply(this.state.read, result.read.split(','));
-            this.state.star.push.apply(this.state.star, result.star.split(','));
+            let read = this.state.read;
+            read.push.apply(this.state.read, result.read.split(','));
+
+            let star = this.state.star;
+            star.push.apply(this.state.star, result.star.split(','));
+
+            // if (this.props.multipleFeedsView) {
+            //     // //get only unread
+            //     articles = articles.filter(function (article) {
+            //         return read.indexOf(article.id) === -1;
+            //     });
+
+            //     articles = articles.slice(0, 3);
+            // }
+
+
 
             this.setState({
-                articles: this.state.articles,
+                articles: articles,
                 readCount: result.readCount,
-                read: this.state.read,
-                star: this.state.star,
+                read: read,
+                star: star,
                 nextcount: result.nextcount
             });
 
@@ -288,13 +304,13 @@ let ArticlesList = React.createClass({
     },
 
     toggleArticleOpen: function(id, currentActive) {
+        let feedUrl = this.props.feedUrl;
+        if (!feedUrl) {
+            feedUrl = this.context.router.getCurrentParams().feedUrl;
+        }
+
         if (this.state.read.indexOf(id) === -1) {
             this.state.read.push(id);
-
-            let feedUrl = this.props.feedUrl;
-            if (!feedUrl) {
-                feedUrl = this.context.router.getCurrentParams().feedUrl;
-            }
 
             AppUtils.markArticleAsRead({
                 folder: this.context.router.getCurrentParams().folderName,
@@ -303,9 +319,17 @@ let ArticlesList = React.createClass({
             });
         }
 
+        //PubSub.publish(AppMessages.CURRENT_FEED, feedUrl);
+        if (typeof this.props.setCurrentFeed === 'function') {
+            this.props.setCurrentFeed.call(this, decodeURIComponent(feedUrl));
+        }
+
+        this.state.articlesOpenThisSession.push(id);
+
         this.setState({
             //read: this.state.read,
-            currentActive: currentActive
+            currentActive: currentActive,
+            articlesOpenThisSession: this.state.articlesOpenThisSession
         });
     },
 
@@ -355,7 +379,6 @@ let ArticlesList = React.createClass({
 
         if (this.state.articles.length === 0) {
             this.state.articles = [];
-            //return (<div></div>);
         }
 
         let showRead = this.resolveShowRead();
@@ -372,8 +395,13 @@ let ArticlesList = React.createClass({
         this.state.componentCounter = 0;
         let articles = this.state.articles.map(function (article) {
             this.state.componentCounter = this.state.componentCounter + 1;
-            let isRead = this.state.allArticlesAreRead || (this.state.read.indexOf(article.id) > -1) ||
-                (AppStore.readData && AppStore.readData[feedUrl] && AppStore.readData[feedUrl].localReadData && AppStore.readData[feedUrl].localReadData.indexOf(article.id) > -1);
+            let isRead = this.state.allArticlesAreRead ||
+                        (this.state.read.indexOf(article.id) > -1) ||
+                        (AppStore.readData &&
+                         AppStore.readData[feedUrl] &&
+                         AppStore.readData[feedUrl].localReadData &&
+                         AppStore.readData[feedUrl].localReadData.indexOf(article.id) > -1);
+
             let isStar = this.state.star.indexOf(article.id) > -1;
             let refName = 'article' + this.state.componentCounter;
 
@@ -383,6 +411,7 @@ let ArticlesList = React.createClass({
                     componentCounter={this.state.componentCounter}
                     currentActive={this.state.currentActive}
                     article={article} isRead={isRead} isStar={isStar}
+                    wasOpenedThisSession={this.state.articlesOpenThisSession.indexOf(article.id) > -1}
                     toggleArticleStar={this.toggleArticleStar}
                     toggleArticleOpen={this.toggleArticleOpen}
                     goToNextArticleMain={this.goToNextArticleMain} />

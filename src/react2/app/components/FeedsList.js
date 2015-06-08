@@ -21,7 +21,8 @@ let FeedsList = React.createClass({
     getInitialState: function() {
         return {
             folderUnreadCounts: {},
-            closedFeeds: []
+            closedFeeds: [],
+            currentFeed: ''
         };
     },
 
@@ -41,7 +42,6 @@ let FeedsList = React.createClass({
 
     componentWillUnmount: function() {
         PubSub.unsubscribe( this.feedReadCountChanged );
-        PubSub.unsubscribe( this.folderUnreadCountChanged );
         document.removeEventListener('keyup', this.keyUp);
     },
 
@@ -50,6 +50,12 @@ let FeedsList = React.createClass({
 
         return this.props.userSettings && this.props.userSettings[folderName] && (typeof this.props.userSettings[folderName].showRead !== 'undefined') ?
                 this.props.userSettings[folderName].showRead : true;
+    },
+
+    setCurrentFeed: function(feedUrl) {
+        this.setState({
+            currentFeed: feedUrl
+        });
     },
 
     keyUp: function(e) {
@@ -105,7 +111,7 @@ let FeedsList = React.createClass({
         if (typeof closedFeeds[feed] === 'undefined') {
             closedFeeds[feed] = false;
         }
-        closedFeeds[feed] = !closedFeeds[feed]  ;
+        closedFeeds[feed] = !closedFeeds[feed];
 
         this.setState({
             closedFeeds: closedFeeds
@@ -145,8 +151,12 @@ let FeedsList = React.createClass({
                     feedUnreadCount = '99';
                 }
 
-                if ((feedUnreadCount === 0) && (!showRead)) {
-                    return (<div />);
+                if (
+                    (feedUnreadCount === 0) &&
+                    (!showRead) &&
+                    (!(this.state.currentFeed === feed.url))
+                ) {
+                    return false;
                 }
 
                 let articlesList = '';
@@ -156,7 +166,12 @@ let FeedsList = React.createClass({
                     if (this.state.closedFeeds && this.state.closedFeeds[encodedFeedUrl]) {
                         articlesList = '';
                     } else {
-                        articlesList = <ArticlesList feedUrl={encodedFeedUrl} multipleFeedsView={multipleFeedsView}></ArticlesList>;
+                        articlesList =
+                            <ArticlesList
+                                feedUrl={encodedFeedUrl}
+                                setCurrentFeed = {this.setCurrentFeed}
+                                multipleFeedsView={true}>
+                            </ArticlesList>;
                     }
 
                     let unreadCountClassName = classNames({
@@ -167,7 +182,7 @@ let FeedsList = React.createClass({
                     articlesHeader =
                         <div>
                             <span className={unreadCountClassName} onClick={this.showMultipleArticlesClick.bind(this, (encodedFeedUrl))} >
-                                {feedUnreadCount !== 0 ? feedUnreadCount : ''}
+                                {feedUnreadCount !== 0 ? feedUnreadCount : ' '}
                             </span>
                             <Link to={url} data-url={feed.url} onClick={this.feedTitleClick}>
                                 <span className='feedTitle'>{feed.title ? feed.title : '-'}</span>

@@ -211,12 +211,16 @@ let AppUtils = {
             colorWheel.classList.add('displayNone');
         }
 
-        startAnimation();
-
+        if (colorWheel) {
+            startAnimation();
+        }
 
         feedUrl = this.updateForCache(feedUrl);
         $.get('/feed/' + feedUrl, function(result) {
-            endAnimation();
+            if (colorWheel) {
+                endAnimation();
+            }
+
             successCallback.apply(this, [result]);
         });
     },

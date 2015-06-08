@@ -357,6 +357,7 @@ class StarArticle(webapp2.RequestHandler):
         star = self.data['state'] == 1
         starArticle = self.data['id']
         if starArticle == '':
+            logging.debug('No starArticle data. returning')
             return
 
         starDataAttr = 'starData__' + self.ud.app_username + \
@@ -364,7 +365,8 @@ class StarArticle(webapp2.RequestHandler):
         starData = StarData.get_by_id(starDataAttr)
         if starData is None:
             starData = StarData(
-                app_username=self.ud.app_username, feedUrl=feedUrl, starData='', id=starDataAttr)
+                app_username=self.ud.app_username, feedUrl=feedUrl,
+                starData='', id=starDataAttr)
 
         starUntilNow = starData.starData.split(',')
         if star:

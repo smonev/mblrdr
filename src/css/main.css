@@ -118,17 +118,17 @@ body {
   .menu .unreadCountMultipleView {
     font-size: 16px;
     background: #66AA33;
-    width: 36px;
+    width: 48px;
     border-radius: 50%;
     color: #fff;
-    height: 36px;
+    height: 48px;
     text-align: center;
-    line-height: 38px;
+    line-height: 48px;
     display: inline-block;
     position: relative;
     cursor: pointer; }
     .menu .unreadCountMultipleView.hasFeeds {
-      top: 22px; }
+      top: 12px; }
   .menu .folder .unreadCount {
     margin-top: -29px;
     margin-left: -7px; }
@@ -243,6 +243,9 @@ body {
         top: 0px; }
       .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .content .fa-angle-double-left {
         top: 70px; }
+      .articlesList .article .contentHeader .fa-angle-double-left, .articlesList .article .contentHeader .fa-angle-double-right, .articlesList .article .content .fa-angle-double-left, .articlesList .article .content .fa-angle-double-right {
+        background-color: white;
+        padding: 0 2px; }
       .articlesList .article .contentHeader .fa-angle-double-up, .articlesList .article .content .fa-angle-double-up {
         top: 110px; }
       .articlesList .article .contentHeader .fa-share, .articlesList .article .content .fa-share {
@@ -276,7 +279,7 @@ body {
   .articlesList .contentHeader {
     position: relative; }
     .articlesList .contentHeader .title {
-      width: 97%; }
+      width: 100%; }
   .articlesList .contentSubHeader {
     width: 100%;
     display: block;

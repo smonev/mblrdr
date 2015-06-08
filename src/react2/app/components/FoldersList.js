@@ -76,10 +76,12 @@ let FoldersList = React.createClass({
             // get first 5, todo sort them before
             unreadFeeds = unreadFeeds.slice(0, 5).map(function(feed) {
                 let url = linkToFolder + '/' + encodeURIComponent(feed.url);
-                return <li><Link to={url} key={url} onClick={this.folderClick} >
-                        <span className="title" title={feed.title}>{feed.title}</span>
-                        <span className="sunreadCount">({feed.unreadCount})</span>
-                </Link></li>;
+                return  <li key={url}>
+                            <Link to={url} onClick={this.folderClick} >
+                                <span className="title" title={feed.title}>{feed.title}</span>
+                                <span className="sunreadCount">({feed.unreadCount})</span>
+                            </Link>
+                        </li>;
             }.bind(this));
 
             let unreadFeedsString = '';

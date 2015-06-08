@@ -229,8 +229,9 @@ let Article = React.createClass({
             wasOpenedThisSession: true
         });
 
-        let addForFirst = this.props.componentCounter === 1 ? 0 : -20;
-        AppUtils.scrollTo($(this.getDOMNode()).offset().top + addForFirst + 90, 300);
+        //let addForFirst = this.props.componentCounter === 1 ? 0 : -20;
+        //AppUtils.scrollTo($(this.getDOMNode()).offset().top + addForFirst + 90, 300);
+        AppUtils.scrollTo($(this.getDOMNode()).offset().top, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
     },
@@ -272,15 +273,18 @@ let Article = React.createClass({
 
         });
 
-        if ((!this.state.wasOpenedThisSession) && ((!this.state.isOpen) && (this.props.isRead) && (!this.props.showRead))) {
-            return (<div />);
+        if (
+                (!this.state.wasOpenedThisSession) &&
+                (!this.props.wasOpenedThisSession) &&
+                ((!this.state.isOpen) && (this.props.isRead) && (!this.props.showRead))
+            ) {
+            return false;
         }
 
         return (
 
             <li className={articleClasses}>
                 <section className='header'>
-
 
                     <ArticleHeader
                         isRead={this.props.isRead} isStar={this.props.isStar}
