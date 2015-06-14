@@ -231,7 +231,10 @@ let Article = React.createClass({
 
         //let addForFirst = this.props.componentCounter === 1 ? 0 : -20;
         //AppUtils.scrollTo($(this.getDOMNode()).offset().top + addForFirst + 90, 300);
-        AppUtils.scrollTo($(this.getDOMNode()).offset().top, 300);
+        //console.log($(this.getDOMNode()[0]));
+        let pos = $(this.getDOMNode()).offset().top;
+        // + $(this.getDOMNode()).height();
+        AppUtils.scrollTo(pos, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
     },

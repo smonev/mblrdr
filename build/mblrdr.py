@@ -117,6 +117,8 @@ class FeedHandler(webapp2.RequestHandler):
                 else:
                     feedData = fd.private_data
                 priorData = int(count) - 1
+                if count == '-1':
+                    count = -2
 
         return feedData, keyName, priorData, feedDataSettings.article_count
 

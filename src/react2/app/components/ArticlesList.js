@@ -11,6 +11,8 @@ let AppUtils = require('../AppUtils.js');
 let AppStore = require('../AppStore.js');
 let AppMessages = require('./../AppMessages.js');
 
+const MAX_ARTICLES_PER_FEED = 3;
+
 let ArticlesList = React.createClass({
 //    mixins: [React.addons.PureRenderMixin],
 
@@ -27,7 +29,8 @@ let ArticlesList = React.createClass({
             nextcount: -1,
             allArticlesAreRead: false,
             noMoreArticles: false,
-            articlesOpenThisSession: []
+            articlesOpenThisSession: [],
+            processedArticles: 0
         };
     },
 
@@ -43,9 +46,7 @@ let ArticlesList = React.createClass({
 
         this.resolveShowRead();
 
-        if (!this.props.multipleFeedsView) {
-            document.addEventListener('keyup', this.keyUp);
-        }
+        //document.addEventListener('keyup', this.keyUp);
 
         this.handleAddNewFeedProcess();
 
@@ -57,12 +58,19 @@ let ArticlesList = React.createClass({
             this.render();
         }.bind(this));
 
+        this.openFirstArticle = PubSub.subscribe(AppMessages.OPEN_FIRST_ARTICLE, function( msg, data ) {
+            if (data.refName === this.props.name) {
+                this.goToFirstOrLastVisibleArticle(data.direction);
+            }
+        }.bind(this));
+
         // Velocity(this.getDOMNode(), 'callout.pulseDownblabla');
     },
 
     componentWillUnmount: function() {
         PubSub.unsubscribe( this.markReadFeedEvent );
         PubSub.unsubscribe( this.showReadChangeEvent );
+        PubSub.unsubscribe( this.openFirstArticle );
 
         document.removeEventListener('keyup', this.keyUp);
     },
@@ -70,7 +78,8 @@ let ArticlesList = React.createClass({
     getFeedDataSuccess: function (result) {
         if (this.isMounted()) {
             let articles = this.state.articles;
-            articles.push.apply(this.state.articles, JSON.parse(result.feed ? result.feed : '[]'));
+            let newArticles = JSON.parse(result.feed ? result.feed : '[]');
+            articles.push.apply(this.state.articles, newArticles);
 
             let read = this.state.read;
             read.push.apply(this.state.read, result.read.split(','));
@@ -78,30 +87,32 @@ let ArticlesList = React.createClass({
             let star = this.state.star;
             star.push.apply(this.state.star, result.star.split(','));
 
-            // if (this.props.multipleFeedsView) {
-            //     // //get only unread
-            //     articles = articles.filter(function (article) {
-            //         return read.indexOf(article.id) === -1;
-            //     });
+            let processedArticles = this.state.processedArticles + newArticles.length;
 
-            //     articles = articles.slice(0, 3);
-            // }
+            if (this.props.multipleFeedsView) {
+                // //get only unread
+                articles = articles.filter(function (article) {
+                    return read.indexOf(article.id) === -1;
+                });
 
+                articles = articles.slice(0, MAX_ARTICLES_PER_FEED);
+            }
 
+            let feedUrl = this.props.feedUrl;
+            if (!feedUrl) {
+                feedUrl = this.context.router.getCurrentParams().feedUrl;
+            }
 
             this.setState({
                 articles: articles,
                 readCount: result.readCount,
                 read: read,
                 star: star,
-                nextcount: result.nextcount
+                nextcount: result.nextcount,
+                processedArticles: processedArticles
             });
 
             if (this.state.articles.length > 0) {
-                let feedUrl = this.props.feedUrl;
-                if (!feedUrl) {
-                    feedUrl = this.context.router.getCurrentParams().feedUrl;
-                }
 
                 AppUtils.updateFeedTitleIfNeeded(
                     this.context.router.getCurrentParams().folderName,
@@ -125,18 +136,15 @@ let ArticlesList = React.createClass({
                     return;
                 }
 
-                let feedUrl = this.props.feedUrl;
-                if (!feedUrl) {
-                    feedUrl = this.context.router.getCurrentParams().feedUrl;
-                }
-
                 let serviceUrl = feedUrl + '?count=' + this.state.nextcount;
                 let decodedFeedUrl =  decodeURIComponent(feedUrl);
 
-
-
-                if (this.thereAreMoreUnread(decodedFeedUrl)) {
-                    AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
+                if (result.nextcount !== -1) {
+                    if (this.thereAreMoreUnread(decodedFeedUrl)) {
+                        AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
+                    }
+                } else {
+                    // no more data
                 }
             }
         }
@@ -158,9 +166,15 @@ let ArticlesList = React.createClass({
 
     thereAreMoreUnread: function(decodedFeedUrl) {
         if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
-            return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount;
+            if (this.props.multipleFeedsView && (this.state.componentCounter >= MAX_ARTICLES_PER_FEED)) {
+                return false;
+            } else if (this.props.multipleFeedsView && (this.state.processedArticles >= 100)) {
+                return false;
+            } else {
+                return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount;
+            }
         } else {
-            return true;
+            return false;
         }
     },
 
@@ -224,9 +238,44 @@ let ArticlesList = React.createClass({
             currentActive: currentActive
         });
         let ref = 'article' + (currentActive + direction);
-        if (this.refs[ref]) {
+        if (this.refs[ref] && (this.refs[ref].getDOMNode() !== null)) {
             this.refs[ref].openArticle.call();
         } else {
+            if (typeof this.props.goToNextArticleList === 'function') {
+                this.props.goToNextArticleList.call(this, this.props.refCounter, direction);
+            } else {
+                AppUtils.scrollTo(0, 300);
+            }
+        }
+    },
+
+    goToFirstOrLastVisibleArticle: function(direction) {
+        this.setState({
+            currentActive: 1
+        });
+
+        let refs = Object.keys(this.refs);
+        refs = refs.filter(function (r) {
+            return r.startsWith('article');
+        });
+
+        if (direction === -1) {
+            refs = refs.reverse();
+        }
+
+        let refsLength = refs.length;
+        let found = false;
+        for (let i = 0; i < refsLength; i++) {
+            if (this.refs[refs[i]]) {
+                if (this.refs[refs[i]].getDOMNode() !== null) {
+                    found = true;
+                    this.refs[refs[i]].openArticle.call();
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
             AppUtils.scrollTo(0, 300);
         }
     },
@@ -267,11 +316,19 @@ let ArticlesList = React.createClass({
             ref = 'article' + (this.state.currentActive + 1);
             if (this.refs[ref]) {
                 this.refs[ref].openArticle.call();
+            } else if (typeof this.props.goToNextArticleList === 'function') {
+                this.props.goToNextArticleList.call(this, this.props.refCounter, 1);
+            } else {
+                //
             }
         } else if (e.keyCode === 75) { //k
             ref = 'article' + (this.state.currentActive - 1);
             if (this.refs[ref]) {
                 this.refs[ref].openArticle.call();
+            } else if (typeof this.props.goToNextArticleList === 'function') {
+                this.props.goToNextArticleList.call(this, this.props.refCounter, -1);
+            } else {
+                //
             }
         } else if (e.keyCode === 78) { //n
             ref = 'article' + (this.state.currentActive + 1);
@@ -319,7 +376,6 @@ let ArticlesList = React.createClass({
             });
         }
 
-        //PubSub.publish(AppMessages.CURRENT_FEED, feedUrl);
         if (typeof this.props.setCurrentFeed === 'function') {
             this.props.setCurrentFeed.call(this, decodeURIComponent(feedUrl));
         }

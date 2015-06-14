@@ -62,14 +62,27 @@ let FeedsList = React.createClass({
         let ref;
 
         if (e.keyCode === 74) { //j
+            // ref = 'article' + (this.state.currentActive + 1);
+            // if (this.refs[ref]) {
+            //     this.refs[ref].openArticle.call();
+            // }
             ref = 'article' + (this.state.currentActive + 1);
             if (this.refs[ref]) {
                 this.refs[ref].openArticle.call();
+            } else {
+                this.goToNextArticleList('???', 1);
             }
         } else if (e.keyCode === 75) { //k
+            // ref = 'article' + (this.state.currentActive - 1);
+            // if (this.refs[ref]) {
+            //     this.refs[ref].openArticle.call();
+            // }
+
             ref = 'article' + (this.state.currentActive - 1);
             if (this.refs[ref]) {
                 this.refs[ref].openArticle.call();
+            } else {
+                this.goToNextArticleList('???', -1);
             }
         } else if (e.keyCode === 78) { //n
             ref = 'article' + (this.state.currentActive + 1);
@@ -118,6 +131,16 @@ let FeedsList = React.createClass({
         });
     },
 
+    goToNextArticleList: function(currentArticleList, direction) {
+        let refName = 'articlesList' + (currentArticleList + direction);
+        if (this.refs[refName]) {
+            PubSub.publish('OPEN_FIRST_ARTICLE', {
+                refName: refName,
+                direction: direction
+            });
+        }
+    },
+
     render: function() {
         let feeds, currentFolder = this.context.router.getCurrentParams().folderName ? this.context.router.getCurrentParams().folderName : 'root';
 
@@ -129,10 +152,11 @@ let FeedsList = React.createClass({
         let multipleFeedsView = typeof this.props.multipleFeedsView !== 'undefined' ? this.props.multipleFeedsView : true;
 
         feeds = this.props.userData.bloglist[currentFolder];
+        let refCounter = 0;
         feeds = feeds
             .map(function (feed) {
                 let url = '/' + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feed.url);
-
+                let encodedFeedUrl = encodeURIComponent(feed.url);
                 let feedUnreadCount = 0;
 
                 if (AppStore.readData && AppStore.readData[feed.url]) {
@@ -142,7 +166,8 @@ let FeedsList = React.createClass({
                 let feedClasses = classNames({
                     feed: true,
                     unread: feedUnreadCount > 0,
-                    'displayNone': false
+                    displayNone: false,
+                    hasFeeds: feedUnreadCount !== 0 && (!(this.state.closedFeeds && this.state.closedFeeds[encodedFeedUrl]))
                 });
 
                 if (feedUnreadCount < 0) {
@@ -161,22 +186,28 @@ let FeedsList = React.createClass({
 
                 let articlesList = '';
                 let articlesHeader;
+                let hasFeeds = false;
                 if (multipleFeedsView) {
-                    let encodedFeedUrl = encodeURIComponent(feed.url);
                     if (this.state.closedFeeds && this.state.closedFeeds[encodedFeedUrl]) {
                         articlesList = '';
                     } else {
+                        refCounter = refCounter + 1;
+                        let refName = 'articlesList' + refCounter;
                         articlesList =
                             <ArticlesList
+                                ref={refName}
+                                refCounter={refCounter}
+                                name={refName}
+                                goToNextArticleList={this.goToNextArticleList}
                                 feedUrl={encodedFeedUrl}
                                 setCurrentFeed = {this.setCurrentFeed}
                                 multipleFeedsView={true}>
                             </ArticlesList>;
                     }
 
+                    
                     let unreadCountClassName = classNames({
-                        unreadCountMultipleView: true,
-                        hasFeeds: feedUnreadCount !== 0 && (!(this.state.closedFeeds && this.state.closedFeeds[encodedFeedUrl]))
+                        unreadCountMultipleView: true
                     });
 
                     articlesHeader =

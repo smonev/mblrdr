@@ -4,6 +4,7 @@ let React = require('react');
 let ReactRouter = require('react-router');
 let Link = ReactRouter.Link;
 
+let classNames = require('classNames');
 let PubSub = require('pubsub-js');
 
 let FeedsList = require('../components/FeedsList.js');
@@ -46,14 +47,14 @@ let FoldersList = React.createClass({
             return element !== 'root';
         }).map(function (folder) {
             let linkToFolder = '/' + folder;
-            let folderUnreadCount;
+            let folderUnreadCount = ' ';
             if (this.state.foldersUnreadCount && this.state.foldersUnreadCount[folder]) {
-                folderUnreadCount = this.state.foldersUnreadCount[folder];
-
-                if (folderUnreadCount <= 0) {
-                    folderUnreadCount = '';
-                } else if (folderUnreadCount > 999) {
+                if (this.state.foldersUnreadCount[folder] <= 0) {
+                    folderUnreadCount = ' ';
+                } else if (this.state.foldersUnreadCount[folder] > 999) {
                     folderUnreadCount = '999';
+                } else {
+                    folderUnreadCount = this.state.foldersUnreadCount[folder];
                 }
             }
 
@@ -89,13 +90,17 @@ let FoldersList = React.createClass({
                 unreadFeedsString = <ul className="someFeeds">{unreadFeeds}</ul>;
             }
 
+            let unreadCountClassName = classNames({
+                unreadCountMultipleView: true
+            });
+
             return (
                 <li className='folder' key={folder} >
                     <Link to={linkToFolder} onClick={this.folderClick} >
-                        <span className='fa fa-circle'>
-                            <span className='unreadCount'>{folderUnreadCount}</span>
+                        <span className={unreadCountClassName}>
+                            {folderUnreadCount}
                         </span>
-                        <span>
+                        <span className="folderTitle">
                             {folder}
                         </span>
                     </Link>
@@ -118,4 +123,5 @@ let FoldersList = React.createClass({
 });
 
 module.exports = FoldersList;
+
 

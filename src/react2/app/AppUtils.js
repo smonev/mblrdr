@@ -11,7 +11,7 @@ let AppUtils = {
         Velocity(document.body, 'scroll', {
             duration: 250,
             offset: scrollPos,
-            easing: 'easeOutQuad',
+            easing: 'easeOutQuad'
         });
     },
 

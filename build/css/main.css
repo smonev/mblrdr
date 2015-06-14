@@ -37,7 +37,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 *, *:before, *:after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 html, button, input, select, textarea {
   font-family: sans-serif; }
@@ -79,6 +85,10 @@ body {
       text-decoration: none;
       color: #2172F7;
       cursor: pointer; }
+    .menu .menuList .folderTitle {
+      margin-left: 4%;
+      position: relative;
+      top: 4px; }
   .menu h3 {
     color: #2172F7;
     margin-left: 20px; }
@@ -95,13 +105,11 @@ body {
     -o-transform: translate3d(0px, -5px, 0px);
     transform: translate3d(0px, -5px, 0px); }
   .menu .feedTitle {
-    margin: 0 0 0 39px;
+    margin: 0 0 0 4%;
     overflow: hidden;
     white-space: nowrap;
     display: block;
-    color: #2172F7;
-    position: relative;
-    top: 2px; }
+    color: #2172F7; }
     .menu .feedTitle:active {
       color: #66AA33; }
   .menu .folderName {
@@ -127,8 +135,10 @@ body {
     display: inline-block;
     position: relative;
     cursor: pointer; }
-    .menu .unreadCountMultipleView.hasFeeds {
-      top: 12px; }
+  .menu .hasFeeds .unreadCountMultipleView {
+    top: 12px; }
+  .menu .hasFeeds .feedTitle {
+    margin: 0 0 0 10%; }
   .menu .folder .unreadCount {
     margin-top: -29px;
     margin-left: -7px; }
@@ -271,7 +281,8 @@ body {
   .articlesList .content {
     min-height: 100px;
     max-width: 800px;
-    white-space: normal; }
+    white-space: normal;
+    clear: both; }
     .articlesList .content p {
       margin: 1.1em 0; }
     .articlesList .content .title {
@@ -279,7 +290,7 @@ body {
   .articlesList .contentHeader {
     position: relative; }
     .articlesList .contentHeader .title {
-      width: 100%; }
+      width: 90%; }
   .articlesList .contentSubHeader {
     width: 100%;
     display: block;
@@ -372,10 +383,11 @@ body {
   color: #2172F7; }
 
 .fontSizeContainer {
-  width: 100%;
+  width: 90%;
   text-align: center;
   display: block;
-  float: left; }
+  float: left;
+  padding: 10px 0; }
   .fontSizeContainer span {
     color: #fcd114;
     padding: 0 3%;
@@ -415,8 +427,10 @@ body {
   line-height: 16px;
   overflow: hidden;
   display: inline;
-  margin-left: 2%;
-  white-space: nowrap; }
+  margin-left: 4%;
+  white-space: nowrap;
+  position: relative;
+  top: 4px; }
   .someFeeds li:active > span {
     color: #66AA33; }
   .someFeeds .title {
@@ -434,11 +448,8 @@ body {
 
 .multipleFeeds .feedTitle {
   color: #000000;
-  margin-left: 4%;
   font-size: 16px;
-  display: initial;
-  position: relative;
-  top: 2px; }
+  display: initial; }
 .multipleFeeds .articlesList .article .header .headerAuthorAndDate {
   font-size: 14px;
   margin-left: 0px; }

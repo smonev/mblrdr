@@ -2,6 +2,13 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;  
 }
 
 html, button, input, select, textarea {
@@ -67,6 +74,12 @@ body {
       color: #2172F7;
       cursor: pointer;
     }
+
+    .folderTitle {
+      margin-left: 4%;
+      position: relative;
+      top: 4px;
+    }
   }
 
   h3 {
@@ -99,13 +112,11 @@ body {
   }
 
   .feedTitle {
-    margin: 0 0 0 39px;
+    margin: 0 0 0 4%;
     overflow: hidden;
     white-space: nowrap;
     display: block;
     color: #2172F7;
-    position: relative;
-    top: 2px;
 
     &:active {
       color: #66AA33;
@@ -142,11 +153,18 @@ body {
     position: relative;
     cursor: pointer;
     //top: 9px;
+  }
 
-    &.hasFeeds {
+  .hasFeeds {
+    .unreadCountMultipleView {
       top: 12px;
     }
+
+    .feedTitle {
+      margin: 0 0 0 10%;
+    }
   }
+
 
   .folder .unreadCount {
       margin-top: -29px;
@@ -360,6 +378,7 @@ body {
     min-height: 100px;
     max-width: 800px;
     white-space: normal;
+    clear: both;
 
     p {
       margin: 1.1em 0;
@@ -376,7 +395,7 @@ body {
     position: relative;
 
     .title {
-      width: 100%;
+      width: 90%;
     }
   }
 
@@ -504,10 +523,11 @@ body {
 }
 
 .fontSizeContainer {
-  width: 100%;
+  width: 90%;
   text-align: center;
   display: block;
   float: left;
+  padding: 10px 0;
 
   span {
       color: #fcd114;
@@ -553,8 +573,10 @@ body {
   line-height: 16px;
   overflow: hidden;
   display: inline;
-  margin-left: 2%;
+  margin-left: 4%;
   white-space: nowrap;
+  position: relative;
+  top: 4px;
 
   li:active > span {
     color: #66AA33;
@@ -581,12 +603,8 @@ body {
 
   .feedTitle {
     color: #000000;
-    margin-left: 4%;
     font-size: 16px;
-    //text-decoration: underline;
     display: initial;
-    position: relative;
-    top: 2px;
   }
 
   .articlesList .article .header .headerAuthorAndDate {
