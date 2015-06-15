@@ -440,7 +440,13 @@ body {
     .fa-star, .fa-star-empty {
       display: none;
     }
+  }
 
+  .showAll {
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+    color: #767676;
   }
 }
 
@@ -628,4 +634,20 @@ body {
 
 .menu .multipleFeeds > .feed a.star {
   display: none
+}
+
+.feed {
+
+  position: relative;
+
+  .fa-ellipsis-v {
+    position: absolute;
+    top: 25px;
+    right: 0%;
+    color: #B2B2B2;
+    font-size: 20px;
+    background-color: #fff;
+    padding: 0 5% 0 2%;
+    cursor: pointer;
+  }
 }
