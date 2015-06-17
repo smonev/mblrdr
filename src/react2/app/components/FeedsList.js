@@ -173,7 +173,7 @@ let FeedsList = React.createClass({
                 if (feedUnreadCount < 0) {
                     feedUnreadCount = 0;
                 } else if (feedUnreadCount > 99) {
-                    feedUnreadCount = '99';
+                    feedUnreadCount = 99;
                 }
 
                 if (
@@ -212,7 +212,7 @@ let FeedsList = React.createClass({
                     articlesHeader =
                         <div>
                             <span className={unreadCountClassName} onClick={this.showMultipleArticlesClick.bind(this, (encodedFeedUrl))} >
-                                {feedUnreadCount !== 0 ? feedUnreadCount : ' '}
+                                {feedUnreadCount !== 0 ? feedUnreadCount : String.fromCharCode(183)}
                             </span>
                             <Link to={url} data-url={feed.url} onClick={this.feedTitleClick}>
                                 <span className='feedTitle'>{feed.title ? feed.title : '-'}</span>

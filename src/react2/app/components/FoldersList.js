@@ -47,10 +47,10 @@ let FoldersList = React.createClass({
             return element !== 'root';
         }).map(function (folder) {
             let linkToFolder = '/' + folder;
-            let folderUnreadCount = ' ';
+            let folderUnreadCount = '';
             if (this.state.foldersUnreadCount && this.state.foldersUnreadCount[folder]) {
                 if (this.state.foldersUnreadCount[folder] <= 0) {
-                    folderUnreadCount = ' ';
+                    folderUnreadCount = '';
                 } else if (this.state.foldersUnreadCount[folder] > 999) {
                     folderUnreadCount = '999';
                 } else {
@@ -88,6 +88,8 @@ let FoldersList = React.createClass({
             let unreadFeedsString = '';
             if (unreadFeeds.length > 0) {
                 unreadFeedsString = <ul className="someFeeds">{unreadFeeds}</ul>;
+            } else {
+                unreadFeedsString = <ul className="someFeeds"></ul>;
             }
 
             let unreadCountClassName = classNames({
@@ -98,7 +100,7 @@ let FoldersList = React.createClass({
                 <li className='folder' key={folder} >
                     <Link to={linkToFolder} onClick={this.folderClick} >
                         <span className={unreadCountClassName}>
-                            {folderUnreadCount}
+                            {folderUnreadCount !== '' ? folderUnreadCount : String.fromCharCode(183)}
                         </span>
                         <span className="folderTitle">
                             {folder}
