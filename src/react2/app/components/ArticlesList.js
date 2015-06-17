@@ -2,6 +2,7 @@
 
 let React = require('react');
 let ReactRouter = require('react-router');
+let Link = ReactRouter.Link;
 
 let classNames = require('classNames');
 let PubSub = require('pubsub-js');
@@ -30,7 +31,8 @@ let ArticlesList = React.createClass({
             allArticlesAreRead: false,
             noMoreArticles: false,
             articlesOpenThisSession: [],
-            processedArticles: 0
+            processedArticles: 0,
+            showMoreButton: false
         };
     },
 
@@ -88,12 +90,17 @@ let ArticlesList = React.createClass({
             star.push.apply(this.state.star, result.star.split(','));
 
             let processedArticles = this.state.processedArticles + newArticles.length;
+            let showMoreButton = false;
 
             if (this.props.multipleFeedsView) {
                 // //get only unread
                 articles = articles.filter(function (article) {
                     return read.indexOf(article.id) === -1;
                 });
+
+                if (articles.length > MAX_ARTICLES_PER_FEED) {
+                    showMoreButton = true;
+                }
 
                 articles = articles.slice(0, MAX_ARTICLES_PER_FEED);
             }
@@ -109,7 +116,8 @@ let ArticlesList = React.createClass({
                 read: read,
                 star: star,
                 nextcount: result.nextcount,
-                processedArticles: processedArticles
+                processedArticles: processedArticles,
+                showMoreButton: showMoreButton
             });
 
             if (this.state.articles.length > 0) {
@@ -131,9 +139,11 @@ let ArticlesList = React.createClass({
                     this.moreLinkAppearSetup();
                 }
             } else {
-                if (this.state.articles.length > 20) {
-                    // enough preview
-                    return;
+                if (showMoreButton) {
+                    if (!this.moreLinkInitialized) {
+                        this.moreLinkInitialized = true;
+                        this.moreLinkAppearSetup();
+                    }
                 }
 
                 let serviceUrl = feedUrl + '?count=' + this.state.nextcount;
@@ -485,6 +495,13 @@ let ArticlesList = React.createClass({
             'displayNone': this.props.multipleFeedsView
         });
 
+/*        let showAll = '';
+        if (this.state.showMoreButton) {
+            let currentFolder = this.context.router.getCurrentParams().folderName;
+            let url = '/' + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feedUrl);
+            showAll = <Link to={url} className="showAll"> SHOW ALL </Link>;
+        }
+*/
         return (
             <div>
                 <ul className='articlesList' ref='feedContainer' onKeyPress={this.keyPress}>
@@ -495,6 +512,7 @@ let ArticlesList = React.createClass({
                     <div id='colorWheel' className='colorWheel displayNone'></div>
                     <i className={moreIconClasses}></i>
                 </a>
+
             </div>
         );
     }
