@@ -232,7 +232,7 @@ let FeedsList = React.createClass({
                     <li className={feedClasses} key={feed.url} data-url={feed.url}>
                         {articlesHeader}
                         {articlesList}
-                        <span className="fa fa-ellipsis-v"></span>
+                        {/*<span className="fa fa-ellipsis-v"></span>*/ }
                     </li>
                 );
             }.bind(this));
