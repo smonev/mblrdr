@@ -36,13 +36,10 @@ let FeedsList = React.createClass({
         }.bind(this));
 
         //Velocity(this.getDOMNode(), 'callout.pulseSide');
-
-        document.addEventListener('keyup', this.keyUp);
     },
 
     componentWillUnmount: function() {
         PubSub.unsubscribe( this.feedReadCountChanged );
-        document.removeEventListener('keyup', this.keyUp);
     },
 
     resolveShowRead: function() {
@@ -58,60 +55,10 @@ let FeedsList = React.createClass({
         });
     },
 
-    keyUp: function(e) {
-        let ref;
-
-        if (e.keyCode === 74) { //j
-            // ref = 'article' + (this.state.currentActive + 1);
-            // if (this.refs[ref]) {
-            //     this.refs[ref].openArticle.call();
-            // }
-            ref = 'article' + (this.state.currentActive + 1);
-            if (this.refs[ref]) {
-                this.refs[ref].openArticle.call();
-            } else {
-                this.goToNextArticleList('???', 1);
-            }
-        } else if (e.keyCode === 75) { //k
-            // ref = 'article' + (this.state.currentActive - 1);
-            // if (this.refs[ref]) {
-            //     this.refs[ref].openArticle.call();
-            // }
-
-            ref = 'article' + (this.state.currentActive - 1);
-            if (this.refs[ref]) {
-                this.refs[ref].openArticle.call();
-            } else {
-                this.goToNextArticleList('???', -1);
-            }
-        } else if (e.keyCode === 78) { //n
-            ref = 'article' + (this.state.currentActive + 1);
-            //this.refs[ref].movetoArticle.call();
-        } else if (e.keyCode === 80) { //p
-            ref = 'article' + (this.state.currentActive - 1);
-            //this.refs[ref].movetoArticle.call();
-        } else if ((e.keyCode === 79) || (e.keyCode === 13)) { //o, enter
-            ref = 'article' + (this.state.currentActive);
-            this.refs[ref].openArticle.call();
-        } else if (e.keyCode === 189) { //-
-            ref = 'article' + (this.state.currentActive);
-            this.refs[ref].zoomContent(-1);
-        } else if (e.keyCode === 187) { //=
-            ref = 'article' + (this.state.currentActive);
-            this.refs[ref].zoomContent(1);
-        } if (e.keyCode === 48) { //=
-            ref = 'article' + (this.state.currentActive);
-            this.refs[ref].zoomContent(0);
-        } else if (e.keyCode === 83) { //s
-            ref = 'article' + (this.state.currentActive);
-            this.refs[ref].toggleArticleStar();
-        } else if (e.keyCode === 86) { //v
-            //todo openCurrentArticleInNewWindow();
-        } else if (e.keyCode === 77) { //m
-            //todo toggleCurrentArticleRead();
-        } else if (e.keyCode === 191) { //?
-            //todo show help (controls)
-        }
+    setCurrentArticleList: function(currentArticleList) {
+        this.setState({
+            currentArticleList: currentArticleList
+        });
     },
 
     feedTitleClick: function(e) {
@@ -201,6 +148,7 @@ let FeedsList = React.createClass({
                                 goToNextArticleList={this.goToNextArticleList}
                                 feedUrl={encodedFeedUrl}
                                 setCurrentFeed = {this.setCurrentFeed}
+                                setCurrentArticleList = {this.setCurrentArticleList}
                                 multipleFeedsView={true}>
                             </ArticlesList>;
                     }

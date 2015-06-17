@@ -48,7 +48,9 @@ let ArticlesList = React.createClass({
 
         this.resolveShowRead();
 
-        //document.addEventListener('keyup', this.keyUp);
+        if (!this.props.multipleFeedsView) {
+            document.addEventListener('keyup', this.keyUp);
+        }
 
         this.handleAddNewFeedProcess();
 
@@ -322,23 +324,21 @@ let ArticlesList = React.createClass({
     keyUp: function(e) {
         let ref;
 
+        AppUtils.scrollTo(0, 300);
+
         if (e.keyCode === 74) { //j
             ref = 'article' + (this.state.currentActive + 1);
             if (this.refs[ref]) {
                 this.refs[ref].openArticle.call();
-            } else if (typeof this.props.goToNextArticleList === 'function') {
-                this.props.goToNextArticleList.call(this, this.props.refCounter, 1);
             } else {
-                //
+                AppUtils.scrollTo(0, 300);
             }
         } else if (e.keyCode === 75) { //k
             ref = 'article' + (this.state.currentActive - 1);
             if (this.refs[ref]) {
                 this.refs[ref].openArticle.call();
-            } else if (typeof this.props.goToNextArticleList === 'function') {
-                this.props.goToNextArticleList.call(this, this.props.refCounter, -1);
             } else {
-                //
+                AppUtils.scrollTo(0, 300);
             }
         } else if (e.keyCode === 78) { //n
             ref = 'article' + (this.state.currentActive + 1);
@@ -368,6 +368,8 @@ let ArticlesList = React.createClass({
         } else if (e.keyCode === 191) { //?
             //todo show help (controls)
         }
+
+        return false;
     },
 
     toggleArticleOpen: function(id, currentActive) {
@@ -388,6 +390,10 @@ let ArticlesList = React.createClass({
 
         if (typeof this.props.setCurrentFeed === 'function') {
             this.props.setCurrentFeed.call(this, decodeURIComponent(feedUrl));
+        }
+
+        if (typeof this.props.setCurrentArticleList === 'function') {
+            this.props.setCurrentArticleList.call(this, this.props.refCounter);
         }
 
         this.state.articlesOpenThisSession.push(id);
