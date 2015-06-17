@@ -68,7 +68,7 @@ body {
     .menu .menuList .feed:last-child, .menu .menuList .folder:last-child {
       border-bottom: 1px solid #e8e8e8; }
     .menu .menuList > .feed, .menu .menuList > .folder {
-      white-space: pre;
+      white-space: nowrap;
       line-height: 1.4em;
       font-size: 2em;
       padding-top: 8px;
