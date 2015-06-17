@@ -45,7 +45,7 @@ body {
     }
 
     &>.feed, &>.folder {
-      white-space: pre;
+      white-space: nowrap;
       line-height: 1.4em;
       font-size: 2em;
       padding-top: 8px;
