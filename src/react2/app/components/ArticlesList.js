@@ -32,7 +32,8 @@ let ArticlesList = React.createClass({
             noMoreArticles: false,
             articlesOpenThisSession: [],
             processedArticles: 0,
-            showMoreButton: false
+            showMoreButton: false,
+            showRead: false
         };
     },
 
@@ -218,6 +219,8 @@ let ArticlesList = React.createClass({
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
         } else if ((!showRead) && this.thereAreMoreUnread(decodedFeedUrl)) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
+        } else if (this.state.showRead) {
+            AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
         } else {
             this.setState({
                 noMoreArticles: true
@@ -230,6 +233,7 @@ let ArticlesList = React.createClass({
         try {
             showRead = this.props.userSettings[view[0].name][view[1].name].showRead;
         } catch (e) {
+            console.log(e);
         }
 
         return showRead;
@@ -434,6 +438,12 @@ let ArticlesList = React.createClass({
         });
     },
 
+    showReadItems: function() {
+        this.setState({
+            showRead: true
+        });
+    },
+
     render: function() {
         if (this.context.router.getCurrentQuery().new === '1') {
             let styles = {
@@ -464,6 +474,7 @@ let ArticlesList = React.createClass({
         }
         feedUrl = decodeURIComponent(feedUrl);
 
+        let everyArticleIsRead = true;
         this.state.componentCounter = 0;
         let articles = this.state.articles.map(function (article) {
             this.state.componentCounter = this.state.componentCounter + 1;
@@ -476,10 +487,11 @@ let ArticlesList = React.createClass({
 
             let isStar = this.state.star.indexOf(article.id) > -1;
             let refName = 'article' + this.state.componentCounter;
+            everyArticleIsRead = everyArticleIsRead && isRead;
 
             return (
                 <Article key={refName} ref={refName}
-                    showRead={showRead}
+                    showRead={showRead || this.state.showRead}
                     componentCounter={this.state.componentCounter}
                     currentActive={this.state.currentActive}
                     article={article} isRead={isRead} isStar={isStar}
@@ -496,9 +508,20 @@ let ArticlesList = React.createClass({
             'displayNone': this.state.noMoreArticles
         });
 
+        let showShowAllMessage = (!this.props.multipleFeedsView) && everyArticleIsRead && (!showRead) && (!this.state.showRead);
+        if (showShowAllMessage) {
+            showShowAllMessage = true;
+            articles =
+                <li className="noUnreadItems">
+                    <span>No unread articles</span>
+                    <a onClick={this.showReadItems}>SHOW ALL</a>
+                </li>;
+        }
+
+
         let moreButtonClasses = classNames({
             'moreLink2': true,
-            'displayNone': this.props.multipleFeedsView
+            'displayNone': this.props.multipleFeedsView || showShowAllMessage
         });
 
 /*        let showAll = '';

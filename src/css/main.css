@@ -478,16 +478,16 @@ body {
     padding: 0 5% 0 2%;
     cursor: pointer; }
 
-.noUnreadFeeds {
+.noUnreadItems {
   text-align: center;
   width: 100%;
   display: block;
   margin: 60px 0;
   font-size: 25px; }
-  .noUnreadFeeds a {
+  .noUnreadItems a {
     color: #66AA33;
     cursor: pointer; }
-  .noUnreadFeeds span {
+  .noUnreadItems span {
     display: block;
     margin: 10px 0; }
 

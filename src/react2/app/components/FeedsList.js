@@ -89,7 +89,7 @@ let FeedsList = React.createClass({
         }
     },
 
-    showReadFeeds: function() {
+    showReadItems: function() {
         this.setState({
             showRead: true
         });
@@ -199,9 +199,9 @@ let FeedsList = React.createClass({
 
         if (multipleFeedsView && (refCounter === 0)) {
             feeds =
-                <li className="noUnreadFeeds">
+                <li className="noUnreadItems">
                     <span>No unread feeds</span>
-                    <a onClick={this.showReadFeeds}>SHOW ALL</a>
+                    <a onClick={this.showReadItems}>SHOW ALL</a>
                 </li>;
         }
 
