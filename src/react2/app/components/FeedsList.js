@@ -22,7 +22,8 @@ let FeedsList = React.createClass({
         return {
             folderUnreadCounts: {},
             closedFeeds: [],
-            currentFeed: ''
+            currentFeed: '',
+            showRead: false
         };
     },
 
@@ -88,6 +89,12 @@ let FeedsList = React.createClass({
         }
     },
 
+    showReadFeeds: function() {
+        this.setState({
+            showRead: true
+        });
+    },
+
     render: function() {
         let feeds, currentFolder = this.context.router.getCurrentParams().folderName ? this.context.router.getCurrentParams().folderName : 'root';
 
@@ -95,7 +102,7 @@ let FeedsList = React.createClass({
             return (<div/>);
         }
 
-        let showRead = this.resolveShowRead();
+        let showRead = this.resolveShowRead() || this.state.showRead;
         let multipleFeedsView = typeof this.props.multipleFeedsView !== 'undefined' ? this.props.multipleFeedsView : true;
 
         feeds = this.props.userData.bloglist[currentFolder];
@@ -189,6 +196,14 @@ let FeedsList = React.createClass({
             'menuList': true,
             'multipleFeeds': multipleFeedsView
         });
+
+        if (multipleFeedsView && (refCounter === 0)) {
+            feeds =
+                <li className="noUnreadFeeds">
+                    <span>No unread feeds</span>
+                    <a onClick={this.showReadFeeds}>SHOW ALL</a>
+                </li>;
+        }
 
         return (
             <ul className={menuListClasses}>

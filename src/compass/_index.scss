@@ -651,3 +651,21 @@ body {
     cursor: pointer;
   }
 }
+
+.noUnreadFeeds {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: 60px 0;
+    font-size: 25px;
+    
+    a {
+      color: #66AA33;
+      cursor: pointer;
+    }
+
+    span {
+      display: block;
+      margin: 10px 0;
+    }
+}

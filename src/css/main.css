@@ -478,6 +478,19 @@ body {
     padding: 0 5% 0 2%;
     cursor: pointer; }
 
+.noUnreadFeeds {
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin: 60px 0;
+  font-size: 25px; }
+  .noUnreadFeeds a {
+    color: #66AA33;
+    cursor: pointer; }
+  .noUnreadFeeds span {
+    display: block;
+    margin: 10px 0; }
+
 .headerWrapper {
   width: 100%;
   margin: 0px auto;
