@@ -57,7 +57,7 @@ let ArticleHeader = React.createClass({
         });
 
         return (
-            <div>
+            <div className='articleHeader'>
                 <a href={this.props.url} target='_blank' className='headerAuthorAndDate'>
                     {this.props.author}
                     {this.props.author && this.props.date ? '\u00A0 \u00b7 \u00A0 ' : ''}
@@ -65,7 +65,7 @@ let ArticleHeader = React.createClass({
 
                 </a>
 
-                <div className='bla'>
+                <div>
                     <a className='star' onClick={this.toggleArticleStar}>
                         <span className={starClass}></span>
                     </a>
@@ -229,11 +229,8 @@ let Article = React.createClass({
             wasOpenedThisSession: true
         });
 
-        //let addForFirst = this.props.componentCounter === 1 ? 0 : -20;
-        //AppUtils.scrollTo($(this.getDOMNode()).offset().top + addForFirst + 90, 300);
-        //console.log($(this.getDOMNode()[0]));
-        let pos = $(this.getDOMNode()).offset().top;
-        // + $(this.getDOMNode()).height();
+        let el = $(this.getDOMNode());
+        let pos = el.find('.articleHeader').offset().top + el.find('.articleHeader').height();
         AppUtils.scrollTo(pos, 300);
 
         this.props.toggleArticleOpen.apply(this, [this.props.article.id, this.props.componentCounter]);
