@@ -160,7 +160,6 @@ body {
     padding: 13px 2% 10px 2%;
     overflow: hidden; }
     .articlesList .article.articleOpen {
-      margin-top: 20px;
       margin-bottom: 20px;
       width: 100%;
       max-width: 860px; }
