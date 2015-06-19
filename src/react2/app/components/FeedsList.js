@@ -107,6 +107,7 @@ let FeedsList = React.createClass({
 
         feeds = this.props.userData.bloglist[currentFolder];
         let refCounter = 0;
+
         feeds = feeds
             .map(function (feed) {
                 let url = '/' + encodeURIComponent(currentFolder) + '/' + encodeURIComponent(feed.url);
@@ -197,7 +198,7 @@ let FeedsList = React.createClass({
             'multipleFeeds': multipleFeedsView
         });
 
-        if (multipleFeedsView && (refCounter === 0)) {
+        if (multipleFeedsView && (refCounter === 0) && (this.state.closedFeeds === 0)) {
             feeds =
                 <li className="noUnreadItems">
                     <span>No unread feeds</span>
