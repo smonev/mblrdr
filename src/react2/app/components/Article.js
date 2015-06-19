@@ -108,12 +108,20 @@ let ArticleContent = React.createClass({
         // this.hammertime = new Hammer( this.getDOMNode() );
         // this.hammertime.add(new Hammer.Pan({ direction: Hammer.DIRECTION_HORIZONTAL }));
         // this.hammertime.on('panend', this.panend);
+
+        this.initializeImageZoom();
     },
 
     componentWillUnmount: function() {
         // if (this.hammertime) {
         //     this.hammertime.destroy();
         // }
+
+        this.removeZoomEvents();
+    },
+
+    componentDidUpdate: function(prevProps, prevState) {
+        //this.initializeImageZoom();
     },
 
     panend: function(e) {
@@ -125,6 +133,55 @@ let ArticleContent = React.createClass({
             }
         }
     },
+
+    initializeImageZoom: function () {
+        $(this.getDOMNode()).find('img').map(function(i, img) {
+            if (img.naturalWidth > 800) {
+
+                img.classList.add('zooInImage');
+                img.classList.remove('zooOutImage');
+
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    if (img.classList.contains('fullScreenImage') ) {
+                        img.classList.remove('fullScreenImage');
+
+                        $(img).velocity(
+                            {scale:1},
+                            {
+                                duration: 200
+                            });
+
+                        img.classList.add('zooInImage');
+                        img.classList.remove('zooOutImage');
+                    } else {
+                        img.classList.add('fullScreenImage');
+
+                        //let scalePercent = window.innerWidth / ($(img).width() + 100);
+                        let scalePercent = window.innerWidth / ($(img).width());
+                        scalePercent = scalePercent * 0.95; //5% padding, change it in css too if changed here
+                        $(img).velocity(
+                            {scale: scalePercent},
+                            {
+                                duration: 200
+                            });
+
+                        img.classList.remove('zooInImage');
+                        img.classList.add('zooOutImage');
+                    }
+                    return false;
+                });
+            }
+        });
+    },
+
+    removeZoomEvents: function() {
+        $(this.getDOMNode()).find('img').map(function(i, img) {
+            img.removeEventListener('click');
+        });
+    },
+    
 
     goToNextArticle: function (e) {
         e.preventDefault();
