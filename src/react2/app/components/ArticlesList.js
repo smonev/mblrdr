@@ -233,7 +233,7 @@ let ArticlesList = React.createClass({
         try {
             showRead = this.props.userSettings[view[0].name][view[1].name].showRead;
         } catch (e) {
-            console.log(e);
+            //console.log(e);
         }
 
         return showRead;
