@@ -491,6 +491,22 @@ body {
     display: block;
     margin: 10px 0; }
 
+.fullScreenImage {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  z-index: 1;
+  right: 0;
+  margin: 0 auto;
+  padding: 5%;
+  background-color: white; }
+
+.zooInImage {
+  cursor: zoom-in; }
+
+.zooOutImage {
+  cursor: zoom-out; }
+
 .headerWrapper {
   width: 100%;
   margin: 0px auto;
