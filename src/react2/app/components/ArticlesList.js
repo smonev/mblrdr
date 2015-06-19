@@ -328,8 +328,6 @@ let ArticlesList = React.createClass({
     keyUp: function(e) {
         let ref;
 
-        AppUtils.scrollTo(0, 300);
-
         if (e.keyCode === 74) { //j
             ref = 'article' + (this.state.currentActive + 1);
             if (this.refs[ref]) {
