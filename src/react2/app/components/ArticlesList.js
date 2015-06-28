@@ -141,13 +141,13 @@ let ArticlesList = React.createClass({
                     this.moreLinkInitialized = true;
                     this.moreLinkAppearSetup();
                 }
-            } else {
-                if (showMoreButton) {
-                    if (!this.moreLinkInitialized) {
-                        this.moreLinkInitialized = true;
-                        this.moreLinkAppearSetup();
-                    }
-                }
+            } else if (typeof this.props !== 'undefined') {
+                // if (showMoreButton) {
+                //     if (!this.moreLinkInitialized) {
+                //         this.moreLinkInitialized = true;
+                //         this.moreLinkAppearSetup();
+                //     }
+                // }
 
                 let serviceUrl = feedUrl + '?count=' + this.state.nextcount;
                 let decodedFeedUrl =  decodeURIComponent(feedUrl);
@@ -166,7 +166,7 @@ let ArticlesList = React.createClass({
     moreLinkAppearSetup: function() {
         let that = this;
         $('.moreLink2').appear();
-        $('.moreLink2').on('appear', function(e) {
+        $('.moreLink2').off('appear').on('appear', function(e) {
             that.moreClick.call();
         });
         $.force_appear('.moreLink2');
