@@ -165,16 +165,11 @@ let ArticlesList = React.createClass({
 
     moreLinkAppearSetup: function() {
         let that = this;
-        appear({
-            elements: function elements(){
-                return document.getElementsByClassName('moreLink2');
-            },
-            appear: function appear(){
-                that.moreClick.call();
-            },
-            bounds: 100,
-            reappear: true
+        $('.moreLink2').appear();
+        $('.moreLink2').on('appear', function(e) {
+            that.moreClick.call();
         });
+        $.force_appear('.moreLink2');
     },
 
     thereAreMoreUnread: function(decodedFeedUrl) {
@@ -204,15 +199,15 @@ let ArticlesList = React.createClass({
         let serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount;
         let decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
-        if (!this.thereAreMoreUnread(decodedFeedUrl)) {
-            this.setState({
-                noMoreArticles: true
-            });
-        }
-
         let showRead = this.resolveShowRead();
         if (this.props.multipleFeedsView) {
             showRead = false;
+        }
+
+        if ((!showRead) && (!this.thereAreMoreUnread(decodedFeedUrl))) {
+            this.setState({
+                noMoreArticles: true
+            });
         }
 
         if (showRead && this.thereAreMore(this.state.componentCounter, decodedFeedUrl)) {
