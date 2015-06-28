@@ -36,7 +36,7 @@ let ArticleHeader = React.createClass({
     },
 
     componentDidMount: function() {
-        Velocity(this.getDOMNode(), 'callout.pulseDown');
+        //Velocity(this.getDOMNode(), 'callout.pulseDown');
     },
 
     toggleArticleOpen: function(e) {
@@ -181,7 +181,6 @@ let ArticleContent = React.createClass({
             img.removeEventListener('click');
         });
     },
-    
 
     goToNextArticle: function (e) {
         e.preventDefault();

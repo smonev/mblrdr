@@ -36,7 +36,7 @@ let FeedsList = React.createClass({
             }
         }.bind(this));
 
-        //Velocity(this.getDOMNode(), 'callout.pulseSide');
+        //Velocity(this.getDOMNode(), 'callout.pulseDown');
     },
 
     componentWillUnmount: function() {

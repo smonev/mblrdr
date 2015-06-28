@@ -423,7 +423,7 @@ let AppSettings = React.createClass({
     },
 
     componentDidUpdate: function(prevProps, prevState) {
-        Velocity(this.getDOMNode(), 'callout.settings8');
+        //Velocity(this.getDOMNode(), 'callout.settings8');
     },
 
     getView: function() {
