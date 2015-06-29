@@ -472,6 +472,8 @@ let AppSettings = React.createClass({
         let settings;
         if (this.props.settingsType === 1) {
             settings = <div>
+                    <HeaderSetting title={view.title} view={view.view}/>
+
                     <MarkReadSetting
                         view={view.view} hideSettings={this.props.hideSettings} />
 
@@ -502,8 +504,6 @@ let AppSettings = React.createClass({
                         <span className='fa fa-times'></span>
                     </a>
                 </li>
-
-                <HeaderSetting title={view.title} view={view.view}/>
 
                 {settings}
             </ul>
