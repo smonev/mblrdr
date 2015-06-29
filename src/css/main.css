@@ -453,7 +453,8 @@ body {
 .multipleFeeds .feedTitle {
   color: #000000;
   font-size: 16px;
-  display: initial; }
+  display: initial;
+  text-decoration: underline; }
 .multipleFeeds .articlesList .article .header .headerAuthorAndDate {
   font-size: 14px;
   margin-left: 0px; }
