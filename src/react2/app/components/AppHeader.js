@@ -16,7 +16,7 @@ class AppHeader extends React.Component {
         super(props);
         this.context = context;
         this.state = {
-            title: ''
+            title: ' '
         };
 
         this.titleChangeEvent = PubSub.subscribe(AppMessages.TITLE_CHANGE_EVENT, function( msg, title ) {
@@ -64,11 +64,15 @@ class AppHeader extends React.Component {
 
         let title = '';
         if (currentParams.feedUrl) {
-            title = this.props.titl ? this.props.title : this.state.title;
+            title = this.props.title ? this.props.title : this.state.title;
         } else if (currentParams.folderName) {
             title = currentParams.folderName;
         } else {
             title = 'Home';
+        }
+
+        if (title === '') {
+            title = String.fromCharCode(183);
         }
 
         return (
