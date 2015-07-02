@@ -1,3 +1,5 @@
+// https://github.com/christianalfoni/react-app-boilerplate
+
 var gulp = require('gulp');
 var browserify = require('browserify');
 var watchify = require('watchify');
