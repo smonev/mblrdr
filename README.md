@@ -1,13 +1,12 @@
-mblrdr - a mobile rss reader
+mblrdr - a rss reader for your mobile
 ======
 
 Intended Use
 ======
 
 > RSS is best for following a large number of infrequently updated
-> sites: sites thatyou’d never remember to check every day because they
-> only post occasionally, and that your social-network friends won’t
-> reliably find or link to.
+> sites: sites that you’d never remember to check every day because they
+> only post occasionally
 
 http://www.marco.org/2013/03/26/power-of-rss
 
@@ -16,13 +15,13 @@ Mblrdr runs on Google App Engine and is using React and react-router. Google App
 How to install and setup your own 
 ======
 
-1. Go to appengine.com and register (if you don't have registration).
+1. Go to http://appengine.com and register (if you don't have registration).
 
 2. In appengine.com add a python app. Choose defautls and remember the app name (handler).
 
-3. Download and unzip the mblrdr.zip
+3. Download and unzip the mblrdr.zip (or clone the repo)
 
-4. Open app.yaml and set replace 'ENTER YOUR APPLICATION NAME HERE' with your name from 2)
+4. Open mblrdr.yaml and set replace 'ENTER YOUR APPLICATION NAME HERE' with your name from 2)
 
 5. Upload to appengine by opening cmd prompt and write: "appcfg.py update mblrdr"
 (asuming the app.yaml file is in mblrdr folder and asuming you have python in your path)
