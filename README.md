@@ -1,6 +1,8 @@
 mblrdr - a rss reader for your mobile
 ======
 
+Mblrdr runs on Google App Engine and is using React and react-router. Google App Engine have some free tier so you can install it to check it out.
+
 Intended Use
 ======
 
@@ -17,14 +19,14 @@ How to install and setup your own
 
 1. Go to http://appengine.com and register (if you don't have registration).
 
-2. In appengine.com add a python app. Choose defautls and remember the app name (handler).
+2. In appengine.com add a python app. Choose defaults and remember the app name (handler).
 
-3. Download and unzip the mblrdr.zip (or clone the repo)
+3. Download and unzip the mblrdr.zip (or clone this repository)
 
 4. Open mblrdr.yaml and set replace 'ENTER YOUR APPLICATION NAME HERE' with your name from 2)
 
 5. Upload to appengine by opening cmd prompt and write: "appcfg.py update mblrdr"
-(asuming the app.yaml file is in mblrdr folder and asuming you have python in your path)
+(assuming the app.yaml file is in mblrdr folder and assuming you have python in your path)
 
 6. go to yourappname.appspot.com and start reading feeds
 
