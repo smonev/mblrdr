@@ -12,7 +12,11 @@ Intended Use
 
 http://www.marco.org/2013/03/26/power-of-rss
 
-Mblrdr runs on Google App Engine and is using React and react-router. Google App Engine have some free tier so you can install it to check it out.
+DEMO
+======
+You can play in readonly mode here (google account needed):
+[demo](http://demo.fdjsfkdsfhkjdshfkjsdhfkjsdhkj.appspot.com)
+
 
 How to install and setup your own 
 ======
