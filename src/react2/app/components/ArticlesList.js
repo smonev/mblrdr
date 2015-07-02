@@ -14,6 +14,8 @@ let AppMessages = require('./../AppMessages.js');
 
 const MAX_ARTICLES_PER_FEED = 3;
 
+let getFeedDataInProgress = false;
+
 let ArticlesList = React.createClass({
 //    mixins: [React.addons.PureRenderMixin],
 
@@ -81,6 +83,8 @@ let ArticlesList = React.createClass({
     },
 
     getFeedDataSuccess: function (result) {
+        getFeedDataInProgress = false;
+
         if (this.isMounted()) {
             let articles = this.state.articles;
             let newArticles = JSON.parse(result.feed ? result.feed : '[]');
@@ -153,7 +157,7 @@ let ArticlesList = React.createClass({
                 let decodedFeedUrl =  decodeURIComponent(feedUrl);
 
                 if (result.nextcount !== -1) {
-                    if (this.thereAreMoreUnread(decodedFeedUrl)) {
+                    if (this.thereAreMoreUnread(this.state.componentCounter, decodedFeedUrl)) {
                         AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
                     }
                 } else {
@@ -172,14 +176,14 @@ let ArticlesList = React.createClass({
         $.force_appear('.moreLink2');
     },
 
-    thereAreMoreUnread: function(decodedFeedUrl) {
+    thereAreMoreUnread: function(shownCount, decodedFeedUrl) {
         if ( (AppStore.readData) && (AppStore.readData[decodedFeedUrl]) ) {
             if (this.props.multipleFeedsView && (this.state.componentCounter >= MAX_ARTICLES_PER_FEED)) {
                 return false;
             } else if (this.props.multipleFeedsView && (this.state.processedArticles >= 100)) {
                 return false;
             } else {
-                return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount;
+                return AppStore.readData[decodedFeedUrl].totalCount > AppStore.readData[decodedFeedUrl].readCount + shownCount;
             }
         } else {
             return false;
@@ -196,6 +200,11 @@ let ArticlesList = React.createClass({
 
     moreClick: function() {
 
+        if (getFeedDataInProgress) {
+            return;
+        }
+
+        getFeedDataInProgress = true;
         let serviceUrl = this.context.router.getCurrentParams().feedUrl + '?count=' + this.state.nextcount;
         let decodedFeedUrl =  decodeURIComponent(this.context.router.getCurrentParams().feedUrl);
 
@@ -204,7 +213,7 @@ let ArticlesList = React.createClass({
             showRead = false;
         }
 
-        if ((!showRead) && (!this.thereAreMoreUnread(decodedFeedUrl))) {
+        if ((!showRead) && (!this.thereAreMoreUnread(this.state.componentCounter, decodedFeedUrl))) {
             this.setState({
                 noMoreArticles: true
             });
@@ -212,7 +221,7 @@ let ArticlesList = React.createClass({
 
         if (showRead && this.thereAreMore(this.state.componentCounter, decodedFeedUrl)) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
-        } else if ((!showRead) && this.thereAreMoreUnread(decodedFeedUrl)) {
+        } else if ((!showRead) && this.thereAreMoreUnread(this.state.componentCounter, decodedFeedUrl)) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
         } else if (this.state.showRead) {
             AppUtils.getFeedData(serviceUrl, this.getFeedDataSuccess);
