@@ -77,6 +77,8 @@ let FeedsList = React.createClass({
         this.setState({
             closedFeeds: closedFeeds
         });
+
+        // Velocity(this.getDOMNode(), 'callout.pulseDown');
     },
 
     goToNextArticleList: function(currentArticleList, direction) {
