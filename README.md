@@ -12,9 +12,9 @@ Intended Use
 
 http://www.marco.org/2013/03/26/power-of-rss
 
-DEMO
+Demo
 ======
-You can play in readonly mode here (google account needed):
+You can check it out in readonly mode here, google account needed:
 [demo](http://demo.fdjsfkdsfhkjdshfkjsdhfkjsdhkj.appspot.com)
 
 
@@ -27,7 +27,7 @@ How to install and setup your own
 
 3. Download and unzip the mblrdr.zip (or clone this repository)
 
-4. Open mblrdr.yaml and set replace 'ENTER YOUR APPLICATION NAME HERE' with your name from 2)
+4. Open mblrdr.yaml and set replace 'ENTER YOUR APPLICATION NAME HERE' with your app name from 2.
 
 5. Upload to appengine by opening cmd prompt and write: "appcfg.py update mblrdr"
 (assuming the app.yaml file is in mblrdr folder and assuming you have python in your path)
