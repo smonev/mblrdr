@@ -31,7 +31,7 @@ def CreateUsername(email):
     return check_name
 
 
-def CreateFirstTimeUser(user):
+def CreateFirstTimeUser(user, demo):
     username = CreateUsername(user.email())
 
     blogs = [{"url": "http://feeds.feedburner.com/TechCrunch", "title": "TechCrunch"}, {"url": "http://feeds.feedburner.com/ommalik", "title": "GigaOM"}, {"url": "http://feeds.feedburner.com/readwriteweb", "title": "ReadWrite"}, {"url": "http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider", "title": "SAI"}, {"url":
@@ -39,7 +39,7 @@ def CreateFirstTimeUser(user):
     jsonBlogList = '{"username":"' + username + \
         '", "bloglist":{"root":[{"url":"http://feeds.feedburner.com/TechCrunch","title":"TechCrunch"}], "1":[{"url":"http://feeds.feedburner.com/ommalik","title":"GigaOM"},{"url":"http://feeds.feedburner.com/readwriteweb","title":"ReadWrite"},{"url":"http://feeds.feedburner.com/typepad/alleyinsider/silicon_alley_insider","title":"SAI"},{"url":"http://feeds.arstechnica.com/arstechnica/index","title":"Ars Technica"},{"url":"http://feeds.paidcontent.org/pcorg","title":"paidContent"}],"2":[{"url":"http://www.engadget.com/rss.xml","title":"Engadget RSS Feed"},{"url":"http://feeds.gawker.com/gizmodo/full","title":"Gizmodo"}, {"url":"http://feeds.feedburner.com/TheBoyGeniusReport","title":"BGR"}]}, "userSettings": {"nightmode": false}}'
     ud = UserData(app_username=username, id=user.email(),
-                  private_data=jsonBlogList, isActive=True)
+                  private_data=jsonBlogList, isActive=True, demo=demo)
 
     ud.put_async(use_cache=False, use_memcache=False)  # !
 

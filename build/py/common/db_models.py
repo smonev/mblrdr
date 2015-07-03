@@ -7,6 +7,7 @@ class UserData(ndb.Model):
     app_username = ndb.StringProperty(required=True, indexed=False)
     isActive = ndb.BooleanProperty(default=False)
     private_data = ndb.TextProperty()
+    demo = ndb.BooleanProperty(default=False, indexed=False)
 
 
 class ReadData(ndb.Model):

@@ -30,9 +30,29 @@ handlers:
 - url: /images
   static_dir: images
 
+- url: /(apple-touch-icon.*\.(png))
+  static_files: images/\1
+  upload: images/(apple-touch-icon.*\.(png))
+
+- url: /(android-chrome.*\.(png))
+  static_files: images/\1
+  upload: images/(android-chrome.*\.(png))
+
+- url: /(mstile.*\.(png))
+  static_files: images/\1
+  upload: images/(mstile.*\.(png))
+
+- url: /(favicon-.*\.(png))
+  static_files: images/\1
+  upload: images/(favicon-.*\.(png))
+
 - url: /favicon.ico
   static_files: images/favicon.ico
   upload: images/favicon.ico
+
+- url: /manifest.json
+  static_files: images/manifest.json
+  upload: images/manifest.json
 
 - url: /robots.txt
   static_files: media/robots.txt

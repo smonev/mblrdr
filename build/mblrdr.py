@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # TODO
-# -1. html escape when parsing and when use inputs sth
 # 3. cron user - keep track of feed usasge and decrease/increase cron times
 # 5. star folder
 # 6. move from hash to somelib.hash
@@ -43,9 +42,8 @@ from py.common.parser import GetFeedDataSettings
 from py.common.utils import *
 
 
-def isReadOnly(host):
-    return 'demo.' in host
-
+def isReadOnly(user):
+    return hasattr(user, 'demo') and user.demo
 
 class MainHandler(webapp2.RequestHandler):
 
@@ -62,7 +60,7 @@ class MainHandler(webapp2.RequestHandler):
             ud = GetAppUserByEmail(user.email())
 
             if ud is None:
-                CreateFirstTimeUser(user)
+                CreateFirstTimeUser(user, True)
                 self.redirect('/')
                 return
 
@@ -210,22 +208,21 @@ class SaveSettingsHandler(webapp2.RequestHandler):
         urllib.urlopen(feedUrl).read()
 
     def post(self):
-        if isReadOnly(self.request.host):
-            logging.debug('READONLY_MODE')
-            self.response.out.write("ok")
-            return
-
         from google.appengine.api import users
 
         user = users.get_current_user()
         if user:
             ud = GetAppUserByEmail(user.email())
             if ud is not None:
+
+                if isReadOnly(ud):
+                    self.response.out.write("ok")
+                    return
+
                 data = self.request.get('data')
 
                 newFeed = self.request.get('newFeed')
                 if newFeed:
-                    logging.debug('adddddddddding new feed: %s', newFeed)
                     if self.addNewFeed(newFeed):
                         self.cronNewFeed(newFeed)
 
@@ -275,8 +272,6 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
 
     def markAllRead(self):
         for feedUrl in self.data:
-            logging.debug('[READCOUNT DEBUG ALL] 11111')
-
             feedUrl = urllib.unquote_plus(feedUrl)
             feedDataSettings = GetFeedDataSettings(feedUrl)
 
@@ -331,17 +326,30 @@ class MarkArticlesAsRead(webapp2.RequestHandler):
             str(json.dumps({'unreadCount': -1, 'feedUrl': feedUrl})))
 
     def post(self):
-        if isReadOnly(self.request.host):
-            logging.debug('READONLY_MODE')
-            self.response.out.write("ok")
-            return
-
         from google.appengine.api import users
 
         user = users.get_current_user()
         if user:
             ud = GetAppUserByEmail(user.email())
             if ud is not None:
+
+                if isReadOnly(ud):
+
+                    if self.request.get('allRead') == '1':
+                        unreadCount = 0
+                    else:
+                        unreadCount = -1
+
+                    self.data = json.loads(self.request.get('data'))
+                    self.response.out.write(str(json.dumps(
+                        {
+                            'unreadCount': unreadCount,
+                            'feedUrl': self.data.keys()[0]
+                        }
+                    )))
+
+                    return
+
                 self.data = json.loads(self.request.get('data'))
                 self.ud = ud
                 self.read = self.request.get('read') == '1'
@@ -380,17 +388,17 @@ class StarArticle(webapp2.RequestHandler):
         starData.put()
 
     def post(self):
-        if isReadOnly(self.request.host):
-            logging.debug('READONLY_MODE')
-            self.response.out.write("ok")
-            return
-
         from google.appengine.api import users
 
         user = users.get_current_user()
         if user:
             self.ud = GetAppUserByEmail(user.email())
             if self.ud is not None:
+
+                if isReadOnly(ud):
+                    self.response.out.write("ok")
+                    return
+
                 self.data = json.loads(self.request.get('data'))
                 self.StarSingleArticle()
                 self.response.out.write("ok")
