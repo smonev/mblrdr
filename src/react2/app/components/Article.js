@@ -134,6 +134,40 @@ let ArticleContent = React.createClass({
         }
     },
 
+    clickOnZoomableImage: function(e) {
+        e.preventDefault();
+
+        let img = e.target;
+
+        if (img.classList.contains('fullScreenImage') ) {
+            img.classList.remove('fullScreenImage');
+
+            $(img).velocity(
+                {scale:1},
+                {
+                    duration: 200
+                });
+
+            img.classList.add('zooInImage');
+            img.classList.remove('zooOutImage');
+        } else {
+            img.classList.add('fullScreenImage');
+
+            //let scalePercent = window.innerWidth / ($(img).width() + 100);
+            let scalePercent = window.innerWidth / ($(img).width());
+            scalePercent = scalePercent * 0.95; //5% padding, change it in css too if changed here
+            $(img).velocity(
+                {scale: scalePercent},
+                {
+                    duration: 200
+                });
+
+            img.classList.remove('zooInImage');
+            img.classList.add('zooOutImage');
+        }
+        return false;
+    },
+
     initializeImageZoom: function () {
         $(this.getDOMNode()).find('img').map(function(i, img) {
             if (img.naturalWidth > 800) {
@@ -141,44 +175,14 @@ let ArticleContent = React.createClass({
                 img.classList.add('zooInImage');
                 img.classList.remove('zooOutImage');
 
-                img.addEventListener('click', function(e) {
-                    e.preventDefault();
-
-                    if (img.classList.contains('fullScreenImage') ) {
-                        img.classList.remove('fullScreenImage');
-
-                        $(img).velocity(
-                            {scale:1},
-                            {
-                                duration: 200
-                            });
-
-                        img.classList.add('zooInImage');
-                        img.classList.remove('zooOutImage');
-                    } else {
-                        img.classList.add('fullScreenImage');
-
-                        //let scalePercent = window.innerWidth / ($(img).width() + 100);
-                        let scalePercent = window.innerWidth / ($(img).width());
-                        scalePercent = scalePercent * 0.95; //5% padding, change it in css too if changed here
-                        $(img).velocity(
-                            {scale: scalePercent},
-                            {
-                                duration: 200
-                            });
-
-                        img.classList.remove('zooInImage');
-                        img.classList.add('zooOutImage');
-                    }
-                    return false;
-                });
+                img.addEventListener('click', this.clickOnZoomableImage);
             }
         });
     },
 
     removeZoomEvents: function() {
         $(this.getDOMNode()).find('img').map(function(i, img) {
-            img.removeEventListener('click');
+            img.removeEventListener('click', this.clickOnZoomableImage);
         });
     },
 
