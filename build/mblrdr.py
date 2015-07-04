@@ -60,6 +60,7 @@ class MainHandler(webapp2.RequestHandler):
             ud = GetAppUserByEmail(user.email())
 
             if ud is None:
+                # all new users are demo users
                 CreateFirstTimeUser(user, True)
                 self.redirect('/')
                 return
