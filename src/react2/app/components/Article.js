@@ -4,12 +4,15 @@ let React = require('react');
 
 let classNames = require('classNames');
 
+let ReactIntl;
+let FormattedRelative;
+
 try {
-    let ReactIntl = require('react-intl');
-    let FormattedRelative = ReactIntl.FormattedRelative;
+    ReactIntl = require('react-intl');
+    FormattedRelative = ReactIntl.FormattedRelative;
 } catch (err) {
     // react-intl does not support some mobile borowsers
-    let FormattedRelative = React.createClass({
+    FormattedRelative = React.createClass({
         render: function() {
             return (
                 <span>
