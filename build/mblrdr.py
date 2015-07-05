@@ -396,7 +396,7 @@ class StarArticle(webapp2.RequestHandler):
             self.ud = GetAppUserByEmail(user.email())
             if self.ud is not None:
 
-                if isReadOnly(ud):
+                if isReadOnly(self.ud):
                     self.response.out.write("ok")
                     return
 
